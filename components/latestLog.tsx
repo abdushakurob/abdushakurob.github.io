@@ -22,7 +22,7 @@ export default function LatestLog() {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-6">Log Updates</h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Thoughts, mistakesm and occational realizations. No grand lessons—just things I&apos;ve noticed
+            Thoughts, mistakes and occational realizations. No grand lessons—just things I&apos;ve noticed
           </p>
   
           <div className="space-y-6">

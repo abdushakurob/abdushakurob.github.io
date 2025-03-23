@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           <div className="space-y-6">
             <h3 className="text-2xl font-semibold text-green-600 dark:text-green-400">Wanna Say Hi?</h3>
             <p className="text-gray-600 dark:text-gray-300 max-w-md">
-              Have a random idea, a project, or just feel like saying something? Go for it
+              Have a random idea, a project, or just feel like saying something? Go for it!
             </p>
             <a
               href="mailto:your.email@example.com"
@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
             © {currentYear} Abdushakur. All rights reserved.
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 md:mt-0">
-            Designed and built with... eventually.
+            Designed and built ... eventually.
           </p>
         </div>
       </div>
