@@ -2,60 +2,74 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground p-8 sm:p-20">
+    <div className="min-h-screen bg-base-100 text-base-content p-4 sm:p-8 md:p-16 max-w-7xl mx-auto">
       {/* Header Section */}
-      <header className="text-center mb-16">
-        <h1 className="text-4xl font-bold mb-4">Abdushakur Ob</h1>
-        <p className="text-lg">Web Developer & Brand Designer</p>
+      <header className="text-center space-y-6 mb-16">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          Welcome to My Corner
+        </h1>
+        <p className="text-xl max-w-2xl mx-auto">
+          This is my little corner on the internet. A place where I document what I'm learning, 
+          building, and figuring out. Some things will be polished, most won't. That's the point.
+        </p>
       </header>
 
-      {/* About Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-4">About Me</h2>
-        <p>
-          I am a passionate web developer and brand designer with a keen eye
-          for creating visually stunning and functional designs. I love
-          exploring the intersection of technology and creativity.
-        </p>
-      </section>
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Latest Logs */}
+        <section className="card bg-base-200 shadow-xl p-6">
+          <h2 className="text-2xl font-bold mb-4">Latest Logs</h2>
+          <p className="mb-4">This is where I log everything. The problems, the fixes, and everything around it.</p>
+          <ul className="space-y-2 list-disc list-inside mb-4">
+            <li>My logo lost its life after vectorizing it</li>
+            <li>What's more important when designing logos?</li>
+            <li>Why most designers struggle with having a logo for their personal brand</li>
+          </ul>
+          <a href="" className="btn btn-primary">Read My Logs</a>
+        </section>
 
-      {/* Skills Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-4">Skills</h2>
-        <ul className="list-disc list-inside">
-          <li>Frontend Development: React, Next.js, Tailwind CSS</li>
-          <li>Backend Development: Node.js, Express</li>
-          <li>Brand Design: Adobe Illustrator, Figma</li>
-        </ul>
-      </section>
-
-      {/* Portfolio Section */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-4">Portfolio</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div className="p-4 border rounded-lg bg-secondary">
-            <h3 className="font-bold">Project 1</h3>
-            <p>A web application built with React and Tailwind CSS.</p>
+        {/* Now Section */}
+        <section className="card bg-base-200 shadow-xl p-6">
+          <h2 className="text-2xl font-bold mb-4">What I'm Working on Now</h2>
+          <div className="space-y-4 mb-4">
+            <div className="flex items-center gap-2">
+              <div className="badge badge-primary">Exploring</div>
+              <p>Sketching and vectorizing 20 logos daily</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="badge badge-secondary">Learning</div>
+              <p>Sui Move and Blockchain Generally</p>
+            </div>
           </div>
-          <div className="p-4 border rounded-lg bg-secondary">
-            <h3 className="font-bold">Project 2</h3>
-            <p>A branding project for a startup using Figma.</p>
+          <a href="" className="btn btn-secondary">See What I'm Working On</a>
+        </section>
+      </div>
+
+      {/* Featured Projects */}
+      <section className="mt-16">
+        <h2 className="text-3xl font-bold mb-8 text-center">Featured Projects</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="card bg-base-200 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title">Freshbite Identity</h3>
+              <p>Branding, Logo, Design</p>
+            </div>
+          </div>
+          <div className="card bg-base-200 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title">SwiftPay</h3>
+              <p>Web dev, web3, Payment</p>
+            </div>
+          </div>
+          <div className="card bg-base-200 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title">Campus Navigator</h3>
+              <p>Offline map Web App</p>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Contact Section */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-        <p>
-          Feel free to reach out to me at{" "}
-          <a
-            href="mailto:abdushakur@example.com"
-            className="text-primary underline"
-          >
-            abdushakur@example.com
-          </a>
-        </p>
+        <div className="text-center mt-8">
+          <a href="" className="btn btn-outline btn-lg">View All Projects</a>
+        </div>
       </section>
     </div>
   );
