@@ -2,7 +2,7 @@ export default function Now() {
     return (
       <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">What I'm Working On</h2>
+          <h2 className="text-3xl font-bold mb-6">What I&apos;m Working On</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
             A snapshot of what I&apos;m currently building, learning, and experimenting with.
           </p>
@@ -16,7 +16,6 @@ export default function Now() {
                 [Exploring]
               </span>
             </div>
-  
             <div className="flex justify-between items-center border-b pb-4">
               <p className="text-gray-900 dark:text-gray-100">
                 Sui Move and Blockchain Generally
