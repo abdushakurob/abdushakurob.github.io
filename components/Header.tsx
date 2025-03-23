@@ -8,14 +8,12 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
@@ -30,19 +28,18 @@ const Header: React.FC = () => {
     return () => document.removeEventListener("click", handleOutsideClick);
   }, [mobileMenuOpen]);
 
-  // Prevent body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "auto";
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      window.scrollTo(0, 0);
     }
   }, [mobileMenuOpen]);
 
-  // Toggle mobile menu
   const toggleMobileMenu = () => setMobileMenuOpen(prev => !prev);
 
-  // Navigation links
   const navItems = useMemo(() => [
     { name: 'Home', path: '/' },
     { name: 'Writings', path: '/writings' },
@@ -58,7 +55,8 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
-          Abdushakur
+          <span className="dark:text-green-300 text-green-700">A</span>
+          <span className="text-foreground">bdushakur</span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -88,24 +86,35 @@ const Header: React.FC = () => {
         </button>
       </div>
       
-      {/* Mobile Menu */}
-      <div 
+      {/* Mobile Menu Overlay */}
+      <div
         id="mobile-menu"
         className={cn(
-          "fixed inset-0 z-40 flex flex-col items-center justify-center bg-background/95 backdrop-blur-md transition-transform duration-300 md:hidden",
+          "fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-md transition-transform duration-300 md:hidden h-full w-full",
           mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         )}
       >
-        {navItems.map((item) => (
-          <Link 
-            key={item.name} 
-            href={item.path}
-            className="text-2xl font-medium text-foreground hover:text-accent transition-colors py-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {item.name}
-          </Link>
-        ))}
+        {/* Close Button */}
+        <button 
+          className="absolute top-5 right-6 text-foreground"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <X size={30} />
+        </button>
+
+        {/* Menu Items */}
+        <nav className="flex flex-col items-center space-y-6">
+          {navItems.map((item) => (
+            <Link 
+              key={item.name} 
+              href={item.path}
+              className="text-2xl font-medium text-foreground hover:text-accent transition-colors py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
