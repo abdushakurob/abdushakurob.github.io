@@ -20,9 +20,9 @@ export default function LatestLog() {
     return (
       <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Latest Writings</h1>
+          <h1 className="text-3xl font-bold mb-6">Log Updates</h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Sharing raw thoughts, things that worked, and lessons learned—no teaching, just experience.
+            Thoughts, mistakesm and occational realizations. No grand lessons—just things I&apos;ve noticed
           </p>
   
           <div className="space-y-6">

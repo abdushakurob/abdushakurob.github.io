@@ -21,6 +21,9 @@ export default function FeaturedProject() {
       <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-12">Featured Projects</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+            A few projects that survived my attention span.
+          </p>
   
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (

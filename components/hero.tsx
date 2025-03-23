@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="text-xl text-muted-foreground leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            Welcome to my little corner on the internet. This is where I figure things out—web, design, ideas, and whatever else catches my interest. Some things will make sense, some won&apos;t. Either way, you&apos;re free to look around.
+            Welcome to my little corner on the internet where I throw things—ideas, half-baked prjects, weird thoughts, and whatever else I'm figuring out. Some things will make sense, most won&apos;t. Either way, you&apos;re free to look around.
           </p>
           
           <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
@@ -44,13 +44,13 @@ const Hero: React.FC = () => {
               href="#projects"
               className="px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-600/90 transition"
             >
-              View my work
+              Stuff I&apos;ve Built
             </a>
             <a
               href="#about"
               className="px-6 py-3 text-lg font-medium text-green-600 border border-green-600 rounded-lg hover:bg-green-600/10 transition"
             >
-              About me
+              Who Am I Again?
             </a>
           </div>
         </div>

@@ -19,15 +19,15 @@ const Footer: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 md:gap-8">
           {/* Contact section */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-green-600 dark:text-green-400">Get in Touch</h3>
+            <h3 className="text-2xl font-semibold text-green-600 dark:text-green-400">Wanna Say Hi?</h3>
             <p className="text-gray-600 dark:text-gray-300 max-w-md">
-              Have a project in mind or just want to chat? Feel free to reach out!
+              Have a random idea, a project, or just feel like saying something? Go for it
             </p>
             <a
               href="mailto:your.email@example.com"
               className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-500 transition"
             >
-              Contact me
+              Reach Out
               <ArrowUpRight size={20} className="ml-2" />
             </a>
 
@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
             © {currentYear} Abdushakur. All rights reserved.
           </p>
           <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 md:mt-0">
-            Designed and built with care.
+            Designed and built with... eventually.
           </p>
         </div>
       </div>

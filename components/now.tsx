@@ -2,9 +2,9 @@ export default function Now() {
     return (
       <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">What I&apos;m Working On</h2>
+          <h2 className="text-3xl font-bold mb-6">What I&apos;m Messing With</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            A snapshot of what I&apos;m currently building, learning, and experimenting with.
+           Stuffs I&apos;m building, learning, and overthinking at the moment.
           </p>
   
           <div className="space-y-6">
@@ -31,7 +31,7 @@ export default function Now() {
           </a>
   
           <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 font-jetbrains-mono">
-            Last updated: <span className="text-green-500">just now</span>
+            Last updated: <span className="text-green-500">just now</span> <i>(or maybe forever ago)</i>
           </p>
         </div>
       </section>
