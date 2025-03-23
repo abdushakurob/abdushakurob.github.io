@@ -9,8 +9,8 @@ export default function Home() {
           Welcome to My Corner
         </h1>
         <p className="text-xl max-w-2xl mx-auto">
-          This is my little corner on the internet. A place where I document what I'm learning, 
-          building, and figuring out. Some things will be polished, most won't. That's the point.
+          This is my little corner on the internet. A place where I document what I&apos;m learning, 
+          building, and figuring out. Some things will be polished, most won&apos;t. That&apos;s the point.
         </p>
       </header>
 
@@ -21,15 +21,15 @@ export default function Home() {
           <p className="mb-4">This is where I log everything. The problems, the fixes, and everything around it.</p>
           <ul className="space-y-2 list-disc list-inside mb-4">
             <li>My logo lost its life after vectorizing it</li>
-            <li>What's more important when designing logos?</li>
+            <li>What&apos;s more important when designing logos?</li>
             <li>Why most designers struggle with having a logo for their personal brand</li>
           </ul>
-          <a href="" className="btn btn-primary">Read My Logs</a>
+          <a href="#" className="btn btn-primary">Read My Logs</a>
         </section>
 
         {/* Now Section */}
         <section className="card bg-base-200 shadow-xl p-6">
-          <h2 className="text-2xl font-bold mb-4">What I'm Working on Now</h2>
+          <h2 className="text-2xl font-bold mb-4">What I&apos;m Working on Now</h2>
           <div className="space-y-4 mb-4">
             <div className="flex items-center gap-2">
               <div className="badge badge-primary">Exploring</div>
@@ -40,7 +40,7 @@ export default function Home() {
               <p>Sui Move and Blockchain Generally</p>
             </div>
           </div>
-          <a href="" className="btn btn-secondary">See What I'm Working On</a>
+          <a href="#" className="btn btn-secondary">See What I&apos;m Working On</a>
         </section>
       </div>
 
@@ -68,7 +68,7 @@ export default function Home() {
           </div>
         </div>
         <div className="text-center mt-8">
-          <a href="" className="btn btn-outline btn-lg">View All Projects</a>
+          <a href="#" className="btn btn-outline btn-lg">View All Projects</a>
         </div>
       </section>
     </div>
