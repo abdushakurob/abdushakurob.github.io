@@ -1,6 +1,12 @@
 import type { Config } from 'tailwindcss';
 
-const config: Config = {
+interface ExtendedConfig {
+  daisyui?: {
+    themes: string[];
+  };
+}
+
+const config: Config & ExtendedConfig = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
