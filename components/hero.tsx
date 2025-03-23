@@ -36,7 +36,7 @@ const Hero: React.FC = () => {
           </h1>
           
           <p className="text-xl text-muted-foreground leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            Welcome to my little corner on the internet where I throw things—ideas, half-baked prjects, weird thoughts, and whatever else I'm figuring out. Some things will make sense, most won&apos;t. Either way, you&apos;re free to look around.
+            Welcome to my little corner on the internet where I throw things—ideas, half-baked prjects, weird thoughts, and whatever else I&apos;m figuring out. Some things will make sense, most won&apos;t. Either way, you&apos;re free to look around.
           </p>
           
           <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
