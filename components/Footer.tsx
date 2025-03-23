@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import Link from 'next/link';
 import { Github, Linkedin, Twitter, Mail, ArrowUpRight } from 'lucide-react';
 import { CustomButton } from './ui/customButton';
 
@@ -35,7 +36,7 @@ const Footer: React.FC = () => {
             
             <div className="flex space-x-5 mt-8">
               {socialLinks.map((link) => (
-                <a 
+                <Link 
                   key={link.name}
                   href={link.url}
                   target="_blank"
@@ -44,7 +45,7 @@ const Footer: React.FC = () => {
                   aria-label={link.name}
                 >
                   {link.icon}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -54,21 +55,21 @@ const Footer: React.FC = () => {
             <div className="space-y-4">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Navigation</h4>
               <nav className="flex flex-col space-y-3">
-                <a href="/" className="text-sm hover:text-accent transition-colors">Home</a>
-                <a href="/writings" className="text-sm hover:text-accent transition-colors">Writings</a>
-                <a href="/projects" className="text-sm hover:text-accent transition-colors">Projects</a>
-                <a href="/now" className="text-sm hover:text-accent transition-colors">Now</a>
-                <a href="/about" className="text-sm hover:text-accent transition-colors">About</a>
+                <Link href="/" className="text-sm hover:text-accent transition-colors">Home</Link>
+                <Link href="/writings" className="text-sm hover:text-accent transition-colors">Writings</Link>
+                <Link href="/projects" className="text-sm hover:text-accent transition-colors">Projects</Link>
+                <Link href="/now" className="text-sm hover:text-accent transition-colors">Now</Link>
+                <Link href="/about" className="text-sm hover:text-accent transition-colors">About</Link>
               </nav>
             </div>
             
             <div className="space-y-4">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Resources</h4>
               <nav className="flex flex-col space-y-3">
-                <a href="#" className="text-sm hover:text-accent transition-colors">Uses</a>
-                <a href="#" className="text-sm hover:text-accent transition-colors">Bookmarks</a>
-                <a href="#" className="text-sm hover:text-accent transition-colors">Newsletter</a>
-                <a href="#" className="text-sm hover:text-accent transition-colors">RSS Feed</a>
+                <Link href="#" className="text-sm hover:text-accent transition-colors">Uses</Link>
+                <Link href="#" className="text-sm hover:text-accent transition-colors">Bookmarks</Link>
+                <Link href="#" className="text-sm hover:text-accent transition-colors">Newsletter</Link>
+                <Link href="#" className="text-sm hover:text-accent transition-colors">RSS Feed</Link>
               </nav>
             </div>
           </div>

@@ -12,7 +12,7 @@ export default function Hero() {
       <header className="pb-20 pt-20 px-6 text-left">
         <div className="max-w-2xl md:mx-0 mx-auto space-y-5 font-sans">
           <p className="text-lg font-medium text-green-500 dark:text-green-400">
-            Hey there! I'm
+            Hey there! I&apos;m
           </p>
           <h1 className="text-5xl sm:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight">
             Abdushakur

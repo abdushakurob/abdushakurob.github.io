@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { cn } from "@/lib/utils";
 import { Menu, X } from 'lucide-react';
 
@@ -39,21 +40,21 @@ const Header: React.FC = () => {
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
+        <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
           Abdushakur
-        </a>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
           {navItems.map((item) => (
-            <a 
+            <Link 
               key={item.name}
               href={item.path}
               className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors relative group"
             >
               {item.name}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
-            </a>
+            </Link>
           ))}
         </nav>
         
@@ -74,14 +75,14 @@ const Header: React.FC = () => {
       )}>
         <div className="flex flex-col items-center justify-center h-full space-y-8">
           {navItems.map((item) => (
-            <a 
+            <Link 
               key={item.name} 
               href={item.path}
               className="text-2xl font-medium hover:text-accent transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
       </div>

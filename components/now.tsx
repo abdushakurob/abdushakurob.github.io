@@ -4,7 +4,7 @@ export default function Now() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-6">What I'm Working On</h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            A snapshot of what I’m currently building, learning, and experimenting with.
+            A snapshot of what I&apos;m currently building, learning, and experimenting with.
           </p>
   
           <div className="space-y-6">
