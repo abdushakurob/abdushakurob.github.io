@@ -2,16 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
-// Define the params type explicitly
-type Params = {
-  params: {
-    slug: string;
-  };
-};
-
 export async function GET(
   request: NextRequest,
-  { params }: Params
+  // Use the inline type definition that matches Next.js expectations
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
