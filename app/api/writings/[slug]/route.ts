@@ -2,15 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
-interface RouteParams {
-  params: {
-    slug: string;
-  };
-}
-
 export async function GET(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: {
+    params: {
+      slug: string;
+    };
+  }
 ) {
   try {
     await connectDB();
