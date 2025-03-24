@@ -2,17 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
-export async function GET(
-  request: NextRequest,
-  { params }: {
-    params: {
-      slug: string;
-    };
-  }
+export async function GET(req: NextRequest,context: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = context.params;
 
     const writing = await Writing.findOne({ slug });
 
