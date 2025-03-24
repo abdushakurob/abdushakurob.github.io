@@ -1,42 +1,43 @@
 export default function About() {
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-14 max-w-4xl mx-auto">
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-4xl mx-auto">
       
       {/* Header */}
-      <h1 className="text-4xl font-bold text-green-600 mb-6">A little more about this site (and me).</h1>
+      <h1 className="text-4xl mt-4 font-bold text-green-600 mb-6">A Little More About This Site (and Me).</h1>
 
       {/* Why This Site Exists */}
       <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">Why This Site Exists</h2>
       <p className="text-lg text-gray-600 leading-relaxed">
         I used to overthink everything before I even started. Now, I just log the process (hopefully)  
-        and make the public my <strong>accountability buddy</strong>.
+        and let the public hold me accountable.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Also, my current <strong>portfolio proof is &apos;believe me, bro.&apos;</strong>  
-        Think of this site as my personal notebook that somehow <strong>escaped into the public.</strong>  
+        Right now, my portfolio is basically “believe me, bro.” So this site is part work,  
+        part experiment, and part personal notebook that somehow ended up online.  
       </p>
 
-      {/* How I Think */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">How I Think</h2>
+      {/* How I Work */}
+      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">How I Work</h2>
       <p className="text-lg text-gray-600 leading-relaxed">
-        I believe in <strong>starting first, figuring things out later.</strong>  
-        No endless planning, no waiting for the perfect moment—just ship, break, fix, and repeat.  
+        I start things before I feel ready. If I wait for the perfect moment, it never happens.  
+        So I build, break things, fix them, and learn along the way.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Simplicity beats complexity. Whether it&apos;s design, code, or communication,  
-        I try to remove the unnecessary and focus on <strong>what actually matters.</strong>  
+        I like keeping things simple—whether it’s design, code, or problem-solving.  
+        Less noise, fewer distractions, just what’s necessary.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Also, I&apos;m a strong believer in <strong>documentation over memory.</strong>  
-        That&apos;s why this site exists—it helps me keep track of what I&apos;ve learned, built, and broken.  
+        Also, I write things down because I forget. That’s basically what this site is.  
       </p>
 
       {/* What I Do */}
       <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">What I Do</h2>
       <p className="text-lg text-gray-600 leading-relaxed">
-        My focus is <strong>Web Development</strong> and <strong>Brand Identity Design</strong>—two areas where  
-        <strong>function and aesthetics</strong> meet. But I also explore <strong>Web3, APIs, automation,  
-        and whatever else seems interesting.</strong>  
+        Most of my time is split between web development and brand design—figuring out  
+        how things work and how they should look.  
+      </p>
+      <p className="text-lg text-gray-600 leading-relaxed mt-4">
+        But I also explore Web3, automation, and random stuff that catches my interest.  
       </p>
 
       {/* Skills */}
@@ -58,7 +59,7 @@ export default function About() {
           </ul>
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-green-600">Other Things I&apos;m Exploring</h3>
+          <h3 className="text-lg font-semibold text-green-600">Other Things I’m Exploring</h3>
           <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
             <li>Sui Move &amp; Blockchain</li>
             <li>Web3 Concepts &amp; Decentralized Systems</li>
@@ -67,15 +68,15 @@ export default function About() {
         </div>
       </div>
 
-      {/* A Little More About Me */}
+      {/* A Bit More About Me */}
       <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">A Bit More About Me</h2>
       <p className="text-lg text-gray-600 leading-relaxed">
-        Outside of work and projects, I&apos;m always <strong>figuring things out.</strong>  
-        I like exploring ideas, learning how things work, and challenging assumptions.  
+        Outside of work, I’m usually learning something, figuring things out,  
+        or just getting lost in a random idea.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        I enjoy <strong>deep conversations</strong> about tech, design, and problem-solving,  
-        but I also think most things are better when you don&apos;t take them too seriously.  
+        I like deep conversations about tech, design, and problem-solving,  
+        but I also think most things are better when you don’t take them too seriously.  
       </p>
     </div>
   );
