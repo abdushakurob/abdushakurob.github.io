@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
               Have a random idea, a project, or just feel like saying something? Go for it!
             </p>
             <a
-              href="mailto:your.email@example.com"
+              href="mailto:me@abdushakur.me"
               className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-500 transition"
             >
               Reach Out
