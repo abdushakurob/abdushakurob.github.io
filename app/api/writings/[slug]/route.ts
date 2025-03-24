@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
-export async function GET(req: NextRequest,context: { params: { slug: string } }
+export async function GET(context: { params: { slug: string } }
 ) {
   try {
     await connectDB();
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest,context: { params: { slug: string } }
       return NextResponse.json({ message: "Writing not found" }, { status: 404 });
     }
 
-    return NextResponse.json(writing);
+    return NextResponse.json({writing}, {status: 200});
   } catch (error) {
     console.error("Error fetching writing:", error);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
