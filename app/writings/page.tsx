@@ -1,21 +1,34 @@
-'use client'
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const logsData = [
-  { id: 1, title: "My logo lost its life after vectorizing it", topic: "Branding", date: "March 22, 2025", description: "Why some logos lose their essence when taken from sketch to vector.", link: "#" },
-  { id: 2, title: "What’s more important when designing logos?", topic: "Design", date: "March 19, 2025", description: "Breaking down what truly matters in a logo.", link: "#" },
-  { id: 3, title: "Why most designers struggle with their own logo", topic: "Thoughts", date: "March 17, 2025", description: "Designers create for others easily, but when it’s personal, it gets complicated.", link: "#" },
-];
-
-const itemsPerPage = 2;
+const itemsPerPage = 5;
 
 export default function Writings() {
+  const [writings, setWritings] = useState([]);
   const [filter, setFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
-  const filteredLogs = filter === "All" ? logsData : logsData.filter((log) => log.topic === filter);
-  const totalPages = Math.ceil(filteredLogs.length / itemsPerPage);
-  const paginatedLogs = filteredLogs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  // ✅ Fetch writings from API
+  useEffect(() => {
+    async function fetchWritings() {
+      try {
+        const res = await axios.get("/api/writings"); // ✅ FIXED: Changed from POST to GET
+        setWritings(res.data); // ✅ FIXED: Use res.data instead of res.json()
+      } catch (error) {
+        console.error("Error fetching writings:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchWritings();
+  }, []);
+
+  // ✅ Filtered and paginated writings
+  const filteredWritings = filter === "All" ? writings : writings.filter((post:any) => post.category === filter);
+  const totalPages = Math.ceil(filteredWritings.length / itemsPerPage);
+  const paginatedWritings = filteredWritings.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
@@ -23,46 +36,52 @@ export default function Writings() {
       <h1 className="text-4xl font-bold text-green-600 mb-6">Writings</h1>
       <p className="text-lg text-gray-600">A mix of raw thoughts, things that worked, and lessons learned—no teaching, just experience.</p>
 
-      {/* Filters (Scrollable on Mobile) */}
-<div className="overflow-x-auto whitespace-nowrap flex gap-4 mt-6 pb-2">
-  {["All", "Branding", "Web Dev", "Web3"].map((category) => (
-    <button
-      key={category}
-      className={`px-4 py-2 rounded-lg ${
-        filter === category ? "bg-blue-500 text-white" : "bg-gray-200"
-      }`}
-      onClick={() => {
-        setFilter(category);
-        setCurrentPage(1);
-      }}
-    >
-      {category}
-    </button>
-  ))}
-</div>
-
-      {/* Logs List */}
-      <div className="space-y-6 mt-10">
-        {paginatedLogs.map((log) => (
-          <div key={log.id} className="border-b pb-4">
-            <h2 className="text-2xl font-semibold text-blue-500">{log.title}</h2>
-            <p className="text-gray-600">{log.topic} — {log.date}</p>
-            <p className="text-gray-600 mt-2">{log.description}</p>
-            <a href={log.link} className="text-blue-500 mt-2 block">Read More →</a>
-          </div>
-        ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center mt-10">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button key={i} className={`px-4 py-2 mx-1 rounded-lg ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`} 
-            onClick={() => setCurrentPage(i + 1)}
+      {/* Filters */}
+      <div className="overflow-x-auto whitespace-nowrap flex gap-4 mt-6 pb-2">
+        {["All", "Branding", "Web Dev", "Web3", "Design"].map((category) => (
+          <button
+            key={category}
+            className={`px-4 py-2 rounded-lg ${filter === category ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+            onClick={() => {
+              setFilter(category);
+              setCurrentPage(1);
+            }}
           >
-            {i + 1}
+            {category}
           </button>
         ))}
       </div>
+
+      {/* Show Loading State */}
+      {loading ? (
+        <p className="text-center text-gray-500 mt-10">Loading writings...</p>
+      ) : (
+        <>
+          {/* Writings List */}
+          <div className="space-y-6 mt-10">
+            {paginatedWritings.map((post:any) => (
+              <div key={post.slug} className="border-b pb-4">
+                <h2 className="text-2xl font-semibold text-blue-500">{post.title}</h2>
+                <p className="text-gray-600">{post.category} — {new Date(post.createdAt).toDateString()}</p>
+                <p className="text-gray-600 mt-2">{post.excerpt}</p>
+                <a href={`/writings/${post.slug}`} className="text-blue-500 mt-2 block">Read More →</a>
+              </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-center mt-10">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button key={i} className={`px-4 py-2 mx-1 rounded-lg ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`} 
+                onClick={() => setCurrentPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
-    }
+}
+
