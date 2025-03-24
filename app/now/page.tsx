@@ -62,7 +62,7 @@ export default function Now() {
       {/* Header */}
       <h1 className="text-4xl font-bold text-green-600 mb-6">What I’m Working On</h1>
       <p className="text-lg text-gray-600">
-        This is my **accountability corner**. A mix of things I’m working on, what I plan to do, 
+        This is my accountability corner. A mix of things I’m working on, what I plan to do, 
         goals I’ve set, challenges I’m pushing myself into, and my daily/weekly/monthly checklist.
       </p>
 
