@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
     { name: 'GitHub', icon: <Github size={24} />, url: 'https://github.com/abdushakurOB' },
     { name: 'LinkedIn', icon: <Linkedin size={24} />, url: 'https://linkedin.com/in/abdushakurOB' },
     { name: 'Twitter', icon: <Twitter size={24} />, url: 'https://twitter.com/AbdushakurOB' },
-    { name: 'Email', icon: <Mail size={24} />, url: 'mailto:your.email@example.com' },
+    { name: 'Email', icon: <Mail size={24} />, url: 'mailto:me@abdushakur.me' },
   ];
 
   return (

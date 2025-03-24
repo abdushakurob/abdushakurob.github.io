@@ -47,7 +47,7 @@ export default function About() {
           <h3 className="text-lg font-semibold text-green-600">Web Development</h3>
           <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
             <li>HTML, CSS, JavaScript, Python (Intermediate)</li>
-            <li>React.js, Next.js, Tailwind, Bootstrap</li>
+            <li>React.js, Next.js, Node.js/Express.js, Tailwind, Bootstrap, MongoDB</li>
             <li>FastAPI (a little)</li>
           </ul>
         </div>
@@ -59,7 +59,7 @@ export default function About() {
           </ul>
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-green-600">Other Things I’m Exploring</h3>
+          <h3 className="text-lg font-semibold text-green-600">Other Things I&apos;m Exploring</h3>
           <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
             <li>Sui Move &amp; Blockchain</li>
             <li>Web3 Concepts &amp; Decentralized Systems</li>
@@ -71,12 +71,12 @@ export default function About() {
       {/* A Bit More About Me */}
       <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">A Bit More About Me</h2>
       <p className="text-lg text-gray-600 leading-relaxed">
-        Outside of work, I’m usually learning something, figuring things out,  
+        Outside of work, I&apos;m usually learning something, figuring things out,  
         or just getting lost in a random idea.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
         I like deep conversations about tech, design, and problem-solving,  
-        but I also think most things are better when you don’t take them too seriously.  
+        but I also think most things are better when you don&apos;t take them too seriously.  
       </p>
     </div>
   );
