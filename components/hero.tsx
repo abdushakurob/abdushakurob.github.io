@@ -50,7 +50,7 @@ const Hero: React.FC = () => {
               href="#about"
               className="px-6 py-3 text-lg font-medium text-green-600 border border-green-600 rounded-lg hover:bg-green-600/10 transition"
             >
-              Who Am I Again?
+              What&apos;s This All About?
             </a>
           </div>
         </div>
