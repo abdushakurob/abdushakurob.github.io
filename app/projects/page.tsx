@@ -28,18 +28,23 @@ export default function Projects() {
         and others are just ideas I’ve started exploring.
       </p>
 
-      {/* Filters */}
-      <div className="flex gap-4 mt-6">
-        {["All", "Branding", "Web Dev", "Web3"].map((category) => (
-          <button
-            key={category}
-            className={`px-4 py-2 rounded-lg ${filter === category ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-            onClick={() => { setFilter(category); setCurrentPage(1); }}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+      {/* Filters (Scrollable on Mobile) */}
+<div className="overflow-x-auto whitespace-nowrap flex gap-4 mt-6 pb-2">
+  {["All", "Branding", "Web Dev", "Web3"].map((category) => (
+    <button
+      key={category}
+      className={`px-4 py-2 rounded-lg ${
+        filter === category ? "bg-blue-500 text-white" : "bg-gray-200"
+      }`}
+      onClick={() => {
+        setFilter(category);
+        setCurrentPage(1);
+      }}
+    >
+      {category}
+    </button>
+  ))}
+</div>
 
       {/* Projects List */}
       <div className="grid md:grid-cols-2 gap-8 mt-10">
