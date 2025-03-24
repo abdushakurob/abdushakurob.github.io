@@ -23,18 +23,23 @@ export default function Writings() {
       <h1 className="text-4xl font-bold text-green-600 mb-6">Writings</h1>
       <p className="text-lg text-gray-600">A mix of raw thoughts, things that worked, and lessons learned—no teaching, just experience.</p>
 
-      {/* Filters */}
-      <div className="flex gap-4 mt-6">
-        {["All", "Branding", "Design", "Thoughts"].map((topic) => (
-          <button
-            key={topic}
-            className={`px-4 py-2 rounded-lg ${filter === topic ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-            onClick={() => { setFilter(topic); setCurrentPage(1); }}
-          >
-            {topic}
-          </button>
-        ))}
-      </div>
+      {/* Filters (Scrollable on Mobile) */}
+<div className="overflow-x-auto whitespace-nowrap flex gap-4 mt-6 pb-2">
+  {["All", "Branding", "Web Dev", "Web3"].map((category) => (
+    <button
+      key={category}
+      className={`px-4 py-2 rounded-lg ${
+        filter === category ? "bg-blue-500 text-white" : "bg-gray-200"
+      }`}
+      onClick={() => {
+        setFilter(category);
+        setCurrentPage(1);
+      }}
+    >
+      {category}
+    </button>
+  ))}
+</div>
 
       {/* Logs List */}
       <div className="space-y-6 mt-10">
