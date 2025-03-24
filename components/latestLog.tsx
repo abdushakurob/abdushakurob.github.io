@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function LatestLog() {
     const logs = [
       {
@@ -37,9 +39,9 @@ export default function LatestLog() {
             ))}
           </div>
   
-          <a href="/writings" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+          <Link href="/writings" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
             View More Logs →
-          </a>
+          </Link>
         </div>
       </section>
     );
