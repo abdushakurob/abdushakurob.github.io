@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
 export async function GET(
-  request: Request,  // Use Request instead of NextRequest
-  { params }: { params: { slug: string } }
+  request: Request,
+  context: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = context.params;
 
     const writing = await Writing.findOne({ slug });
 
