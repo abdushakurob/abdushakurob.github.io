@@ -2,13 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
+interface RouteParams {
+  params: {
+    slug: string;
+  };
+}
+
 export async function GET(
-  request: NextRequest,  // First parameter is the request
-  context: { params: { slug: string } }  // Second parameter is the context
+  request: NextRequest,
+  { params }: RouteParams
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
 
     const writing = await Writing.findOne({ slug });
 
