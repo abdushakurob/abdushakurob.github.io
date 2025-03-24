@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="border-t border-gray-300 dark:border-gray-700 py-16 mt-16 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-8">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-8">
           {/* Contact section */}
           <div className="space-y-6">
             <h3 className="text-2xl font-semibold text-green-600 dark:text-green-400">Wanna Say Hi?</h3>
@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
               </nav>
             </div>
 
-            <div className="space-y-4">
+            {/* <div className="space-y-4">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">
                 Resources
               </h4>
@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
                   RSS Feed
                 </Link>
               </nav>
-            </div>
+            </div> */}
           </div>
         </div>
 
