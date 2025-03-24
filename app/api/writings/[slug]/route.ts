@@ -1,19 +1,20 @@
-import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/dbConfig";
-import Writing from "@/models/Writings";
+import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/dbConfig"; // Import your MongoDB connection
+import Writing from "@/models/Writings"; // Import your Mongoose model
 
-// ✅ GET a single writing by slug
-export async function GET(req: Request, { params }: { params: { slug: string } }) {
+// ✅ Corrected GET function
+export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   try {
     await connectDB();
     const writing = await Writing.findOne({ slug: params.slug });
 
     if (!writing) {
-      return NextResponse.json({ error: "Writing not found" }, { status: 404 });
+      return NextResponse.json({ message: "Not Found" }, { status: 404 });
     }
 
     return NextResponse.json(writing);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch writing" }, { status: 500 });
+    console.error("Error fetching writing:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
   }
 }
