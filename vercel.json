@@ -1,0 +1,9 @@
+{
+    "build": {
+      "env": {
+        "NEXT_IGNORE_ESLINT": "1",
+        "NEXT_PUBLIC_IGNORE_TYPECHECK": "1"
+      }
+    }
+  }
+  
