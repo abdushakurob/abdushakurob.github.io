@@ -3,12 +3,12 @@ import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
 export async function GET(
-  request: Request,
-  context: { params: { slug: string } }
+  request: Request, 
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
 
     const writing = await Writing.findOne({ slug });
 
@@ -16,7 +16,7 @@ export async function GET(
       return NextResponse.json({ message: "Writing not found" }, { status: 404 });
     }
 
-    return NextResponse.json({writing}, {status: 200});
+    return NextResponse.json(writing, { status: 200 });
   } catch (error) {
     console.error("Error fetching writing:", error);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
