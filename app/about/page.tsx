@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <div className="min-h-screen bg-base-100 pt-5 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-4xl mx-auto">
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-14 max-w-4xl mx-auto">
       
       {/* Header */}
       <h1 className="text-4xl font-bold text-green-600 mb-6">A little more about this site (and me).</h1>
