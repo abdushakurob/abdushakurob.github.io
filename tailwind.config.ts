@@ -14,17 +14,17 @@ const config: Config & ExtendedConfig = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        body: ["var(--font-source-sans)", "sans-serif"],
-      }
+        sans: ['var(--font-inter)', 'sans-serif'],
+        body: ['var(--font-source-sans)', 'sans-serif'], // Ensure it's used correctly
+      },
     },
   },
   plugins: [
-    require('@tailwindcss/typography'), // Add Tailwind Typography
+    require('@tailwindcss/typography'), 
     require('daisyui'),
   ],
   daisyui: {
-    themes: ['light', 'dark'], // Enable DaisyUI themes
+    themes: ['light', 'dark'],
   },
 };
 
