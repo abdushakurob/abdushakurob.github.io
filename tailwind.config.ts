@@ -12,7 +12,12 @@ const config: Config & ExtendedConfig = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "sans-serif"],
+        body: ["var(--font-source-sans)", "sans-serif"],
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/typography'), // Add Tailwind Typography

@@ -24,13 +24,13 @@ const Hero: React.FC = () => {
             {/* <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-600/10 text-accent">
               Hey there! I&apos;m
             </span> */}
-            <p className="text-lg font-medium text-green-500 dark:text-green-400">
+            <p className="text-lg font-sans font-medium text-green-500 dark:text-green-400">
             Hey there! I&apos;m
           </p>
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold leading-tight md:leading-tight animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70">
+            <span className="text-transparent font-sans bg-clip-text bg-gradient-to-r from-foreground to-foreground/70">
               Abdushakur
             </span>
           </h1>
