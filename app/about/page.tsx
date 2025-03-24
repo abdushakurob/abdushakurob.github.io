@@ -12,7 +12,7 @@ export default function About() {
         and make the public my <strong>accountability buddy</strong>.
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Also, my current <strong>portfolio proof is “believe me, bro.”</strong>  
+        Also, my current <strong>portfolio proof is &apos;believe me, bro.&apos;</strong>  
         Think of this site as my personal notebook that somehow <strong>escaped into the public.</strong>  
       </p>
 
@@ -22,10 +22,10 @@ export default function About() {
         I believe in <strong>starting first, figuring things out later.</strong> No endless planning, no waiting for the perfect moment—just ship, break, fix, and repeat.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Simplicity beats complexity. Whether it’s design, code, or communication, I try to remove the unnecessary and focus on <strong>what actually matters.</strong>  
+        Simplicity beats complexity. Whether it&apos;s design, code, or communication, I try to remove the unnecessary and focus on <strong>what actually matters.</strong>  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Also, I’m a strong believer in <strong>documentation over memory.</strong> That’s why this site exists—it helps me keep track of what I’ve learned, built, and broken.  
+        Also, I&apos;m a strong believer in <strong>documentation over memory.</strong> That&apos;s why this site exists—it helps me keep track of what I&apos;ve learned, built, and broken.  
       </p>
 
       {/* What I Do */}
@@ -49,15 +49,15 @@ export default function About() {
         <div>
           <h3 className="text-lg font-semibold text-primary">Brand Visual Design</h3>
           <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
-            <li>Paper & Pen (first step always)</li>
+            <li>Paper &amp; Pen (first step always)</li>
             <li>Adobe Illustrator</li>
           </ul>
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-primary">Other Things I'm Exploring</h3>
+          <h3 className="text-lg font-semibold text-primary">Other Things I&apos;m Exploring</h3>
           <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
-            <li>Sui Move & Blockchain</li>
-            <li>Web3 Concepts & Decentralized Systems</li>
+            <li>Sui Move &amp; Blockchain</li>
+            <li>Web3 Concepts &amp; Decentralized Systems</li>
           </ul>
         </div>
       </div>
