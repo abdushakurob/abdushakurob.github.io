@@ -26,7 +26,7 @@ export default function Now() {
             </div>
           </div>
   
-          <a href="#" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+          <a href="/now" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
             View More →
           </a>
   

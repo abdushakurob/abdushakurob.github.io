@@ -41,13 +41,13 @@ const Hero: React.FC = () => {
           
           <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
             <a
-              href="#projects"
+              href="/projects"
               className="px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-600/90 transition"
             >
               Stuff I&apos;ve Built
             </a>
             <a
-              href="#about"
+              href="/about"
               className="px-6 py-3 text-lg font-medium text-green-600 border border-green-600 rounded-lg hover:bg-green-600/10 transition"
             >
               What&apos;s This All About?

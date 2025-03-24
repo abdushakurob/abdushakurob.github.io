@@ -36,7 +36,7 @@ export default function FeaturedProject() {
           </div>
   
           <div className="text-center mt-12">
-            <a href="#" className="inline-block px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            <a href="/projects" className="inline-block px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
               View All Projects →
             </a>
           </div>

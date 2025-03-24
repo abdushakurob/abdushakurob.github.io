@@ -37,7 +37,7 @@ export default function LatestLog() {
             ))}
           </div>
   
-          <a href="#" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+          <a href="/writings" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
             View More Logs →
           </a>
         </div>
