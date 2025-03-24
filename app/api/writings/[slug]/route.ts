@@ -1,11 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
-export async function GET(req: NextRequest, context: { params: { slug: string } }) {
+export async function GET(
+  request: Request, 
+  context: { params: { slug: string } }
+) {
   try {
     await connectDB();
-    
     const { slug } = context.params;
 
     const writing = await Writing.findOne({ slug });
