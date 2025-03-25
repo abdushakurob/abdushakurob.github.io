@@ -8,8 +8,8 @@ import { ArrowLeft, Save, Plus, Trash } from 'lucide-react';
 import Link from 'next/link';
 
 // Import React Quill dynamically to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+import 'react-quill-new/dist/quill.snow.css';
 
 interface Update {
   title: string;
