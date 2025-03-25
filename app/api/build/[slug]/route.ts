@@ -16,13 +16,14 @@ export async function GET(req: NextRequest, { params }: {params: Promise<{slug: 
 }
 
 // ✅ POST a new update to a track
-export async function POST(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function POST(req: NextRequest, { params }: {params: Promise<{slug: string}>}) {
   await connectDB();
   try {
     const { title, content } = await req.json();
     if (!title || !content) return NextResponse.json({ error: "Title and content required" }, { status: 400 });
 
-    const track = await Track.findOne({ slug: params.slug });
+    const { slug } = await params;
+    const track = await Track.findOne({ slug });
     if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
 
     track.updates.push({ title, content, date: new Date() });
