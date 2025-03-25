@@ -39,12 +39,12 @@ export default function BuildPage() {
     }
   };
 
-  const deleteTrack = async (id: string) => {
+  const deleteTrack = async (slug: string) => {
     if (!confirm('Are you sure you want to delete this track?')) return;
     
     try {
-      await axios.delete(`/api/build/${id}`);
-      setTracks(tracks.filter(track => track._id !== id));
+      await axios.delete(`/api/build/${slug}`);
+      setTracks(tracks.filter(track => track.slug !== slug));
     } catch (err) {
       setError('Failed to delete track');
       console.error(err);
@@ -122,13 +122,13 @@ export default function BuildPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/build/edit/${track._id}`}
+                        href={`/admin/build/edit/${track.slug}`}
                         className="text-yellow-600 hover:text-yellow-900"
                       >
                         <Pencil size={18} />
                       </Link>
                       <button
-                        onClick={() => deleteTrack(track._id)}
+                        onClick={() => deleteTrack(track.slug)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <Trash2 size={18} />
