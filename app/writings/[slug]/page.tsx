@@ -25,7 +25,7 @@ export default function WritingPage() {
       try {
         setError(false); // Reset error state
         const res = await axios.get(`/api/writings/${slug}`);
-        setWriting(res.data);
+        setWriting(res.data.writing); // ✅ Fix: Access 'writing' inside response
       } catch (err) {
         console.error("Failed to fetch writing:", err);
         setError(true);
