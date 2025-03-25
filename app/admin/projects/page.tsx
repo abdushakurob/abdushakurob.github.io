@@ -38,12 +38,12 @@ export default function ProjectsPage() {
     }
   };
 
-  const deleteProject = async (id: string) => {
+  const deleteProject = async (slug: string) => {
     if (!confirm('Are you sure you want to delete this project?')) return;
     
     try {
-      await axios.delete(`/api/projects/${id}`);
-      setProjects(projects.filter(project => project._id !== id));
+      await axios.delete(`/api/projects/${slug}`);
+      setProjects(projects.filter(project => project.slug !== slug));
     } catch (err) {
       setError('Failed to delete project');
       console.error(err);
@@ -117,13 +117,13 @@ export default function ProjectsPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/projects/edit/${project._id}`}
+                        href={`/admin/projects/edit/${project.slug}`}
                         className="text-yellow-600 hover:text-yellow-900"
                       >
                         <Pencil size={18} />
                       </Link>
                       <button
-                        onClick={() => deleteProject(project._id)}
+                        onClick={() => deleteProject(project.slug)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <Trash2 size={18} />
