@@ -12,10 +12,15 @@ const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
     
-    // Simple workaround that doesn't require modifying ReactDOM
+    // Mock findDOMNode to prevent the error
     if (typeof window !== 'undefined') {
-      // Create a mock function for the editor to use instead
-      (window as any).__reactQuillFindDOMNode = (element: any) => element;
+      // Import ReactDOM using ES modules syntax instead of require()
+      import('react-dom').then(ReactDOM => {
+        // Provide a mock implementation if it doesn't exist
+        if (!ReactDOM.findDOMNode) {
+          ReactDOM.findDOMNode = (element) => element;
+        }
+      });
     }
     
     return function comp({ forwardedRef, ...props }: { forwardedRef: any, [key: string]: any }) {
