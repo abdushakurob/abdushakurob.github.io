@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import Head from "next/head";
+import Link from "next/link";
 
 const Hero: React.FC = () => {
   return (
@@ -40,18 +41,18 @@ const Hero: React.FC = () => {
           </p>
           
           <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-            <a
+            <Link
               href="/projects"
               className="px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-600/90 transition"
             >
               Stuff I&apos;ve Built
-            </a>
-            <a
+            </Link>
+            <Link
               href="/about"
               className="px-6 py-3 text-lg font-medium text-green-600 border border-green-600 rounded-lg hover:bg-green-600/10 transition"
             >
               What&apos;s This All About?
-            </a>
+            </Link>
           </div>
         </div>
       </section>
