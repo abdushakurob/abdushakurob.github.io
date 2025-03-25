@@ -35,6 +35,7 @@ export async function POST(req: Request) {
     return NextResponse.json(newWriting, { status: 201 });
   } catch (error) {
     return NextResponse.json({ response: "Failed to create writing: ", error}, { status: 500 });
+    console.log("Failed to create writing:", error);
 
   }
 }
