@@ -1,11 +1,31 @@
+'use client';
+
 import Link from 'next/link';
 import { FileText, Home, BookOpen, Construction, LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useState } from 'react';
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await axios.post('/api/auth/logout');
+      router.push('/admin/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -17,18 +37,30 @@ export default function AdminLayout({
           </Link>
         </div>
         
-        <nav className="mt-6">
+        <nav className="mt-6 flex flex-col h-[calc(100vh-100px)] justify-between">
           <ul>
             <SidebarItem href="/admin" icon={<Home size={18} />} text="Dashboard" />
             <SidebarItem href="/admin/projects" icon={<FileText size={18} />} text="Projects" />
             <SidebarItem href="/admin/writings" icon={<BookOpen size={18} />} text="Writings" />
             <SidebarItem href="/admin/build" icon={<Construction size={18} />} text="Build" />
-            <li className="mt-auto">
+          </ul>
+          <ul className="mt-auto">
+            <li>
+              <button 
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="w-full flex items-center gap-2 px-6 py-3 text-red-600 hover:bg-gray-100"
+              >
+                <LogOut size={18} />
+                <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+              </button>
+            </li>
+            <li>
               <Link 
                 href="/"
                 className="flex items-center gap-2 px-6 py-3 text-gray-600 hover:bg-gray-100"
               >
-                <LogOut size={18} />
+                <Home size={18} />
                 <span>Back to Site</span>
               </Link>
             </li>
