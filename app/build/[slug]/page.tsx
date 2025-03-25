@@ -1,137 +1,167 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import axios from "axios";
-import Link from "next/link";
-import { CheckCircle2, Clock, Target, ArrowLeft } from "lucide-react";
+"use client"
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import axios from "axios"
+import Link from "next/link"
+import { CheckCircle2, Clock, Target, ArrowLeft } from "lucide-react"
 
 interface Update {
-  title: string;
-  content: string;
-  date: string;
+  title: string
+  content: string
+  date: string
 }
 
 interface Track {
-  title: string;
-  description: string;
-  category: string;
-  updates: Update[];
-  milestones: { title: string; achieved: boolean; date?: string }[];
+  title: string
+  description: string
+  category: string
+  updates: Update[]
+  milestones: { title: string; achieved: boolean; date?: string }[]
+  links: string[]
+  isCompleted: boolean
+  createdAt: string
 }
 
 export default function TrackPage() {
-  const { slug } = useParams();
-  const [track, setTrack] = useState<Track | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { slug } = useParams()
+  const [track, setTrack] = useState<Track | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchTrack() {
       try {
-        const res = await axios.get(`/api/builds/${slug}`);
-        setTrack(res.data);
+        const res = await axios.get(`/api/build/${slug}`)
+        setTrack(res.data)
       } catch (error) {
-        console.error("Error fetching track:", error);
+        console.error("Error fetching track:", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-    fetchTrack();
-  }, [slug]);
+    fetchTrack()
+  }, [slug])
 
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
       </div>
-    );
+    )
 
-  if (!track) return <p className="text-center text-red-500">Track not found.</p>;
+  if (!track)
+    return (
+      <div className="text-center py-10">
+        <p className="text-lg text-red-500">Track not found.</p>
+        <Link href="/build" className="text-blue-500 hover:underline">← Back to Builds</Link>
+      </div>
+    )
 
-  // Calculate progress metrics
-  const completedMilestones = track.milestones.filter((m) => m.achieved).length;
-  const totalMilestones = track.milestones.length;
-  const progressPercentage = Math.round((completedMilestones / totalMilestones) * 100) || 0;
+  // ✅ Calculate progress
+  const completedMilestones = track.milestones.filter((m) => m.achieved).length
+  const totalMilestones = track.milestones.length
+  const progressPercentage = totalMilestones ? Math.round((completedMilestones / totalMilestones) * 100) : 0
 
-  // Sort updates by date (newest first)
-  const sortedUpdates = [...track.updates].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  // ✅ Sort updates (newest first)
+  const sortedUpdates = [...track.updates].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Back Button */}
-      <Link href="/builds" className="flex items-center text-sm text-gray-500 hover:text-gray-700 mb-4">
-        <ArrowLeft className="h-4 w-4 mr-1" />
-        Back to all builds
-      </Link>
-
-      {/* Track Title */}
-      <h1 className="text-3xl font-bold">{track.title}</h1>
-      <p className="text-gray-600 mt-2">{track.description}</p>
-      <div className="flex items-center mt-3">
-        <span className="text-xs px-2 py-1 bg-gray-100 rounded-full">{track.category}</span>
-        {sortedUpdates.length > 0 && (
-          <span className="text-xs text-gray-500 ml-3">
-            Last updated: {new Date(sortedUpdates[0].date).toLocaleDateString()}
-          </span>
-        )}
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+      {/* ✅ Header */}
+      <div className="flex items-center mb-6">
+        <Link href="/build" className="flex items-center text-gray-500 hover:text-gray-700">
+          <ArrowLeft className="h-5 w-5 mr-2" />
+          <span className="text-lg">Back to Builds</span>
+        </Link>
       </div>
 
-      {/* Progress Overview */}
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold">Progress Overview</h2>
-        <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-          <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${progressPercentage}%` }}></div>
+      {/* ✅ Track Details */}
+      <h1 className="text-4xl font-bold text-green-600">{track.title}</h1>
+      <p className="text-lg text-gray-600 mt-2">{track.description}</p>
+      <p className="text-sm text-gray-500 mt-2">
+        {track.category} • Started on {new Date(track.createdAt).toDateString()}
+      </p>
+
+      {/* ✅ Related Links */}
+      {track.links.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg font-medium">Related Links</h3>
+          <ul className="list-disc list-inside text-blue-500">
+            {track.links.map((link, index) => (
+              <li key={index}>
+                <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  {link}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-        <p className="text-xs text-gray-500 mt-2">
-          {completedMilestones} of {totalMilestones} milestones completed
-        </p>
+      )}
+
+      {/* ✅ Progress Overview */}
+      <div className="mt-6 grid md:grid-cols-3 gap-4">
+        <div className="bg-base-200 p-4 rounded-xl shadow-md">
+          <h3 className="text-sm font-medium text-gray-600">Progress</h3>
+          <div className="text-2xl font-bold mt-1">{progressPercentage}%</div>
+          <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+            <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${progressPercentage}%` }}></div>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">{completedMilestones} of {totalMilestones} milestones completed</p>
+        </div>
+
+        <div className="bg-base-200 p-4 rounded-xl shadow-md">
+          <h3 className="text-sm font-medium text-gray-600">Updates</h3>
+          <div className="text-2xl font-bold mt-1">{track.updates.length}</div>
+          <p className="text-xs text-gray-500 mt-2">
+            {track.updates.length > 0 ? `Last update: ${new Date(sortedUpdates[0].date).toDateString()}` : "No updates yet"}
+          </p>
+        </div>
+
+        <div className="bg-base-200 p-4 rounded-xl shadow-md">
+          <h3 className="text-sm font-medium text-gray-600">Next Milestone</h3>
+          <p className="text-lg font-semibold mt-1">
+            {track.milestones.find((m) => !m.achieved)?.title || "All complete!"}
+          </p>
+        </div>
       </div>
 
-      {/* Milestones */}
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold">Milestones</h2>
-        <ul className="space-y-2 mt-2">
+      {/* ✅ Milestones */}
+      <div className="mt-10">
+        <h2 className="text-2xl font-semibold text-blue-500">Milestones</h2>
+        <div className="space-y-4 mt-4">
           {track.milestones.map((milestone, index) => (
-            <li key={index} className="flex items-center gap-3">
-              <div className={`${milestone.achieved ? "text-green-500" : "text-gray-300"}`}>
-                {milestone.achieved ? <CheckCircle2 className="h-5 w-5" /> : <div className="h-5 w-5 rounded-full border-2 border-current" />}
+            <div key={index} className="bg-base-200 p-4 rounded-xl flex items-center">
+              <div className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                milestone.achieved ? "bg-green-500 text-white" : "bg-gray-300"
+              }`}>
+                {milestone.achieved ? <CheckCircle2 className="h-4 w-4" /> : <div className="h-4 w-4" />}
               </div>
-              <div>
-                <p className={`text-sm font-medium ${milestone.achieved ? "text-green-700" : ""}`}>{milestone.title}</p>
+              <div className="ml-3">
+                <p className="text-gray-700">{milestone.title}</p>
                 {milestone.achieved && milestone.date && (
-                  <p className="text-xs text-gray-500">Completed on {new Date(milestone.date).toLocaleDateString()}</p>
+                  <p className="text-sm text-gray-500">Completed on {new Date(milestone.date).toDateString()}</p>
                 )}
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
 
-      {/* Live Update Feed */}
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold">Recent Updates</h2>
-        <div className="space-y-4 mt-3">
+      {/* ✅ Updates */}
+      <div className="mt-10">
+        <h2 className="text-2xl font-semibold text-blue-500">Progress Updates</h2>
+        <div className="space-y-6 mt-4">
           {sortedUpdates.length > 0 ? (
             sortedUpdates.map((update, index) => (
-              <div key={index} className="relative pl-6 border-l-2 border-gray-200">
-                <div className="absolute -left-3 top-2 h-4 w-4 rounded-full bg-blue-500" />
-                <div>
-                  <h3 className="font-semibold">{update.title}</h3>
-                  <p className="text-xs text-gray-500">{new Date(update.date).toLocaleDateString()}</p>
-                  <p className="text-sm mt-1 text-gray-600">{update.content}</p>
-                </div>
+              <div key={index} className="bg-base-200 p-4 rounded-xl">
+                <h3 className="text-lg font-semibold text-gray-800">{update.title}</h3>
+                <p className="text-sm text-gray-500">{new Date(update.date).toDateString()}</p>
+                <div className="mt-2 prose max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: update.content }} />
               </div>
             ))
           ) : (
             <p className="text-gray-500">No updates yet.</p>
           )}
         </div>
-      </div>
-
-      {/* View Full History */}
-      <div className="text-center mt-8">
-        <Link href={`/builds/${slug}/history`} className="text-blue-500 hover:underline">
-          View Full History →
-        </Link>
       </div>
     </div>
   );
