@@ -4,11 +4,11 @@ import Writing from "@/models/Writings";
 
 export async function GET(
   request: Request, 
-  context: { params: { slug: string } }
+  {params}: {params: Promise<{slug: string}>}
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = await params;
 
     const writing = await Writing.findOne({ slug });
 
