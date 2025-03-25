@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 interface Project {
   _id: string;
@@ -33,7 +34,7 @@ export default function Projects() {
 
         setProjects(fetchedProjects);
 
-        // ✅ Generate dynamic categories from fetched projects
+        // ✅ Generate unique categories from fetched projects
         const uniqueCategories = ["All", ...new Set(fetchedProjects.map((p) => p.category))];
         setCategories(uniqueCategories);
       } catch (error) {
@@ -57,13 +58,13 @@ export default function Projects() {
         A collection of things I’ve built, designed, or experimented with. Some are finished, some are ongoing, and some are just ideas I started exploring.
       </p>
 
-      {/* Filters (Now Dynamic) */}
+      {/* Filters */}
       <div className="overflow-x-auto whitespace-nowrap flex gap-4 mt-6 pb-2">
         {categories.map((category) => (
           <button
             key={category}
-            className={`px-4 py-2 rounded-lg ${
-              filter === category ? "bg-blue-500 text-white" : "bg-gray-200"
+            className={`px-4 py-2 rounded-lg transition ${
+              filter === category ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
             }`}
             onClick={() => {
               setFilter(category);
@@ -84,28 +85,30 @@ export default function Projects() {
           <div className="grid md:grid-cols-2 gap-8 mt-10">
             {paginatedProjects.length > 0 ? (
               paginatedProjects.map((project) => (
-                <div key={project._id} className="card bg-base-200 shadow-lg p-6 rounded-lg">
-                  {project.coverImage && (
-                    <img src={project.coverImage} alt={project.title} className="w-full h-40 object-cover rounded-lg mb-4" />
-                  )}
-                  <h2 className="text-2xl font-semibold text-blue-500">{project.title}</h2>
-                  <p className="text-gray-600">{project.category}</p>
-                  <p className="text-gray-600 mt-2">{project.description}</p>
+                <Link key={project._id} href={`/projects/${project.slug}`}>
+                  <div className="card bg-base-200 shadow-lg p-6 rounded-lg hover:shadow-xl transition cursor-pointer">
+                    {project.coverImage && (
+                      <img src={project.coverImage} alt={project.title} className="w-full h-40 object-cover rounded-lg mb-4" />
+                    )}
+                    <h2 className="text-2xl font-semibold text-blue-500">{project.title}</h2>
+                    <p className="text-gray-600">{project.category}</p>
+                    <p className="text-gray-600 mt-2">{project.description}</p>
 
-                  {/* ✅ Show links only if available */}
-                  <div className="flex gap-4 mt-4">
-                    {project.link && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                        Live Project →
-                      </a>
-                    )}
-                    {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-500">
-                        GitHub Repo →
-                      </a>
-                    )}
+                    {/* ✅ Links (if available) */}
+                    <div className="flex gap-4 mt-4">
+                      {project.link && (
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                          Live →
+                        </a>
+                      )}
+                      {project.github && (
+                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:underline">
+                          GitHub →
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-center text-gray-500">No projects found.</p>
@@ -115,7 +118,9 @@ export default function Projects() {
           {/* Pagination */}
           <div className="flex justify-center mt-10">
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} className={`px-4 py-2 mx-1 rounded-lg ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"}`} 
+              <button key={i} className={`px-4 py-2 mx-1 rounded-lg transition ${
+                currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+              }`}
                 onClick={() => setCurrentPage(i + 1)}
               >
                 {i + 1}
