@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const { title, description, coverImage, tags, category, link, github, isFeatured } = await req.json();
+    const { title, description, coverImage, tags, category,content, link, github, isFeatured } = await req.json();
 
     if (!title || !description) {
       return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
       coverImage,
       tags,
       category,
+      content,
       link,
       github,
       isFeatured,
