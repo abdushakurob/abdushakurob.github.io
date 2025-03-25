@@ -14,11 +14,13 @@ const ReactQuill = dynamic(
     
     // Mock findDOMNode to prevent the error
     if (typeof window !== 'undefined') {
-      const ReactDOM = require('react-dom');
-      // Provide a mock implementation if it doesn't exist
-      if (!ReactDOM.findDOMNode) {
-        ReactDOM.findDOMNode = (element) => element;
-      }
+      // Import ReactDOM using ES modules syntax instead of require()
+      import('react-dom').then(ReactDOM => {
+        // Provide a mock implementation if it doesn't exist
+        if (!ReactDOM.findDOMNode) {
+          ReactDOM.findDOMNode = (element) => element;
+        }
+      });
     }
     
     return function comp({ forwardedRef, ...props }: { forwardedRef: any, [key: string]: any }) {
