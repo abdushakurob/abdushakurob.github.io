@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/dbConfig";
+import connectDB from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
 export async function GET(
