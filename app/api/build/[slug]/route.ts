@@ -33,3 +33,66 @@ export async function POST(req: NextRequest, { params }: {params: Promise<{slug:
     return NextResponse.json({ error: "Failed to add update" }, { status: 500 });
   }
 }
+
+// UPDATE a track
+export async function PUT(
+  req: NextRequest,
+  {params}: {params: Promise<{slug: string}>}
+) {
+  try {
+    const { slug } = await params;
+    await connectDB();
+    
+    const track = await Track.findOne({ slug });
+    
+    if (!track) {
+      return NextResponse.json({ error: "Track not found" }, { status: 404 });
+    }
+    
+    const { title, description, category, updates, milestones, links, isCompleted } = await req.json();
+    
+    if (!title || !description) {
+      return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
+    }
+    
+    // Update the track
+    track.title = title;
+    track.description = description;
+    track.category = category;
+    track.updates = updates;
+    track.milestones = milestones;
+    track.links = links;
+    track.isCompleted = isCompleted;
+    
+    await track.save();
+    
+    return NextResponse.json(track);
+  } catch (error) {
+    console.error("Error updating track:", error);
+    return NextResponse.json({ error: "Failed to update track" }, { status: 500 });
+  }
+}
+
+// DELETE a track
+export async function DELETE(
+  req: NextRequest,
+  {params}: {params: Promise<{slug: string}>}
+) {
+  try {
+    const { slug } = await params;
+    await connectDB();
+    
+    const track = await Track.findOne({ slug });
+    
+    if (!track) {
+      return NextResponse.json({ error: "Track not found" }, { status: 404 });
+    }
+    
+    await Track.findOneAndDelete({ slug });
+    
+    return NextResponse.json({ message: "Track deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting track:", error);
+    return NextResponse.json({ error: "Failed to delete track" }, { status: 500 });
+  }
+}
