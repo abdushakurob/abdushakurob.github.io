@@ -27,3 +27,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to create track" }, { status: 500 });
   }
 }
+
+export async function GET(req: NextRequest) {
+  await connectDB();
+  try {
+    const tracks = await Track.find().sort({ createdAt: -1 }); // Get all tracks, sorted by newest first
+    return NextResponse.json(tracks, { status: 200 });
+  } catch (error) {
+    console.error("Failed to fetch tracks:", error);
+    return NextResponse.json({ error: "Failed to fetch tracks" }, { status: 500 });
+  }
+}
