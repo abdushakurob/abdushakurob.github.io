@@ -7,7 +7,7 @@ import { CheckCircle2, Clock, Target, ArrowLeft } from "lucide-react";
 
 interface Update {
   title: string;
-  content: string; // ✅ Supports HTML content
+  content: string;
   date: string;
 }
 
@@ -117,8 +117,7 @@ export default function TrackPage() {
                 <div>
                   <h3 className="font-semibold">{update.title}</h3>
                   <p className="text-xs text-gray-500">{new Date(update.date).toLocaleDateString()}</p>
-                  {/* ✅ Rendering HTML Content */}
-                  <div className="text-sm text-gray-600 mt-1 prose max-w-none" dangerouslySetInnerHTML={{ __html: update.content }} />
+                  <p className="text-sm mt-1 text-gray-600">{update.content}</p>
                 </div>
               </div>
             ))
