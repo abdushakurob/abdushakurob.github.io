@@ -86,7 +86,7 @@ export default function Writings() {
             {paginatedWritings.length > 0 ? (
               paginatedWritings.map((post) => (
                 <div key={post.slug} className="border-b pb-4">
-                  <h2 className="text-2xl font-semibold text-blue-500">{post.title}</h2>
+                  <h2 className="text-2xl font-semibold text-blue-500"><a  href={`/writings/${post.slug}`}>{post.title}</a></h2>
                   <p className="text-gray-600">{post.category} — {new Date(post.createdAt).toDateString()}</p>
                   <p className="text-gray-600 mt-2">{stripHtml(post.excerpt)}</p>
                   <a href={`/writings/${post.slug}`} className="text-blue-500 mt-2 inline-block">Read More →</a>
