@@ -60,7 +60,7 @@ export default function Now() {
           <p className="text-center text-gray-500">No active builds right now.</p>
         )}
 
-        <Link href="/now" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+        <Link href="/build" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
           View More →
         </Link>
 
