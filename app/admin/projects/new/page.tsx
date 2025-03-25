@@ -8,8 +8,14 @@ import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 
 // Import React Quill dynamically to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill-new');
+    return RQ;
+  },
+  { ssr: false }
+);
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function NewProjectPage() {
   const router = useRouter();
