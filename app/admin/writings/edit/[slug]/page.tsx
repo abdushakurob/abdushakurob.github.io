@@ -7,8 +7,16 @@ import axios from 'axios';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 
-// Import React Quill dynamically to avoid SSR issues
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// Use this specific pattern for dynamic import
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill');
+    return function comp({ forwardedRef, ...props }) {
+      return <RQ ref={forwardedRef} {...props} />;
+    };
+  },
+  { ssr: false }
+);
 import 'react-quill/dist/quill.snow.css';
 
 export default function EditWritingPage() {
