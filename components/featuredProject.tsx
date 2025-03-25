@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function FeaturedProject() {
     const projects = [
       {
@@ -36,9 +38,9 @@ export default function FeaturedProject() {
           </div>
   
           <div className="text-center mt-12">
-            <a href="/projects" className="inline-block px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            <Link href="/projects" className="inline-block px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
               View All Projects →
-            </a>
+            </Link>
           </div>
         </div>
       </section>
