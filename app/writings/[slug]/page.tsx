@@ -32,14 +32,13 @@ async function getRelatedPosts(category: string, currentSlug: string): Promise<W
   }
 }
 
-// Define the props type explicitly
-type WritingPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export default async function WritingPage({ params }: WritingPageProps) {
+export default async function WritingPage({ 
+  params 
+}: { 
+  params: { 
+    slug: string 
+  } 
+}) {
   const writing = await getWriting(params.slug);
   if (!writing) return notFound();
 
