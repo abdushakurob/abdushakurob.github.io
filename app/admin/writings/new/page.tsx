@@ -203,7 +203,7 @@ export default function NewWritingPage() {
                 className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
               />
               <label htmlFor="isDraft" className="ml-2 block text-sm text-gray-900">
-                Save as draft (won't be published)
+                Save as draft (won&apos;t be published)
               </label>
             </div>
           </div>
