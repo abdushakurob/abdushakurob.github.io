@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import Link from "next/link"
-import { CheckCircle2, Clock, Filter, Layers, Target } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 interface Track {
   _id: string
@@ -17,18 +17,16 @@ interface Track {
 export default function Build() {
   const [tracks, setTracks] = useState<Track[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState<string>("all")
-  const [categories, setCategories] = useState<string[]>([])
+  const [activeTrack, setActiveTrack] = useState<Track | null>(null)
 
   useEffect(() => {
     async function fetchTracks() {
       try {
         const res = await axios.get("/api/build")
         setTracks(res.data)
-
-        // Extract unique categories
-        const uniqueCategories = [...new Set(res.data.map((track: Track) => track.category))] as string[]
-        setCategories(uniqueCategories)
+        if (res.data.length > 0) {
+          setActiveTrack(res.data[0])
+        }
       } catch (error) {
         console.error("Error fetching tracks:", error)
       } finally {
@@ -38,102 +36,86 @@ export default function Build() {
     fetchTracks()
   }, [])
 
-  // Filter tracks based on selected category
-  const filteredTracks = filter === "all" ? tracks : tracks.filter((track) => track.category === filter)
-
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-green-600 mb-6">Build In Public</h1>
-        <p className="text-lg text-gray-600">
-          Tracking my progress on projects, challenges, and experiments. This is where I stay accountable.
-        </p>
-      </div>
-
-      {/* Filter by category */}
-      {!loading && categories.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          <div className="flex items-center text-gray-500 mr-2">
-            <Filter className="h-4 w-4 mr-1" />
-            <span className="text-sm">Filter:</span>
-          </div>
-          <button
-            onClick={() => setFilter("all")}
-            className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
-              filter === "all" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            All Projects
-          </button>
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setFilter(category)}
-              className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
-                filter === category ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      )}
+    <div className="min-h-screen bg-base-100 text-base-content py-12 max-w-5xl mx-auto">
+      <h1 className="text-4xl font-bold text-green-600 mb-6 px-6 sm:px-12">Build In Public</h1>
+      <p className="text-lg text-gray-600 mb-10 px-6 sm:px-12">
+        Tracking my progress on projects, challenges, and experiments. This is where I stay accountable.
+      </p>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-16">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
-          <p className="text-gray-500 mt-4">Fetching projects...</p>
-        </div>
-      ) : filteredTracks.length === 0 ? (
-        <div className="text-center py-16">
-          <Layers className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-gray-700">No projects found</h3>
-          <p className="text-gray-500 mt-2">
-            {filter !== "all" ? `No projects in the "${filter}" category` : "Start by adding your first project"}
-          </p>
-        </div>
+        <p className="text-center text-gray-500 mt-10">Fetching projects...</p>
       ) : (
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          {filteredTracks.map((track) => (
-            <div
-              key={track._id}
-              className="bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-            >
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <h2 className="text-xl font-semibold text-blue-600">{track.title}</h2>
-                  {track.isCompleted ? (
-                    <span className="flex items-center text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                      <CheckCircle2 className="h-3 w-3 mr-1" />
-                      Completed
-                    </span>
-                  ) : (
-                    <span className="flex items-center text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                      <Clock className="h-3 w-3 mr-1" />
-                      In Progress
-                    </span>
-                  )}
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Sidebar with projects list */}
+          <div className="md:w-1/3 px-6 sm:px-12 md:px-0 md:pl-12 md:border-r border-gray-200 md:pr-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-700">My Projects</h2>
+            <div className="space-y-1">
+              {tracks.map((track) => (
+                <div
+                  key={track._id}
+                  onClick={() => setActiveTrack(track)}
+                  className={`py-3 px-4 rounded-md cursor-pointer transition-colors ${
+                    activeTrack?._id === track._id
+                      ? "bg-blue-50 border-l-4 border-blue-500"
+                      : "hover:bg-gray-50 border-l-4 border-transparent"
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <h3 className={`font-medium ${activeTrack?._id === track._id ? "text-blue-600" : "text-gray-700"}`}>
+                      {track.title}
+                    </h3>
+                    {track.isCompleted && (
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Done</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">{track.category}</p>
                 </div>
-                <div className="flex items-center mb-3">
-                  <span className="text-xs px-2 py-1 bg-gray-100 rounded-full text-gray-600">{track.category}</span>
-                  <span className="text-xs text-gray-500 ml-3">
-                    Started {new Date(track.createdAt).toLocaleDateString()}
+              ))}
+            </div>
+          </div>
+
+          {/* Main content area */}
+          {activeTrack ? (
+            <div className="md:w-2/3 px-6 sm:px-12 md:pr-12 md:pl-8">
+              <div className="mb-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-gray-800">{activeTrack.title}</h2>
+                  <span
+                    className={`text-sm px-3 py-1 rounded-full ${
+                      activeTrack.isCompleted ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {activeTrack.isCompleted ? "Completed" : "In Progress"}
                   </span>
                 </div>
-                <p className="text-gray-600 text-sm mb-4">{track.description}</p>
-                <Link
-                  href={`/build/${track.slug}`}
-                  className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
-                >
-                  <Target className="h-4 w-4 mr-1" />
-                  View Progress
-                  <span className="ml-1">→</span>
-                </Link>
+                <div className="flex items-center mt-2 text-sm text-gray-500">
+                  <span className="mr-3">{activeTrack.category}</span>
+                  <span>Started {new Date(activeTrack.createdAt).toLocaleDateString()}</span>
+                </div>
               </div>
-              {/* Visual progress indicator at bottom of card */}
-              <div className={`h-1 w-full ${track.isCompleted ? "bg-green-500" : "bg-blue-500"}`}></div>
+
+              <div
+                className="bg-white p-6 rounded-lg border border-gray-200 mb-6"
+                style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.05)" }}
+              >
+                <h3 className="text-lg font-medium mb-3 text-gray-700">About this project</h3>
+                <p className="text-gray-600 leading-relaxed">{activeTrack.description}</p>
+              </div>
+
+              <Link
+                href={`/build/${activeTrack.slug}`}
+                className="inline-flex items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                View detailed progress
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </div>
-          ))}
+          ) : (
+            <div className="md:w-2/3 px-6 sm:px-12 md:pr-12 md:pl-8 flex items-center justify-center">
+              <p className="text-gray-500 italic">Select a project to view details</p>
+            </div>
+          )}
         </div>
       )}
     </div>
