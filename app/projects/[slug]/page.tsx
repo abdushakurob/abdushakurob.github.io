@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-import { GithubIcon, TagIcon } from "lucide-react";
+import { Code, GithubIcon, TagIcon } from "lucide-react";
 
 interface Project {
   title: string;
@@ -92,12 +92,12 @@ export default function ProjectPage() {
       <div className="mt-8 flex gap-4">
         {project.link && (
           <a href={project.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            <TagIcon/>Live Project
+            <span className="flex"><Code/><span>Live Project</span></span>
           </a>
         )}
         {project.github && (
           <a href={project.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
-            <GithubIcon/> GitHub Repo
+            <span className="flex"><GithubIcon/> GitHub Repo</span>
           </a>
         )}
       </div>
