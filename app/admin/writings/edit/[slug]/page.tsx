@@ -10,18 +10,13 @@ import Link from 'next/link';
 // Use this specific pattern for dynamic import
 const ReactQuill = dynamic(
   async () => {
-    const { default: RQ } = await import('react-quill');
-    
-    // Skip the ReactDOM patching and use a simpler approach
+    // Create a global stub for findDOMNode that quill will use
     if (typeof window !== 'undefined') {
-      const ReactDOM = await import('react-dom');
-      // Use type assertion to bypass TypeScript error
-      (ReactDOM as any).findDOMNode = (element: any) => element;
+      // @ts-ignore
+      window.ReactDom = { findDOMNode: (element) => element };
     }
-    
-    return function comp({ forwardedRef, ...props }: { forwardedRef: any, [key: string]: any }) {
-      return <RQ ref={forwardedRef} {...props} />;
-    };
+    const { default: RQ } = await import('react-quill');
+    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
   },
   { ssr: false }
 );
