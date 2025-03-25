@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import Head from "next/head";
+import { processQuillHtml } from "@/lib/quill-html-processor";
 
 interface Writing {
   title: string;
@@ -66,7 +67,8 @@ export default function WritingPage() {
         {writing.category} • {new Date(writing.createdAt).toDateString()}
       </p>
 
-      <div className="mt-6 prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-green-600 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-li:marker:text-blue-500 prose-a:text-blue-500 prose-a:underline prose-code:text-red-500 prose-code:bg-gray-100 prose-code:p-1 prose-code:rounded prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic" dangerouslySetInnerHTML={{ __html: writing.content }} />
+      <div className="mt-6 prose prose-lg max-w-none" 
+        dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} />
 
       {/* Back Button */}
       <div className="mt-10">

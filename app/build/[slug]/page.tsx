@@ -4,6 +4,7 @@ import { useParams } from "next/navigation"
 import axios from "axios"
 import Link from "next/link"
 import { CheckCircle2, Clock, Target, ArrowLeft } from "lucide-react"
+import { processQuillHtml } from "@/lib/quill-html-processor"
 
 interface Update {
   title: string
@@ -155,7 +156,8 @@ export default function TrackPage() {
               <div key={index} className="bg-base-200 p-4 rounded-xl">
                 <h3 className="text-lg font-semibold text-gray-800">{update.title}</h3>
                 <p className="text-sm text-gray-500">{new Date(update.date).toDateString()}</p>
-                <div className="mt-2 prose max-w-none prose-headings:font-bold prose-headings:text-green-600 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-li:marker:text-blue-500 prose-a:text-blue-500 prose-a:underline prose-code:text-red-500 prose-code:bg-gray-100 prose-code:p-1 prose-code:rounded prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic" dangerouslySetInnerHTML={{ __html: update.content }} />
+                <div className="mt-2 prose max-w-none" 
+                  dangerouslySetInnerHTML={{ __html: processQuillHtml(update.content) }} />
               </div>
             ))
           ) : (
