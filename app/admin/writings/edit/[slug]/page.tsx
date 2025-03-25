@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
@@ -11,7 +11,7 @@ import Link from 'next/link';
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
-    return function comp({ forwardedRef, ...props }) {
+    return function comp({ forwardedRef, ...props }: { forwardedRef: any, [key: string]: any }) {
       return <RQ ref={forwardedRef} {...props} />;
     };
   },
@@ -23,6 +23,7 @@ export default function EditWritingPage() {
   const router = useRouter();
   const params = useParams();
   const slug = params.slug as string;
+  const quillRef = useRef(null);
   
   const [loading, setLoading] = useState(false);
   const [loadingWriting, setLoadingWriting] = useState(true);
@@ -270,6 +271,7 @@ export default function EditWritingPage() {
             </label>
             <div className="h-96 border border-gray-300 rounded-md overflow-hidden">
               <ReactQuill
+                forwardedRef={quillRef}
                 theme="snow"
                 value={formData.content}
                 onChange={handleEditorChange}
