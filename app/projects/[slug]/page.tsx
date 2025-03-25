@@ -61,7 +61,12 @@ export default function ProjectPage() {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      
+       {/* Back Button */}
+       <div className="mt-10">
+        <Link href="/projects" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          ← Back to Projects
+        </Link>
+      </div>
       {/* Project Details */}
       <h1 className="text-4xl font-bold text-green-600 mb-2">{project.title}</h1>
       <p className="text-gray-600 text-sm">{project.category} • {new Date(project.createdAt).toDateString()}</p>
@@ -92,22 +97,17 @@ export default function ProjectPage() {
       <div className="mt-8 flex gap-4">
         {project.link && (
           <a href={project.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            <span className="flex"><Code/><span>Live Project</span></span>
+            <span className="flex"><Code/><span className="ml-2"> Live Project</span></span>
           </a>
         )}
         {project.github && (
           <a href={project.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
-            <span className="flex"><GithubIcon/> GitHub Repo</span>
+            <span className="flex"><GithubIcon/> <span className="ml-2"> GitHub Repo</span></span>
           </a>
         )}
       </div>
 
-      {/* Back Button */}
-      <div className="mt-10">
-        <Link href="/projects" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-          ← Back to Projects
-        </Link>
-      </div>
+     
     </div>
   );
 }
