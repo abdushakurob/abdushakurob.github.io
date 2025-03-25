@@ -96,16 +96,16 @@ export default function Projects() {
 
                     {/* ✅ Links (if available) */}
                     <div className="flex gap-4 mt-4">
-                      {project.link && (
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                          Live →
+                      {project.slug && (
+                        <a href={project.slug} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                          Project Detail →
                         </a>
                       )}
-                      {project.github && (
+                      {/* {project.github && (
                         <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:underline">
                           GitHub →
                         </a>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </Link>
