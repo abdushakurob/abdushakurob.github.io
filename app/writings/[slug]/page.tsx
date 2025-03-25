@@ -1,8 +1,9 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import axios from "axios";
+"use client"; // 
 
-// ✅ Define expected types
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation"; // 
+import Link from "next/link";
+
 interface Writing {
   title: string;
   content: string;
@@ -11,21 +12,27 @@ interface Writing {
   slug: string;
 }
 
-// ✅ Ensure correct `params` typing
-export default async function WritingPage({ params }: { params: { slug: string } }) {
-  async function getWriting(slug: string): Promise<Writing | null> {
-    try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/writings/${slug}`);
-      if (!res.data) return null;
-      return res.data;
-    } catch (error) {
-      console.error("Failed to fetch writing:", error);
-      return null;
-    }
-  }
+export default function WritingPage() {
+  const { slug } = useParams(); // 
+  const [writing, setWriting] = useState<Writing | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const writing = await getWriting(params.slug);
-  if (!writing) return notFound();
+  useEffect(() => {
+    async function fetchWriting() {
+      try {
+        const res = await axios.get(`/api/writings/${slug}`);
+        setWriting(res.data);
+      } catch (error) {
+        console.error("Failed to fetch writing:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (slug) fetchWriting();
+  }, [slug]); // ✅ Runs when slug changes
+
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (!writing) return <p className="text-center text-red-500">Post not found.</p>;
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
