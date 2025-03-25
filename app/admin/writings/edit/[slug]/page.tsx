@@ -11,6 +11,16 @@ import Link from 'next/link';
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill');
+    
+    // Mock findDOMNode to prevent the error
+    if (typeof window !== 'undefined') {
+      const ReactDOM = require('react-dom');
+      // Provide a mock implementation if it doesn't exist
+      if (!ReactDOM.findDOMNode) {
+        ReactDOM.findDOMNode = (element) => element;
+      }
+    }
+    
     return function comp({ forwardedRef, ...props }: { forwardedRef: any, [key: string]: any }) {
       return <RQ ref={forwardedRef} {...props} />;
     };
