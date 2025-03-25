@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { ArrowLeft, Save, Plus, Trash } from 'lucide-react';
@@ -23,9 +23,10 @@ interface Milestone {
   date?: string;
 }
 
-export default function EditTrackPage({ params }: { params: { slug: string } }) {
+export default function EditTrackPage() {
   const router = useRouter();
-  const { slug } = params;
+  const params = useParams();
+  const slug = params.slug as string;
   
   const [loading, setLoading] = useState(false);
   const [loadingTrack, setLoadingTrack] = useState(true);
