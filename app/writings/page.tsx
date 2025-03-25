@@ -27,12 +27,11 @@ export default function Writings() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Fetch writings from API
   useEffect(() => {
     async function fetchWritings() {
       try {
         const res = await axios.get("/api/writings");
-        const fetchedWritings: Writing[] = res.data; // ✅ Type defined
+        const fetchedWritings: Writing[] = res.data;
         setWritings(fetchedWritings);
       } catch (error) {
         console.error("Error fetching writings:", error);
@@ -43,7 +42,8 @@ export default function Writings() {
     fetchWritings();
   }, []);
 
-  // ✅ Filtered and paginated writings
+  const stripHtml = (html: string | undefined) => html?.replace(/<[^>]*>/g, "") || ""; // ✅ Removes all HTML tags
+
   const filteredWritings = filter === "All" ? writings : writings.filter((post) => post.category === filter);
   const totalPages = Math.ceil(filteredWritings.length / itemsPerPage);
   const paginatedWritings = filteredWritings.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -80,7 +80,7 @@ export default function Writings() {
               <div key={post.slug} className="border-b pb-4">
                 <h2 className="text-2xl font-semibold text-blue-500">{post.title}</h2>
                 <p className="text-gray-600">{post.category} — {new Date(post.createdAt).toDateString()}</p>
-                <p className="text-gray-600 mt-2">{post.excerpt}</p>
+                <p className="text-gray-600 mt-2">{stripHtml(post.excerpt)}</p> {/* ✅ Removes <p> tags */}
                 <a href={`/writings/${post.slug}`} className="text-blue-500 mt-2 block">Read More →</a>
               </div>
             ))}
