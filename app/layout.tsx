@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Source_Sans_3 } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -15,6 +16,16 @@ const sourceSans3 = Source_Sans_3({
   subsets: ["latin"],
 });
 
+const clashDisplay = localFont({
+  src: "../public/fonts/ClashDisplay-Variable.woff2",
+  variable: "--font-clash-display",
+})
+
+const satoshi = localFont({
+  src: "../public/fonts/Satoshi-Variable.woff2",
+  variable: "--font-satoshi",
+})
+
 export const metadata: Metadata = {
   title: "Abdushakur",
   description: "My Corner on the web",
@@ -27,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     
-    <html lang="en" className={`${inter.variable} ${sourceSans3.variable}`}>
+    <html lang="en" className={`${clashDisplay.variable} ${satoshi.variable} ${inter.variable} ${sourceSans3.variable}`}>
       <head>
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -43,3 +54,4 @@ export default function RootLayout({
     </html>
   );
 }
+
