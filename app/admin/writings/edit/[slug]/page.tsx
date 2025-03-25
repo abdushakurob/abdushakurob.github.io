@@ -7,20 +7,15 @@ import axios from 'axios';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 
-// Use this specific pattern for dynamic import
+// Use dynamic import without any findDOMNode workarounds
 const ReactQuill = dynamic(
   async () => {
-    // Create a global stub for ReactDOM.findDOMNode
-    if (typeof window !== 'undefined') {
-      // @ts-ignore
-      window.ReactDOM = { findDOMNode: (element) => element };
-    }
-    const { default: RQ } = await import('react-quill');
+    const { default: RQ } = await import('react-quill-new');
     return RQ;
   },
   { ssr: false }
 );
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function EditWritingPage() {
   const router = useRouter();
