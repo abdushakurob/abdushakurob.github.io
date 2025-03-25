@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { ArrowLeft, Save } from 'lucide-react';
@@ -11,9 +11,10 @@ import Link from 'next/link';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 
-export default function EditWritingPage({ params }: { params: { slug: string } }) {
+export default function EditWritingPage() {
   const router = useRouter();
-  const { slug } = params;
+  const params = useParams();
+  const slug = params.slug as string;
   
   const [loading, setLoading] = useState(false);
   const [loadingWriting, setLoadingWriting] = useState(true);
