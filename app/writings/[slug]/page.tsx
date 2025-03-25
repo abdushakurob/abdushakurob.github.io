@@ -13,15 +13,14 @@ interface Writing {
 
 async function getWriting(slug: string): Promise<Writing | null> {
   try {
-    const res = await axios.get(`/api/writings/${slug}`); // ✅ FIXED: Removed res.ok & used res.data
-    return res.data;
+    const res = await axios.get(`/api/writings/${slug}`);
+    return res.data.writing; // Assuming the API returns { writing: Writing }
   } catch (error) {
     console.error("Failed to fetch writing:", error);
     return null;
   }
 }
 
-// ✅ Fetch related posts (same category, different slug)
 async function getRelatedPosts(category: string, currentSlug: string): Promise<Writing[]> {
   try {
     const res = await axios.get(`/api/writings`);
@@ -33,7 +32,14 @@ async function getRelatedPosts(category: string, currentSlug: string): Promise<W
   }
 }
 
-export default async function WritingPage({ params }: { params: { slug: string } }) {
+// Define the props type explicitly
+type WritingPageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+export default async function WritingPage({ params }: WritingPageProps) {
   const writing = await getWriting(params.slug);
   if (!writing) return notFound();
 
