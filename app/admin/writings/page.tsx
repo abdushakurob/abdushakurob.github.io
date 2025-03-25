@@ -39,12 +39,12 @@ export default function WritingsPage() {
     }
   };
 
-  const deleteWriting = async (id: string) => {
+  const deleteWriting = async (slug: string) => {
     if (!confirm('Are you sure you want to delete this writing?')) return;
     
     try {
-      await axios.delete(`/api/writings/${id}`);
-      setWritings(writings.filter(writing => writing._id !== id));
+      await axios.delete(`/api/writings/${slug}`);
+      setWritings(writings.filter(writing => writing.slug !== slug));
     } catch (err) {
       setError('Failed to delete writing');
       console.error(err);
@@ -122,13 +122,13 @@ export default function WritingsPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/writings/edit/${writing._id}`}
+                        href={`/admin/writings/edit/${writing.slug}`}
                         className="text-yellow-600 hover:text-yellow-900"
                       >
                         <Pencil size={18} />
                       </Link>
                       <button
-                        onClick={() => deleteWriting(writing._id)}
+                        onClick={() => deleteWriting(writing.slug)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <Trash2 size={18} />
