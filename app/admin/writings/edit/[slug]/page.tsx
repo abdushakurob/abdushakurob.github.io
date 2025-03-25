@@ -10,13 +10,13 @@ import Link from 'next/link';
 // Use this specific pattern for dynamic import
 const ReactQuill = dynamic(
   async () => {
-    // Create a global stub for findDOMNode that quill will use
+    // Create a global stub for ReactDOM.findDOMNode
     if (typeof window !== 'undefined') {
       // @ts-ignore
-      window.ReactDom = { findDOMNode: (element) => element };
+      window.ReactDOM = { findDOMNode: (element) => element };
     }
     const { default: RQ } = await import('react-quill');
-    return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+    return RQ;
   },
   { ssr: false }
 );
@@ -274,7 +274,6 @@ export default function EditWritingPage() {
             </label>
             <div className="h-96 border border-gray-300 rounded-md overflow-hidden">
               <ReactQuill
-                forwardedRef={quillRef}
                 theme="snow"
                 value={formData.content}
                 onChange={handleEditorChange}
