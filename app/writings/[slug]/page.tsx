@@ -11,12 +11,8 @@ interface Writing {
   slug: string;
 }
 
-interface PageProps {
-  params: { slug: string };
-}
-
-// ✅ Ensure function is NOT a Client Component
-export default async function WritingPage({ params }: PageProps) {
+// ✅ Ensure correct `params` typing
+export default async function WritingPage({ params }: { params: { slug: string } }) {
   async function getWriting(slug: string): Promise<Writing | null> {
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/writings/${slug}`);
