@@ -6,11 +6,12 @@ const ProjectSchema = new mongoose.Schema(
     title: { type: String, required: true },
     slug: { type: String, unique: true },
     description: { type: String, required: true },
+    content: { type: String }, // ✅ For detailed write-ups
     coverImage: { type: String },
     tags: [{ type: String }],
     category: { type: String, default: "Uncategorized" },
-    link: { type: String }, // Deployed project link
-    github: { type: String }, // GitHub repo link
+    link: { type: String },
+    github: { type: String },
     isFeatured: { type: Boolean, default: false },
   },
   { timestamps: true }
