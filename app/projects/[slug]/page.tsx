@@ -91,86 +91,120 @@ export default function ProjectPage() {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-       {/* Back Button */}
-       <div className="mt-10">
-        <Link href="/projects" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-          ← Back to Projects
+      {/* Back Button */}
+      <div className="mb-8">
+        <Link href="/projects" className="inline-flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
+          <span className="text-lg">←</span>
+          <span className="ml-2">Back to projects</span>
         </Link>
       </div>
+
       {/* Project Details */}
-      <h1 className="text-4xl font-bold text-green-600 mb-2">{project.title}</h1>
-      <p className="text-gray-600 text-sm">
-        {project.category} • {project.manualDate ? new Date(project.manualDate).toLocaleDateString() : new Date(project.createdAt).toLocaleDateString()}
-      </p>
-
-      {/* Cover Image */}
-      {project.coverImage && (
-        <div className="relative w-full h-96 mt-6">
-          <Image 
-            src={project.coverImage} 
-            alt={project.title} 
-            fill
-            className="object-cover rounded-lg shadow-lg"
-            priority
-          />
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{project.title}</h1>
+          <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+              {project.category}
+            </span>
+            <span>•</span>
+            <time>
+              {project.manualDate 
+                ? new Date(project.manualDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                : new Date(project.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </time>
+          </div>
         </div>
-      )}
 
-      {/* Project Content (WYSIWYG) */}
-      <div className="mt-6 prose prose-lg max-w-none" 
-        dangerouslySetInnerHTML={{ __html: processQuillHtml(project.content || project.description) }} />
+        {/* Cover Image */}
+        {project.coverImage && (
+          <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
+            <Image 
+              src={project.coverImage} 
+              alt={project.title} 
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        )}
 
-      {/* Tags */}
-      {project.tags && project.tags.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold text-blue-500">Tags:</h3>
-          <div className="flex flex-wrap gap-2 mt-2">
+        {/* Project Content */}
+        <div className="prose prose-lg max-w-none dark:prose-invert" 
+          dangerouslySetInnerHTML={{ __html: processQuillHtml(project.content || project.description) }} />
+
+        {/* Tags */}
+        {project.tags && project.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
             {project.tags.map((tag, index) => (
-              <span key={index} className="px-3 py-1 text-sm bg-gray-200 rounded-lg text-gray-700">
+              <span key={index} className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
                 {tag}
               </span>
             ))}
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Links */}
-      <div className="flex flex-wrap gap-4 mt-8">
-        {project.link && (
-          <a href={project.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-            <span className="flex"><Code/><span className="ml-2"> Live Project</span></span>
-          </a>
-        )}
-        {project.github && (
-          <a href={project.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">
-            <span className="flex"><GithubIcon/> <span className="ml-2"> GitHub Repo</span></span>
-          </a>
-        )}
-        {project.customLinks?.map((link, index) => (
-          <a key={index} href={link.url} target="_blank" rel="noopener noreferrer" 
-             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
-            {link.title} →
-          </a>
-        ))}
+        {/* Links */}
+        <div className="flex flex-wrap items-center gap-4 pt-4">
+          {project.link && (
+            <a 
+              href={project.link} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+            >
+              <Code size={18} />
+              <span>View Live Project</span>
+            </a>
+          )}
+          {project.github && (
+            <a 
+              href={project.github} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg transition-colors"
+            >
+              <GithubIcon size={18} />
+              <span>View Source</span>
+            </a>
+          )}
+          {project.customLinks?.map((link, index) => (
+            <a 
+              key={index} 
+              href={link.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors"
+            >
+              <span>{link.title}</span>
+            </a>
+          ))}
+        </div>
       </div>
 
       {/* Related Writings */}
       {relatedWritings.length > 0 && (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold text-green-600 mb-6">Related Writings</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Related Writings</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedWritings.map((writing) => (
               <Link key={writing.slug} href={`/writings/${writing.slug}`}>
-                <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg hover:shadow-lg transition">
-                  <h3 className="text-xl font-semibold text-blue-500">{writing.title}</h3>
-                  <p className="text-gray-600 mt-2">{writing.description}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {writing.tags?.map((tag, index) => (
-                      <span key={index} className="px-2 py-1 text-sm bg-gray-200 rounded-full text-gray-600">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                <div className="group bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-200">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+                    {writing.title}
+                  </h3>
+                  <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
+                    {writing.description}
+                  </p>
+                  {writing.tags && writing.tags.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {writing.tags.map((tag, index) => (
+                        <span key={index} className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </Link>
             ))}

@@ -17,6 +17,15 @@ const ReactQuill = dynamic(
 );
 import 'react-quill-new/dist/quill.snow.css';
 
+interface Writing {
+  title: string;
+  content: string;
+  category: string;
+  tags?: string[];
+  readingTime?: number;
+  slug: string;
+}
+
 export default function EditWritingPage() {
   const router = useRouter();
   const params = useParams();
@@ -30,7 +39,8 @@ export default function EditWritingPage() {
     title: '',
     content: '',
     category: '',
-    tags: '',
+    tags: [] as string[],
+    readingTime: '',
     excerpt: '',
     coverImage: '',
     isDraft: true
@@ -47,7 +57,8 @@ export default function EditWritingPage() {
           title: writing.title || '',
           content: writing.content || '',
           category: writing.category || '',
-          tags: writing.tags ? writing.tags.join(', ') : '',
+          tags: writing.tags || [],
+          readingTime: writing.readingTime?.toString() || '',
           excerpt: writing.excerpt || '',
           coverImage: writing.coverImage || '',
           isDraft: writing.isDraft || false
@@ -112,14 +123,11 @@ export default function EditWritingPage() {
       setLoading(true);
       setError('');
       
-      // Transform tags from comma-separated string to array
-      const tagsArray = formData.tags 
-        ? formData.tags.split(',').map(tag => tag.trim()) 
-        : [];
+      const readingTimeNum = formData.readingTime ? parseInt(formData.readingTime) : undefined;
       
       const writingData = {
         ...formData,
-        tags: tagsArray
+        readingTime: readingTimeNum
       };
       
       await axios.put(`/api/writings/${slug}`, writingData);
@@ -130,6 +138,26 @@ export default function EditWritingPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAddTag = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && formData.tagInput.trim()) {
+      e.preventDefault();
+      if (!formData.tags.includes(formData.tagInput.trim())) {
+        setFormData(prev => ({
+          ...prev,
+          tags: [...prev.tags, formData.tagInput.trim()],
+          tagInput: ''
+        }));
+      }
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
   };
 
   const modules = {
@@ -211,12 +239,30 @@ export default function EditWritingPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Tags (comma separated)
             </label>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {formData.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-gray-100 rounded-full text-sm flex items-center"
+                >
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(tag)}
+                    className="ml-2 text-gray-500 hover:text-gray-700"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
             <input
               type="text"
-              name="tags"
-              value={formData.tags}
+              name="tagInput"
+              value={formData.tagInput}
               onChange={handleChange}
-              placeholder="tech, tutorial, javascript"
+              onKeyDown={handleAddTag}
+              placeholder="Type a tag and press Enter"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -259,6 +305,19 @@ export default function EditWritingPage() {
               value={formData.excerpt}
               onChange={handleChange}
               rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Reading Time (minutes)
+            </label>
+            <input
+              type="number"
+              name="readingTime"
+              value={formData.readingTime}
+              onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

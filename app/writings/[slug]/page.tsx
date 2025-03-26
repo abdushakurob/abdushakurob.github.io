@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-import Head from "next/head";
 import { processQuillHtml } from "@/lib/quill-html-processor";
 
 interface Writing {
   title: string;
   content: string;
   category: string;
+  tags?: string[];
   createdAt: string;
+  readingTime?: number;
   slug: string;
 }
 
@@ -24,9 +25,9 @@ export default function WritingPage() {
   useEffect(() => {
     async function fetchWriting() {
       try {
-        setError(false); // Reset error state
+        setError(false);
         const res = await axios.get(`/api/writings/${slug}`);
-        setWriting(res.data.writing); // ✅ Fix: Access 'writing' inside response
+        setWriting(res.data.writing);
       } catch (err) {
         console.error("Failed to fetch writing:", err);
         setError(true);
@@ -56,25 +57,49 @@ export default function WritingPage() {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      {/* Dynamic Page Title */}
-      <Head>
-        <title>{writing.title} | Abdushakur</title>
-      </Head>
-
-      {/* Blog Content */}
-      <h1 className="text-4xl font-bold text-green-600 mb-2">{writing.title}</h1>
-      <p className="text-gray-600 text-sm">
-        {writing.category} • {new Date(writing.createdAt).toDateString()}
-      </p>
-
-      <div className="mt-6 prose prose-lg max-w-none" 
-        dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} />
-
       {/* Back Button */}
-      <div className="mt-10">
-        <Link href="/writings" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-          ← Back to Writings
+      <div className="mb-8">
+        <Link href="/writings" className="inline-flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
+          <span className="text-lg">←</span>
+          <span className="ml-2">Back to writings</span>
         </Link>
+      </div>
+
+      {/* Writing Details */}
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{writing.title}</h1>
+          <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+              {writing.category}
+            </span>
+            <span>•</span>
+            <time>
+              {new Date(writing.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </time>
+            {writing.readingTime && (
+              <>
+                <span>•</span>
+                <span>{writing.readingTime} min read</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Tags */}
+        {writing.tags && writing.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {writing.tags.map((tag, index) => (
+              <span key={index} className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Writing Content */}
+        <div className="prose prose-lg max-w-none dark:prose-invert" 
+          dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} />
       </div>
     </div>
   );

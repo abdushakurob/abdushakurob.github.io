@@ -6,36 +6,50 @@ import Writing from "@/models/Writings";
 export async function GET() {
   try {
     await connectDB();
-    const writings = await Writing.find().sort({ createdAt: -1 });
-    return NextResponse.json(writings);
+    const writings = await Writing.find({}).sort({ createdAt: -1 });
+    return NextResponse.json({ writings });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch writings" }, { status: 500 });
+    console.error("Failed to fetch writings:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch writings" },
+      { status: 500 }
+    );
   }
 }
 
 // ✅ POST a new writing
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    await connectDB();
-    const { title, content, category, tags, excerpt, coverImage, isDraft } = await req.json();
+    const body = await request.json();
+    const { title, content, category, tags, readingTime } = body;
 
-    if (!title || !content) {
-      return NextResponse.json({ error: "Title and content are required" }, { status: 400 });
+    if (!title || !content || !category) {
+      return NextResponse.json(
+        { error: "Title, content, and category are required" },
+        { status: 400 }
+      );
     }
 
-    const newWriting = await Writing.create({
+    await connectDB();
+
+    const writing = await Writing.create({
       title,
       content,
       category,
-      tags,
-      excerpt,
-      coverImage,
-      isDraft
+      tags: tags || [],
+      readingTime,
+      slug: title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, ""),
     });
 
-    return NextResponse.json(newWriting, { status: 201 });
+    return NextResponse.json({ writing }, { status: 201 });
   } catch (error) {
     console.error("Failed to create writing:", error);
-    return NextResponse.json({ error: "Failed to create writing" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create writing" },
+      { status: 500 }
+    );
   }
 }

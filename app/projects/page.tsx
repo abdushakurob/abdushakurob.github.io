@@ -154,49 +154,57 @@ export default function Projects() {
       ) : (
         <>
           {/* Projects List */}
-          <div className="grid md:grid-cols-2 gap-8 mt-10">
+          <div className="grid md:grid-cols-2 gap-6 mt-10">
             {paginatedProjects.length > 0 ? (
               paginatedProjects.map((project) => (
                 <Link key={project._id} href={`/projects/${project.slug}`}>
-                  <div className="card bg-base-200 shadow-lg p-6 rounded-lg hover:shadow-xl transition cursor-pointer h-full">
+                  <div className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
                     {project.coverImage && (
-                      <div className="relative w-full h-48 mb-4">
+                      <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
                         <Image 
                           src={project.coverImage} 
                           alt={project.title} 
                           fill
-                          className="object-cover rounded-lg"
+                          className="object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </div>
                     )}
-                    <div className="flex flex-col h-full">
-                      <h2 className="text-2xl font-semibold text-blue-500">{project.title}</h2>
-                      <p className="text-gray-600">{project.category}</p>
-                      <p className="text-gray-600 mt-2 flex-grow">{project.description}</p>
+                    <div>
+                      <div className="flex items-start justify-between">
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+                          {project.title}
+                        </h2>
+                        <span className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                          {project.category}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">{project.description}</p>
+                      
                       <div className="mt-4 flex flex-wrap gap-2">
                         {project.tags?.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-sm bg-gray-100 rounded-full text-gray-600">
+                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
                             {tag}
                           </span>
                         ))}
                       </div>
-                      <div className="mt-4 flex flex-wrap gap-2">
+
+                      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-3">
                         {project.link && (
                           <a href={project.link} target="_blank" rel="noopener noreferrer" 
-                             className="px-3 py-1 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                            Live Demo →
+                             className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                            <span>View Live</span> →
                           </a>
                         )}
                         {project.github && (
                           <a href={project.github} target="_blank" rel="noopener noreferrer"
-                             className="px-3 py-1 text-sm bg-gray-700 text-white rounded-lg hover:bg-gray-800">
-                            GitHub →
+                             className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
+                            <span>GitHub</span> →
                           </a>
                         )}
                         {project.customLinks?.map((link, index) => (
                           <a key={index} href={link.url} target="_blank" rel="noopener noreferrer"
-                             className="px-3 py-1 text-sm bg-gray-600 text-white rounded-lg hover:bg-gray-700">
-                            {link.title} →
+                             className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
+                            <span>{link.title}</span> →
                           </a>
                         ))}
                       </div>
