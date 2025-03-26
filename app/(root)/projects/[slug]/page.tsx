@@ -85,20 +85,53 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Existing useEffect and error handling remain the same
+  useEffect(() => {
+    async function fetchProject() {
+      try {
+        setError(false);
+        setLoading(true);
+        const res = await axios.get(`/api/projects/${slug}`);
+        setProject(res.data.project);
+        
+        // Fetch related writings if project has tags
+        if (res.data.project.tags?.length > 0) {
+          const writingsRes = await axios.get('/api/writings');
+          const allWritings = writingsRes.data.writings;
+          
+          // Filter writings that share at least one tag with the project
+          const related = allWritings.filter((writing: Writing) => 
+            writing.tags?.some(tag => res.data.project.tags.includes(tag))
+          ).slice(0, 3); // Get top 3 related writings
+          
+          setRelatedWritings(related);
+        }
+      } catch (err) {
+        console.error("Failed to fetch project:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  if (loading)
+    if (slug) {
+      fetchProject();
+    }
+  }, [slug]);
+
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="animate-pulse text-lg text-gray-500">
-          Loading project...
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <p className="text-lg text-gray-600 dark:text-gray-400">Loading project...</p>
         </div>
       </div>
     );
+  }
 
-  if (error || !project)
+  if (error || !project) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gradient-to-br from-red-50 to-white dark:from-red-900 dark:to-gray-800">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-white dark:from-red-900 dark:to-gray-800 flex flex-col items-center justify-center text-center p-6">
         <p className="text-xl text-red-500 mb-4">Project not found or failed to load.</p>
         <Link 
           href="/projects" 
@@ -116,6 +149,7 @@ export default function ProjectPage() {
         </Link>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
