@@ -92,7 +92,7 @@ export default function AdminLayout({
             </li>
             <li>
               <Link 
-                href="/"
+                href="https://www.abdushakur.me"
                 className="flex items-center gap-2 px-6 py-3 text-gray-600 hover:bg-gray-100 transition-colors"
               >
                 <Home size={18} />
