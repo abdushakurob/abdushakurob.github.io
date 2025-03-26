@@ -170,7 +170,7 @@ export default function Projects() {
       </div>
 
       {/* Tags */}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">Tags</h3>
         <div className="flex flex-wrap gap-2">
           {allTags.map((tag) => (
@@ -187,7 +187,7 @@ export default function Projects() {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Show Loading State */}
       {loading ? (

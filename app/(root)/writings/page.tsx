@@ -188,7 +188,7 @@ export default function Writings() {
                     )}
                     
                     <div className="p-8">
-                      <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start mb-4">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
                           {writing.title}
                         </h2>
@@ -201,13 +201,14 @@ export default function Writings() {
                           <>
                             <span>•</span>
                             <span>{writing.readingTime} min read</span>
-                            <span className="ml-4 px-3 py-1 text-sm font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
-                          {writing.category}
-                        </span>
+                            
                           </>
                           
                         )}
-                   
+                        <span>•</span>
+                      <span className="px-3 py-1 text-sm font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                          {writing.category}
+                      </span>
                       </div>
 
                       <div className="prose prose-gray dark:prose-invert max-w-none mb-6">
