@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Source_Sans_3 } from "next/font/google";
 import localFont from "next/font/local";
-import "./globals.css";
+import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SocialIcons from "@/components/socialIcons";
