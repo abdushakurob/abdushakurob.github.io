@@ -13,6 +13,12 @@ const ProjectSchema = new mongoose.Schema(
     link: { type: String },
     github: { type: String },
     isFeatured: { type: Boolean, default: false },
+    manualDate: { type: Date }, // For projects that happened in the past
+    customLinks: [{
+      title: { type: String, required: true },
+      url: { type: String, required: true },
+      icon: { type: String }
+    }]
   },
   { timestamps: true }
 );

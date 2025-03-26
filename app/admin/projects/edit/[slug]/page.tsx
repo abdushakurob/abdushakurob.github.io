@@ -28,8 +28,41 @@ export default function EditProjectPage() {
     tags: '',
     link: '',
     github: '',
-    isFeatured: false
+    isFeatured: false,
+    manualDate: '',
+    customLinks: [{ title: '', url: '' }]
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+    }));
+  };
+
+  const handleCustomLinkChange = (index: number, field: 'title' | 'url', value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      customLinks: prev.customLinks.map((link, i) => 
+        i === index ? { ...link, [field]: value } : link
+      )
+    }));
+  };
+
+  const addCustomLink = () => {
+    setFormData(prev => ({
+      ...prev,
+      customLinks: [...prev.customLinks, { title: '', url: '' }]
+    }));
+  };
+
+  const removeCustomLink = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      customLinks: prev.customLinks.filter((_, i) => i !== index)
+    }));
+  };
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -47,7 +80,9 @@ export default function EditProjectPage() {
           tags: project.tags ? project.tags.join(', ') : '',
           link: project.link || '',
           github: project.github || '',
-          isFeatured: project.isFeatured || false
+          isFeatured: project.isFeatured || false,
+          manualDate: project.manualDate || '',
+          customLinks: project.customLinks?.length ? project.customLinks : [{ title: '', url: '' }]
         });
       } catch (err) {
         console.error('Error fetching project:', err);
@@ -60,22 +95,6 @@ export default function EditProjectPage() {
     fetchProject();
   }, [slug]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement;
-    
-    if (type === 'checkbox') {
-      setFormData({
-        ...formData,
-        [name]: (e.target as HTMLInputElement).checked
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-    }
-  };
-
   const handleEditorChange = (content: string) => {
     setFormData({
       ...formData,
@@ -85,27 +104,18 @@ export default function EditProjectPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.title || !formData.description) {
-      setError('Title and description are required');
-      return;
-    }
-    
+    setLoading(true);
+    setError('');
+
     try {
-      setLoading(true);
-      setError('');
-      
-      // Transform tags from comma-separated string to array
-      const tagsArray = formData.tags 
-        ? formData.tags.split(',').map(tag => tag.trim()) 
-        : [];
-      
-      const projectData = {
+      // Process tags from string to array
+      const processedData = {
         ...formData,
-        tags: tagsArray
+        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+        customLinks: formData.customLinks.filter(link => link.title && link.url)
       };
-      
-      await axios.put(`/api/projects/${slug}`, projectData);
+
+      await axios.put(`/api/projects/${slug}`, processedData);
       router.push('/admin/projects');
     } catch (err) {
       console.error('Error updating project:', err);
@@ -290,6 +300,45 @@ export default function EditProjectPage() {
                 className="h-full"
               />
             </div>
+          </div>
+
+          {/* Custom Links */}
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Custom Links
+            </label>
+            {formData.customLinks.map((link, index) => (
+              <div key={index} className="flex gap-4 mb-2">
+                <input
+                  type="text"
+                  placeholder="Link Title (e.g., Product Hunt)"
+                  value={link.title}
+                  onChange={(e) => handleCustomLinkChange(index, 'title', e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <input
+                  type="url"
+                  placeholder="URL"
+                  value={link.url}
+                  onChange={(e) => handleCustomLinkChange(index, 'url', e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeCustomLink(index)}
+                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addCustomLink}
+              className="mt-2 px-4 py-2 text-blue-600 hover:text-blue-800"
+            >
+              + Add Custom Link
+            </button>
           </div>
         </div>
       </form>

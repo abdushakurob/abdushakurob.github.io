@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const { title, description, coverImage, tags, category,content, link, github, isFeatured } = await req.json();
+    const { title, description, coverImage, tags, category, content, link, github, isFeatured, manualDate, customLinks } = await req.json();
 
     if (!title || !description) {
       return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
@@ -33,11 +33,54 @@ export async function POST(req: NextRequest) {
       link,
       github,
       isFeatured,
+      manualDate: manualDate ? new Date(manualDate) : undefined,
+      customLinks: customLinks?.filter((link: any) => link.title && link.url)
     });
 
     return NextResponse.json(newProject, { status: 201 });
   } catch (error) {
     console.error("Failed to create project:", error);
     return NextResponse.json({ error: "Failed to create project" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectDB();
+    const { searchParams } = new URL(req.url);
+    const slug = searchParams.get('slug');
+
+    if (!slug) {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+    }
+
+    const { title, description, coverImage, tags, category, content, link, github, isFeatured, manualDate, customLinks } = await req.json();
+
+    const updatedProject = await Project.findOneAndUpdate(
+      { slug },
+      {
+        title,
+        description,
+        coverImage,
+        tags,
+        category,
+        content,
+        link,
+        github,
+        isFeatured,
+        manualDate: manualDate ? new Date(manualDate) : undefined,
+        customLinks: customLinks?.filter((link: any) => link.title && link.url)
+      },
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(updatedProject);
+  } catch (error) {
+    console.error("Failed to update project:", error);
+    return NextResponse.json({ error: "Failed to update project" }, { status: 500 });
   }
 }
