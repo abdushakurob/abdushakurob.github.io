@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Project {
   _id: string;
@@ -9,6 +10,16 @@ interface Project {
   slug: string;
   category: string;
   description: string;
+  coverImage?: string;
+  tags?: string[];
+  link?: string;
+  github?: string;
+  isFeatured: boolean;
+  customLinks?: Array<{
+    title: string;
+    url: string;
+    icon?: string;
+  }>;
 }
 
 export default function FeaturedProject() {
@@ -18,8 +29,8 @@ export default function FeaturedProject() {
   useEffect(() => {
     async function fetchFeaturedProjects() {
       try {
-        const res = await axios.get("/api/projects?featured=true"); // ✅ Fetch featured projects only
-        setProjects(res.data);
+        const res = await axios.get("/api/projects?featured=true");
+        setProjects(res.data.projects.filter((p: Project) => p.isFeatured));
       } catch (error) {
         console.error("Error fetching featured projects:", error);
       } finally {
@@ -46,10 +57,61 @@ export default function FeaturedProject() {
               {projects.length > 0 ? (
                 projects.map((project) => (
                   <Link key={project._id} href={`/projects/${project.slug}`}>
-                    <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition cursor-pointer">
-                      <h3 className="text-xl font-semibold text-blue-500">{project.title}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{project.category}</p>
-                      <p className="mt-2 text-gray-700 dark:text-gray-300">{project.description}</p>
+                    <div className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
+                      {project.coverImage && (
+                        <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+                          <Image 
+                            src={project.coverImage} 
+                            alt={project.title} 
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-200"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+                            {project.title}
+                          </h3>
+                          <span className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                            {project.category}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        {project.tags && project.tags.length > 0 && (
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {project.tags.map((tag, index) => (
+                              <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-3">
+                          {project.link && (
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" 
+                               className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                              <span>View Live</span> →
+                            </a>
+                          )}
+                          {project.github && (
+                            <a href={project.github} target="_blank" rel="noopener noreferrer"
+                               className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
+                              <span>GitHub</span> →
+                            </a>
+                          )}
+                          {project.customLinks?.map((link, index) => (
+                            <a key={index} href={link.url} target="_blank" rel="noopener noreferrer"
+                               className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
+                              <span>{link.title}</span> →
+                            </a>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </Link>
                 ))

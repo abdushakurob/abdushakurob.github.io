@@ -1,20 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { ArrowLeft, Save } from 'lucide-react';
 import Link from 'next/link';
 
-// Use dynamic import without any findDOMNode workarounds
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import('react-quill-new');
-    return RQ;
-  },
-  { ssr: false }
-);
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
 
 interface Writing {
@@ -30,11 +23,11 @@ export default function EditWritingPage() {
   const router = useRouter();
   const params = useParams();
   const slug = params.slug as string;
-  const quillRef = useRef(null);
   
   const [loading, setLoading] = useState(false);
   const [loadingWriting, setLoadingWriting] = useState(true);
   const [error, setError] = useState('');
+  const [tagInput, setTagInput] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -51,7 +44,7 @@ export default function EditWritingPage() {
       try {
         setLoadingWriting(true);
         const response = await axios.get(`/api/writings/${slug}`);
-        const writing = response.data.writing; // Note: API returns { writing } object
+        const writing = response.data.writing;
         
         setFormData({
           title: writing.title || '',
@@ -126,8 +119,14 @@ export default function EditWritingPage() {
       const readingTimeNum = formData.readingTime ? parseInt(formData.readingTime) : undefined;
       
       const writingData = {
-        ...formData,
-        readingTime: readingTimeNum
+        title: formData.title,
+        content: formData.content,
+        category: formData.category,
+        tags: formData.tags,
+        readingTime: readingTimeNum,
+        excerpt: formData.excerpt,
+        coverImage: formData.coverImage,
+        isDraft: formData.isDraft
       };
       
       await axios.put(`/api/writings/${slug}`, writingData);
@@ -141,14 +140,14 @@ export default function EditWritingPage() {
   };
 
   const handleAddTag = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && formData.tagInput.trim()) {
+    if (e.key === "Enter" && tagInput.trim()) {
       e.preventDefault();
-      if (!formData.tags.includes(formData.tagInput.trim())) {
+      if (!formData.tags.includes(tagInput.trim())) {
         setFormData(prev => ({
           ...prev,
-          tags: [...prev.tags, formData.tagInput.trim()],
-          tagInput: ''
+          tags: [...prev.tags, tagInput.trim()]
         }));
+        setTagInput('');
       }
     }
   };
@@ -237,7 +236,7 @@ export default function EditWritingPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tags (comma separated)
+              Tags
             </label>
             <div className="flex flex-wrap gap-2 mb-2">
               {formData.tags.map((tag, index) => (
@@ -258,9 +257,8 @@ export default function EditWritingPage() {
             </div>
             <input
               type="text"
-              name="tagInput"
-              value={formData.tagInput}
-              onChange={handleChange}
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
               placeholder="Type a tag and press Enter"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

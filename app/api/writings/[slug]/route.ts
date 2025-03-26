@@ -3,12 +3,13 @@ import connectDB from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
 export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const writing = await Writing.findOne({ slug: params.slug });
+    const { slug } = await params;
+    const writing = await Writing.findOne({ slug });
 
     if (!writing) {
       return NextResponse.json(
@@ -29,22 +30,26 @@ export async function GET(
 
 // UPDATE a writing
 export async function PUT(
-  request: Request,
-  { params }: { params: { slug: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const body = await request.json();
-    const { title, content, category, tags, readingTime } = body;
+    const body = await req.json();
+    const { title, content, category, tags, readingTime, isDraft, excerpt, coverImage } = body;
 
     await connectDB();
+    const { slug } = await params;
     const writing = await Writing.findOneAndUpdate(
-      { slug: params.slug },
+      { slug },
       {
         title,
         content,
         category,
         tags: tags || [],
         readingTime,
+        isDraft: isDraft || false,
+        excerpt,
+        coverImage,
         slug: title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
@@ -72,12 +77,13 @@ export async function PUT(
 
 // DELETE a writing
 export async function DELETE(
-  request: Request,
-  { params }: { params: { slug: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const writing = await Writing.findOneAndDelete({ slug: params.slug });
+    const { slug } = await params;
+    const writing = await Writing.findOneAndDelete({ slug });
 
     if (!writing) {
       return NextResponse.json(

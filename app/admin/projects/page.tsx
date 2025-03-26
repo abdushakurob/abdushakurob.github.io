@@ -28,7 +28,7 @@ export default function ProjectsPage() {
     try {
       setLoading(true);
       const response = await axios.get('/api/projects');
-      setProjects(response.data);
+      setProjects(response.data.projects);
       setError('');
     } catch (err) {
       setError('Failed to fetch projects');

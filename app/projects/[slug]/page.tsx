@@ -47,16 +47,16 @@ export default function ProjectPage() {
       try {
         setError(false);
         const res = await axios.get(`/api/projects/${slug}`);
-        setProject(res.data);
+        setProject(res.data.project);
         
         // Fetch related writings if project has tags
-        if (res.data.tags?.length > 0) {
+        if (res.data.project.tags?.length > 0) {
           const writingsRes = await axios.get('/api/writings');
-          const allWritings = writingsRes.data;
+          const allWritings = writingsRes.data.writings;
           
           // Filter writings that share at least one tag with the project
           const related = allWritings.filter((writing: Writing) => 
-            writing.tags?.some(tag => res.data.tags.includes(tag))
+            writing.tags?.some(tag => res.data.project.tags.includes(tag))
           ).slice(0, 3); // Get top 3 related writings
           
           setRelatedWritings(related);

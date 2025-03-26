@@ -67,15 +67,17 @@ export default function Writings() {
   };
 
   // Filter writings
-  const filteredWritings = writings.filter(writing => {
-    const matchesCategory = filter === "All" || writing.category === filter;
-    const matchesSearch = writing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         (writing.excerpt?.toLowerCase() || "").includes(searchQuery.toLowerCase());
-    const matchesTags = selectedTags.length === 0 || 
-                       selectedTags.every(tag => writing.tags?.includes(tag));
-    
-    return matchesCategory && matchesSearch && matchesTags;
-  });
+  const filteredWritings = writings
+    .filter(writing => !writing.isDraft) // Filter out drafts
+    .filter(writing => {
+      const matchesCategory = filter === "All" || writing.category === filter;
+      const matchesSearch = writing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (writing.excerpt?.toLowerCase() || "").includes(searchQuery.toLowerCase());
+      const matchesTags = selectedTags.length === 0 || 
+                         selectedTags.every(tag => writing.tags?.includes(tag));
+      
+      return matchesCategory && matchesSearch && matchesTags;
+    });
 
   const totalPages = Math.ceil(filteredWritings.length / itemsPerPage);
   const paginatedWritings = filteredWritings.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);

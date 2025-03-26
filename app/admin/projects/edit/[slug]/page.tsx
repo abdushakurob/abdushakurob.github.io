@@ -69,7 +69,7 @@ export default function EditProjectPage() {
       try {
         setLoadingProject(true);
         const response = await axios.get(`/api/projects/${slug}`);
-        const project = response.data;
+        const project = response.data.project;
         
         setFormData({
           title: project.title || '',

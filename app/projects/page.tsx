@@ -40,9 +40,16 @@ export default function Projects() {
     async function fetchProjects() {
       try {
         const res = await axios.get("/api/projects");
-        const fetchedProjects: Project[] = res.data;
+        const fetchedProjects: Project[] = res.data.projects;
 
-        setProjects(fetchedProjects);
+        // Sort projects: featured first, then by date
+        const sortedProjects = [...fetchedProjects].sort((a, b) => {
+          if (a.isFeatured && !b.isFeatured) return -1;
+          if (!a.isFeatured && b.isFeatured) return 1;
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
+
+        setProjects(sortedProjects);
 
         // Generate unique categories and tags
         const uniqueCategories = ["All", ...new Set(fetchedProjects.map((p) => p.category))];

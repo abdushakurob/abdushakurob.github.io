@@ -29,7 +29,7 @@ export default function WritingsPage() {
     try {
       setLoading(true);
       const response = await axios.get('/api/writings');
-      setWritings(response.data);
+      setWritings(response.data.writings);
       setError('');
     } catch (err) {
       setError('Failed to fetch writings');
