@@ -62,15 +62,15 @@ const ProjectLinkButton = ({
     rel="noopener noreferrer"
     className={`
       group relative inline-flex items-center gap-2 
-      px-5 py-3 rounded-xl 
+      px-4 py-2 rounded-lg 
       transition-all duration-300 
-      text-white 
-      transform hover:-translate-y-1 hover:scale-[1.02]
+      text-white text-sm
+      transform hover:-translate-y-0.5 hover:scale-[1.02]
       focus:outline-none focus:ring-2 focus:ring-offset-2
       ${className}
     `}
   >
-    <span className="absolute inset-0 bg-gradient-to-br opacity-75 group-hover:opacity-90 rounded-xl blur-sm group-hover:blur-md transition-all"></span>
+    <span className="absolute inset-0 bg-gradient-to-br opacity-75 group-hover:opacity-90 rounded-lg blur-sm group-hover:blur-md transition-all"></span>
     <span className="relative z-10 flex items-center gap-2">
       {icon}
       {children}
@@ -152,7 +152,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       {/* Back Button */}
       <div className="mb-8">
         <Link 
@@ -207,7 +207,7 @@ export default function ProjectPage() {
             {project.link && (
               <ProjectLinkButton 
                 href={project.link}
-                icon={<Code size={20} />}
+                icon={<Code size={18} />}
                 className="bg-blue-500 hover:bg-blue-600 shadow-blue-500/30"
               >
                 Live Project
@@ -216,7 +216,7 @@ export default function ProjectPage() {
             {project.github && (
               <ProjectLinkButton 
                 href={project.github}
-                icon={<GithubIcon size={20} />}
+                icon={<GithubIcon size={18} />}
                 className="bg-gray-800 hover:bg-black shadow-gray-800/30"
               >
                 GitHub Repository
@@ -226,7 +226,7 @@ export default function ProjectPage() {
               <ProjectLinkButton 
                 key={index}
                 href={link.url}
-                icon={link.icon ? <span>{link.icon}</span> : <LinkIcon size={20} />}
+                icon={link.icon ? <span>{link.icon}</span> : <LinkIcon size={18} />}
                 className="bg-gray-600 hover:bg-gray-700 shadow-gray-600/30"
               >
                 {link.title}
@@ -235,7 +235,6 @@ export default function ProjectPage() {
           </div>
         </div>
 
-        {/* Rest of the component remains the same */}
         {/* Project Content */}
         <div 
           className="
