@@ -4,6 +4,21 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 
+// Add relative date function
+function getRelativeDate(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return 'just now';
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`;
+  if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
+  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
+
 interface Project {
   _id: string;
   title: string;
@@ -182,10 +197,10 @@ export default function Projects() {
       ) : (
         <>
           {/* Projects List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 auto-rows-fr">
             {paginatedProjects.length > 0 ? (
               paginatedProjects.map((project) => (
-                <Link key={project._id} href={`/projects/${project.slug}`}>
+                <Link key={project._id} href={`/projects/${project.slug}`} className="block h-full">
                   <div className="group h-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 transform hover:-translate-y-1">
                     {project.coverImage && (
                       <div className="relative w-full h-48 overflow-hidden">
@@ -223,8 +238,8 @@ export default function Projects() {
                         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                           <time>
                             {project.manualDate 
-                              ? new Date(project.manualDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-                              : new Date(project.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                              ? getRelativeDate(project.manualDate)
+                              : getRelativeDate(project.createdAt)}
                           </time>
                         </div>
                         <div className="flex items-center gap-1 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">
