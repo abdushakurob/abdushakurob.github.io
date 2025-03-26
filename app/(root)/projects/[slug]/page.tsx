@@ -106,55 +106,52 @@ export default function ProjectPage() {
     );
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      {/* Back Button */}
-      <div className="mb-8">
-        <Link href="/projects" className="inline-flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 group">
-          <span className="text-lg transform group-hover:-translate-x-1 transition-transform">←</span>
-          <span className="ml-2">Back to projects</span>
-        </Link>
-      </div>
-
-      {/* Project Details */}
-      <div className="space-y-8">
-        {/* Header Section */}
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{project.title}</h1>
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-            <span className="px-3 py-1 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
-              {project.category}
-            </span>
-            <span>•</span>
-            <time>
-              {project.manualDate 
-                ? getRelativeDate(project.manualDate)
-                : getRelativeDate(project.createdAt)}
-            </time>
+    <div className="min-h-screen bg-base-100 text-base-content">
+      {/* Hero Section with Cover Image */}
+      {project.coverImage && (
+        <div className="relative w-full h-[60vh] min-h-[400px]">
+          <Image 
+            src={project.coverImage} 
+            alt={project.title} 
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-12 md:p-24">
+            <div className="max-w-5xl mx-auto">
+              <Link href="/projects" className="inline-flex items-center text-white/80 hover:text-white mb-6 group">
+                <span className="text-lg transform group-hover:-translate-x-1 transition-transform">←</span>
+                <span className="ml-2">Back to projects</span>
+              </Link>
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{project.title}</h1>
+              <div className="flex flex-wrap items-center gap-3 text-sm text-white/80">
+                <span className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full">
+                  {project.category}
+                </span>
+                <span>•</span>
+                <time>
+                  {project.manualDate 
+                    ? getRelativeDate(project.manualDate)
+                    : getRelativeDate(project.createdAt)}
+                </time>
+              </div>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Cover Image */}
-        {project.coverImage && (
-          <div className="relative w-full h-[500px] rounded-xl overflow-hidden shadow-lg">
-            <Image 
-              src={project.coverImage} 
-              alt={project.title} 
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        )}
-
+      {/* Main Content */}
+      <div className="max-w-5xl mx-auto px-6 sm:px-12 md:px-24 py-12">
         {/* Project Links - Sticky */}
-        <div className="sticky top-4 z-10 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+        <div className="sticky top-4 z-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 border border-gray-100 dark:border-gray-700 mb-8">
           <div className="flex flex-wrap gap-4">
             {project.link && (
               <a 
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30"
               >
                 <Code size={20} />
                 <span>View Live Project</span>
@@ -165,7 +162,7 @@ export default function ProjectPage() {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors shadow-lg shadow-gray-800/20"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-200 shadow-lg shadow-gray-800/20 hover:shadow-gray-800/30"
               >
                 <GithubIcon size={20} />
                 <span>View on GitHub</span>
@@ -177,7 +174,7 @@ export default function ProjectPage() {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-lg shadow-gray-500/10"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 text-gray-700 dark:text-gray-200 rounded-lg hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-700 transition-all duration-200 shadow-lg shadow-gray-500/10 hover:shadow-gray-500/20"
               >
                 {link.icon && <span className="text-lg">{link.icon}</span>}
                 <span>{link.title}</span>
@@ -187,12 +184,12 @@ export default function ProjectPage() {
         </div>
 
         {/* Project Content */}
-        <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-blue-500 prose-a:no-underline hover:prose-a:underline" 
+        <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-blue-500 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg" 
           dangerouslySetInnerHTML={{ __html: processQuillHtml(project.content || project.description) }} />
 
         {/* Tags */}
         {project.tags && project.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-8">
             {project.tags.map((tag, index) => (
               <span 
                 key={index} 

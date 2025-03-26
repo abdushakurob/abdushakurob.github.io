@@ -197,7 +197,13 @@ export default function Projects() {
       ) : (
         <>
           {/* Projects List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 auto-rows-fr">
+          <div className={`grid gap-6 mt-10 auto-rows-fr ${
+            paginatedProjects.length === 1 
+              ? 'grid-cols-1 max-w-3xl mx-auto' 
+              : paginatedProjects.length === 2 
+                ? 'grid-cols-1 md:grid-cols-2' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {paginatedProjects.length > 0 ? (
               paginatedProjects.map((project) => (
                 <Link key={project._id} href={`/projects/${project.slug}`} className="block h-full">

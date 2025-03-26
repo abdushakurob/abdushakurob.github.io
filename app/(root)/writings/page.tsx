@@ -2,6 +2,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
+import { processQuillHtml } from "@/lib/quill-html-processor";
+
+// Add relative date function
+function getRelativeDate(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return 'just now';
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 604800)}w ago`;
+  if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
+  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
 
 interface Writing {
   _id: string;
@@ -153,48 +170,82 @@ export default function Writings() {
       ) : (
         <>
           {/* Writings List */}
-          <div className="grid md:grid-cols-2 gap-6 mt-10">
+          <div className="grid grid-cols-1 gap-8 mt-10">
             {paginatedWritings.length > 0 ? (
               paginatedWritings.map((writing) => (
                 <Link key={writing.slug} href={`/writings/${writing.slug}`}>
-                  <div className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
-                    <div className="flex items-start justify-between">
-                      <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
-                        {writing.title}
-                      </h2>
-                      <span className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
-                        {writing.category}
-                      </span>
-                    </div>
-                    
-                    <div className="mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <time>{new Date(writing.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</time>
-                      {writing.readingTime && (
-                        <>
-                          <span>•</span>
-                          <span>{writing.readingTime} min read</span>
-                        </>
-                      )}
-                    </div>
-
-                    <p className="mt-3 text-gray-600 dark:text-gray-300 line-clamp-2">
-                      {writing.excerpt || writing.content.substring(0, 150)}...
-                    </p>
-
-                    {writing.tags && writing.tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {writing.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
-                            {tag}
-                          </span>
-                        ))}
+                  <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700">
+                    {writing.coverImage && (
+                      <div className="relative w-full h-64 overflow-hidden">
+                        <Image 
+                          src={writing.coverImage} 
+                          alt={writing.title} 
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                     )}
+                    
+                    <div className="p-8">
+                      <div className="flex items-start justify-between mb-4">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+                          {writing.title}
+                        </h2>
+                        <span className="px-3 py-1 text-sm font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                          {writing.category}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400 mb-4">
+                        <time>{getRelativeDate(writing.createdAt)}</time>
+                        {writing.readingTime && (
+                          <>
+                            <span>•</span>
+                            <span>{writing.readingTime} min read</span>
+                          </>
+                        )}
+                      </div>
+
+                      <div className="prose prose-gray dark:prose-invert max-w-none mb-6">
+                        <div dangerouslySetInnerHTML={{ 
+                          __html: processQuillHtml(writing.excerpt || writing.content.substring(0, 500) + '...') 
+                        }} />
+                      </div>
+
+                      {writing.tags && writing.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-6">
+                          {writing.tags.map((tag, index) => (
+                            <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex items-center text-blue-500 group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-300">
+                        <span className="text-sm">Read full article</span>
+                        <span className="ml-1 transform group-hover:translate-x-1 transition-transform">→</span>
+                      </div>
+                    </div>
                   </div>
                 </Link>
               ))
             ) : (
-              <p className="text-center text-gray-500 col-span-2">No writings found matching your criteria.</p>
+              <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                <p className="text-gray-500 dark:text-gray-400">No writings found matching your criteria.</p>
+                <button 
+                  onClick={() => {
+                    setSearchQuery('');
+                    setFilter('All');
+                    setSelectedTags([]);
+                    setCurrentPage(1);
+                  }}
+                  className="mt-4 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  Clear filters
+                </button>
+              </div>
             )}
           </div>
 
