@@ -3,10 +3,14 @@ import connectDB from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
 // ✅ GET all writings
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const includeDrafts = searchParams.get('includeDrafts') === 'true';
+
     await connectDB();
-    const writings = await Writing.find({}).sort({ createdAt: -1 });
+    const query = includeDrafts ? {} : { isDraft: false };
+    const writings = await Writing.find(query).sort({ createdAt: -1 });
     return NextResponse.json({ writings });
   } catch (error) {
     console.error("Failed to fetch writings:", error);
@@ -21,7 +25,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, content, category, tags, readingTime } = body;
+    const { title, content, category, tags, readingTime, isDraft } = body;
 
     if (!title || !content || !category) {
       return NextResponse.json(
@@ -38,6 +42,7 @@ export async function POST(request: Request) {
       category,
       tags: tags || [],
       readingTime,
+      isDraft: isDraft || false,
       slug: title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")

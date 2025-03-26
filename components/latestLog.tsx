@@ -8,6 +8,7 @@ interface Writing {
   category: string;
   createdAt: string;
   slug: string;
+  isDraft: boolean;
 }
 
 export default function LatestWritings() {
@@ -19,7 +20,9 @@ export default function LatestWritings() {
     async function fetchWritings() {
       try {
         const res = await axios.get("/api/writings");
-        const fetchedWritings: Writing[] = res.data.slice(0, 3); // ✅ Get only the latest 3 writings
+        const fetchedWritings: Writing[] = res.data.writings
+          .filter(writing => !writing.isDraft)
+          .slice(0, 3); // Get only the latest 3 non-draft writings
         setWritings(fetchedWritings);
       } catch (err) {
         console.error("Error fetching writings:", err);
