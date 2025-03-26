@@ -20,14 +20,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(url)
   }
 
-  // Handle authentication for admin routes on the main domain
+  // Return 404 for /admin routes on main domain
   if (pathname.startsWith('/admin')) {
-    const token = request.cookies.get('token')
-    if (!token) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/login'
-      return NextResponse.redirect(url)
-    }
+    return new NextResponse(null, { status: 404 })
   }
 
   return NextResponse.next()
