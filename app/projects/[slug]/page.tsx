@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
-import { Code, GithubIcon, TagIcon } from "lucide-react";
+import { Code, GithubIcon } from "lucide-react";
 import { processQuillHtml } from "@/lib/quill-html-processor";
 
 interface Project {
@@ -104,7 +105,15 @@ export default function ProjectPage() {
 
       {/* Cover Image */}
       {project.coverImage && (
-        <img src={project.coverImage} alt={project.title} className="w-full max-h-96 object-cover rounded-lg mt-6 shadow-lg" />
+        <div className="relative w-full h-96 mt-6">
+          <Image 
+            src={project.coverImage} 
+            alt={project.title} 
+            fill
+            className="object-cover rounded-lg shadow-lg"
+            priority
+          />
+        </div>
       )}
 
       {/* Project Content (WYSIWYG) */}

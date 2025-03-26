@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Project {
   _id: string;
@@ -89,7 +90,7 @@ export default function Projects() {
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       <h1 className="text-4xl font-bold text-green-600 mb-6">Projects</h1>
       <p className="text-lg text-gray-600">
-        A collection of things I've built, designed, or experimented with. Some are finished, some are ongoing, and some are just ideas I started exploring.
+        A collection of things I&apos;ve built, designed, or experimented with. Some are finished, some are ongoing, and some are just ideas I started exploring.
       </p>
 
       {/* Search Bar */}
@@ -159,7 +160,14 @@ export default function Projects() {
                 <Link key={project._id} href={`/projects/${project.slug}`}>
                   <div className="card bg-base-200 shadow-lg p-6 rounded-lg hover:shadow-xl transition cursor-pointer h-full">
                     {project.coverImage && (
-                      <img src={project.coverImage} alt={project.title} className="w-full h-48 object-cover rounded-lg mb-4" />
+                      <div className="relative w-full h-48 mb-4">
+                        <Image 
+                          src={project.coverImage} 
+                          alt={project.title} 
+                          fill
+                          className="object-cover rounded-lg"
+                        />
+                      </div>
                     )}
                     <div className="flex flex-col h-full">
                       <h2 className="text-2xl font-semibold text-blue-500">{project.title}</h2>
