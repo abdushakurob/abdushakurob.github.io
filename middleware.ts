@@ -8,7 +8,9 @@ export function middleware(request: NextRequest) {
   if (host.startsWith('admin.')) {
     // Skip authentication check for login page
     if (pathname === '/login') {
-      return NextResponse.next()
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.rewrite(url)
     }
 
     // Check for authentication on admin subdomain
@@ -21,7 +23,7 @@ export function middleware(request: NextRequest) {
 
     // Rewrite the URL path to the admin route
     const url = request.nextUrl.clone()
-    url.pathname = `${pathname}`
+    url.pathname = `/admin${pathname}`
     return NextResponse.rewrite(url)
   }
 
