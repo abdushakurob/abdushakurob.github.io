@@ -201,38 +201,69 @@ export default function ProjectPage() {
           </div>
         )}
 
-        {/* Project Links - Improved Design */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700">
-          <div className="flex flex-wrap gap-4 justify-start">
-            {project.link && (
-              <ProjectLinkButton 
-                href={project.link}
-                icon={<Code size={18} />}
-                className="bg-blue-500 hover:bg-blue-600 shadow-blue-500/30"
-              >
-                Live Project
-              </ProjectLinkButton>
-            )}
-            {project.github && (
-              <ProjectLinkButton 
-                href={project.github}
-                icon={<GithubIcon size={18} />}
-                className="bg-gray-800 hover:bg-black shadow-gray-800/30"
-              >
-                GitHub Repository
-              </ProjectLinkButton>
-            )}
-            {project.customLinks?.map((link, index) => (
-              <ProjectLinkButton 
-                key={index}
-                href={link.url}
-                icon={link.icon ? <span>{link.icon}</span> : <LinkIcon size={18} />}
-                className="bg-gray-600 hover:bg-gray-700 shadow-gray-600/30"
-              >
-                {link.title}
-              </ProjectLinkButton>
-            ))}
-          </div>
+        {/* Project Links - Natural Layout */}
+        <div className="flex flex-wrap gap-4">
+          {project.link && (
+            <a 
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                inline-flex items-center gap-2 
+                px-4 py-2 
+                text-blue-600 dark:text-blue-400 
+                hover:text-blue-700 dark:hover:text-blue-300 
+                transition-colors
+                border-b-2 border-transparent 
+                hover:border-blue-500 
+                dark:hover:border-blue-400
+              "
+            >
+              <Code size={18} />
+              <span>View Live Project</span>
+            </a>
+          )}
+          {project.github && (
+            <a 
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                inline-flex items-center gap-2 
+                px-4 py-2 
+                text-gray-600 dark:text-gray-400 
+                hover:text-gray-900 dark:hover:text-gray-200 
+                transition-colors
+                border-b-2 border-transparent 
+                hover:border-gray-500 
+                dark:hover:border-gray-400
+              "
+            >
+              <GithubIcon size={18} />
+              <span>View on GitHub</span>
+            </a>
+          )}
+          {project.customLinks?.map((link, index) => (
+            <a 
+              key={index}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                inline-flex items-center gap-2 
+                px-4 py-2 
+                text-gray-600 dark:text-gray-400 
+                hover:text-gray-900 dark:hover:text-gray-200 
+                transition-colors
+                border-b-2 border-transparent 
+                hover:border-gray-500 
+                dark:hover:border-gray-400
+              "
+            >
+              {link.icon ? <span>{link.icon}</span> : <LinkIcon size={18} />}
+              <span>{link.title}</span>
+            </a>
+          ))}
         </div>
 
         {/* Project Content */}

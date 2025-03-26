@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import { satoshi, plusJakarta, jetbrainsMono } from './fonts';
 
 export const metadata: Metadata = {
   title: 'Abdul Shakur',
@@ -15,8 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html 
+      lang="en" 
+      className={`${satoshi.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="font-satoshi antialiased">{children}</body>
     </html>
   );
 }
