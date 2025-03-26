@@ -35,7 +35,7 @@ export default function Writings() {
     async function fetchWritings() {
       try {
         const res = await axios.get("/api/writings");
-        const fetchedWritings: Writing[] = res.data;
+        const fetchedWritings: Writing[] = res.data.writings;
         setWritings(fetchedWritings);
 
         // Extract unique categories and tags
