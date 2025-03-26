@@ -4,6 +4,11 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname, host } = request.nextUrl
 
+  // Skip middleware for API routes
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next()
+  }
+
   // Check if the request is coming from the admin subdomain
   if (host.startsWith('admin.')) {
     // Skip authentication check for login page
@@ -14,7 +19,7 @@ export function middleware(request: NextRequest) {
     }
 
     // Check for authentication on admin subdomain
-    const token = request.cookies.get('token')
+    const token = request.cookies.get('auth_token')
     if (!token) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
@@ -40,11 +45,10 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 } 

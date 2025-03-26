@@ -23,7 +23,7 @@ export default function AdminLogin() {
       });
 
       if (response.data.success) {
-        router.push('/admin');
+        router.push('/');
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'An error occurred. Please try again.');
