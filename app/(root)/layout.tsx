@@ -16,25 +16,7 @@ const sourceSans3 = Source_Sans_3({
   subsets: ["latin"],
 });
 
-const clashDisplay = localFont({
-  src: "../public/fonts/ClashDisplay-Variable.woff2",
-  variable: "--font-clash-display",
-})
 
-const jetBrainsMono = localFont({
-  src: "../public/fonts/JetBrainsMono-Variable.woff2",
-  variable: "--font-jetbrains-mono",
-})
-
-const PlusJakartaSans = localFont({
-  src: "../public/fonts/PlusJakartaSans-Variable.woff2",
-  variable: "--font-plus-jakarta-sans",
-})
-
-const satoshi = localFont({
-  src: "../public/fonts/Satoshi-Variable.woff2",
-  variable: "--font-satoshi",
-})
 
 export const metadata: Metadata = {
   title: "Abdushakur",
@@ -48,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     
-    <html lang="en" className={`${PlusJakartaSans.variable}${jetBrainsMono.variable} ${clashDisplay.variable} ${satoshi.variable} ${inter.variable} ${sourceSans3.variable}`}>
+    <html lang="en" className={` ${inter.variable} ${sourceSans3.variable}`}>
       <head>
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
