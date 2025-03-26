@@ -6,9 +6,9 @@ export function middleware(request: NextRequest) {
 
   // Check if the request is coming from the admin subdomain
   if (host.startsWith('admin.')) {
-    // Rewrite the URL path to the admin route group
+    // Rewrite the URL path to the admin route
     const url = request.nextUrl.clone()
-    url.pathname = `/(admin)${pathname}`
+    url.pathname = `/admin${pathname}`
     return NextResponse.rewrite(url)
   }
 
