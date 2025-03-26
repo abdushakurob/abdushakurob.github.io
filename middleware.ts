@@ -2,30 +2,23 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const host = request.headers.get('host') || ''
-  const isAdminSubdomain = host.startsWith('admin.')
-  const isAdminPath = request.nextUrl.pathname.startsWith('/admin')
-  
-  // If it's the admin subdomain, rewrite to /admin path
-  if (isAdminSubdomain) {
+  const { pathname, host } = request.nextUrl
+
+  // Check if the request is coming from the admin subdomain
+  if (host.startsWith('admin.')) {
+    // Rewrite the URL path to the admin route group
     const url = request.nextUrl.clone()
-    url.pathname = `/admin${url.pathname}`
+    url.pathname = `/(admin)${pathname}`
     return NextResponse.rewrite(url)
   }
 
   // Handle authentication for admin routes
-  if (isAdminPath || isAdminSubdomain) {
-    const token = request.cookies.get('token')?.value
-
-    // Don't protect the login page
-    if (request.nextUrl.pathname === '/admin/login') {
-      return NextResponse.next()
-    }
-
+  if (pathname.startsWith('/admin')) {
+    const token = request.cookies.get('token')
     if (!token) {
-      const loginUrl = new URL('/admin/login', request.url)
-      loginUrl.searchParams.set('from', request.nextUrl.pathname)
-      return NextResponse.redirect(loginUrl)
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
     }
   }
 
@@ -35,6 +28,13 @@ export function middleware(request: NextRequest) {
 // Configure the middleware to run on all paths
 export const config = {
   matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 } 

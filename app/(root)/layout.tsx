@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Source_Sans_3 } from "next/font/google";
 import localFont from "next/font/local";
 import "../globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import SocialIcons from "@/components/socialIcons";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import SocialIcons from '@/components/socialIcons';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,27 +23,20 @@ export const metadata: Metadata = {
   description: "My Corner on the web",
 };
 
-export default function RootLayout({
+export default function MainLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    
-    <html lang="en" className={` ${inter.variable} ${sourceSans3.variable}`}>
-      <head>
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-      <link rel="manifest" href="/site.webmanifest" />
-      </head>
-      <body>
-        <Header/>
+    <>
+      <Header />
+      <main className="min-h-screen">
         {children}
-        <SocialIcons/>
-      <Footer/>
-      </body>
-    </html>
+      </main>
+      <Footer />
+      <SocialIcons />
+    </>
   );
 }
 
