@@ -43,10 +43,10 @@ export default function AdminLayout({
         <nav className="mt-6 flex flex-col h-[calc(100vh-100px)] justify-between">
           <ul className="space-y-1">
             <SidebarItem 
-              href="/admin" 
+              href="/" 
               icon={<Home size={18} />} 
               text="Dashboard" 
-              isActive={isActive('/admin')}
+              isActive={isActive('/')}
             />
             <SidebarItem 
               href="/projects" 
@@ -92,7 +92,7 @@ export default function AdminLayout({
             </li>
             <li>
               <Link 
-                href="/"
+                href="https://www.abdushakur.me"
                 className="flex items-center gap-2 px-6 py-3 text-gray-600 hover:bg-gray-100 transition-colors"
               >
                 <Home size={18} />
