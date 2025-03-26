@@ -28,6 +28,7 @@ interface Project {
 }
 
 interface Writing {
+  _id: string;
   title: string;
   slug: string;
   description: string;
@@ -93,18 +94,19 @@ export default function ProjectPage() {
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       {/* Back Button */}
       <div className="mb-8">
-        <Link href="/projects" className="inline-flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-          <span className="text-lg">←</span>
+        <Link href="/projects" className="inline-flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 group">
+          <span className="text-lg transform group-hover:-translate-x-1 transition-transform">←</span>
           <span className="ml-2">Back to projects</span>
         </Link>
       </div>
 
       {/* Project Details */}
-      <div className="space-y-6">
-        <div>
+      <div className="space-y-8">
+        {/* Header Section */}
+        <div className="space-y-4">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{project.title}</h1>
-          <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+            <span className="px-3 py-1 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
               {project.category}
             </span>
             <span>•</span>
@@ -118,7 +120,7 @@ export default function ProjectPage() {
 
         {/* Cover Image */}
         {project.coverImage && (
-          <div className="relative w-full h-[400px] rounded-xl overflow-hidden">
+          <div className="relative w-full h-[500px] rounded-xl overflow-hidden shadow-lg">
             <Image 
               src={project.coverImage} 
               alt={project.title} 
@@ -129,6 +131,46 @@ export default function ProjectPage() {
           </div>
         )}
 
+        {/* Project Links - Sticky */}
+        <div className="sticky top-4 z-10 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-100 dark:border-gray-700">
+          <div className="flex flex-wrap gap-4">
+            {project.link && (
+              <a 
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20"
+              >
+                <Code size={20} />
+                <span>View Live Project</span>
+              </a>
+            )}
+            {project.github && (
+              <a 
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors shadow-lg shadow-gray-800/20"
+              >
+                <GithubIcon size={20} />
+                <span>View on GitHub</span>
+              </a>
+            )}
+            {project.customLinks?.map((link, index) => (
+              <a 
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors shadow-lg shadow-gray-500/10"
+              >
+                {link.icon && <span className="text-lg">{link.icon}</span>}
+                <span>{link.title}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* Project Content */}
         <div className="prose prose-lg max-w-none dark:prose-invert" 
           dangerouslySetInnerHTML={{ __html: processQuillHtml(project.content || project.description) }} />
@@ -137,80 +179,43 @@ export default function ProjectPage() {
         {project.tags && project.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag, index) => (
-              <span key={index} className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
+              <span 
+                key={index} 
+                className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-sm"
+              >
                 {tag}
               </span>
             ))}
           </div>
         )}
 
-        {/* Links */}
-        <div className="flex flex-wrap items-center gap-4 pt-4">
-          {project.link && (
-            <a 
-              href={project.link} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-            >
-              <Code size={18} />
-              <span>View Live Project</span>
-            </a>
-          )}
-          {project.github && (
-            <a 
-              href={project.github} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg transition-colors"
-            >
-              <GithubIcon size={18} />
-              <span>View Source</span>
-            </a>
-          )}
-          {project.customLinks?.map((link, index) => (
-            <a 
-              key={index} 
-              href={link.url} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg transition-colors"
-            >
-              <span>{link.title}</span>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Related Writings */}
-      {relatedWritings.length > 0 && (
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Related Writings</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatedWritings.map((writing) => (
-              <Link key={writing.slug} href={`/writings/${writing.slug}`}>
-                <div className="group bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-200">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+        {/* Related Projects */}
+        {relatedWritings.length > 0 && (
+          <div className="pt-12 border-t border-gray-200 dark:border-gray-700">
+            <h2 className="text-2xl font-bold mb-6">Related Projects</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {relatedWritings.map((writing) => (
+                <Link 
+                  key={writing.slug} 
+                  href={`/writings/${writing.slug}`}
+                  className="group block p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700"
+                >
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
                     {writing.title}
                   </h3>
-                  <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm line-clamp-2">
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                     {writing.description}
                   </p>
-                  {writing.tags && writing.tags.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {writing.tags.map((tag, index) => (
-                        <span key={index} className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
+                  <div className="mt-4 flex items-center text-blue-500 text-sm">
+                    <span>Read more</span>
+                    <span className="ml-1 transform group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

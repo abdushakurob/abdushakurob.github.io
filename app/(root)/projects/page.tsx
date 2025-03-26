@@ -96,33 +96,52 @@ export default function Projects() {
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       <h1 className="text-4xl font-bold text-green-600 mb-6">Projects</h1>
-      <p className="text-lg text-gray-600">
+      <p className="text-lg text-gray-600 dark:text-gray-300">
         A collection of things I&apos;ve built, designed, or experimented with. Some are finished, some are ongoing, and some are just ideas I started exploring.
       </p>
 
       {/* Search Bar */}
       <div className="mt-6">
-        <input
-          type="text"
-          placeholder="Search projects..."
-          value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search projects..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="w-full px-4 py-3 pl-12 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100 transition-colors"
+          />
+          <svg
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
       </div>
 
       {/* Filters */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">Categories</h3>
-        <div className="overflow-x-auto whitespace-nowrap flex gap-4 pb-2">
+        <div className="overflow-x-auto whitespace-nowrap flex gap-4 pb-2 scrollbar-hide">
           {categories.map((category) => (
             <button
               key={category}
-              className={`px-4 py-2 rounded-lg transition ${
-                filter === category ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+              className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                filter === category 
+                  ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20" 
+                  : "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
               }`}
               onClick={() => {
                 setFilter(category);
@@ -142,10 +161,10 @@ export default function Projects() {
           {allTags.map((tag) => (
             <button
               key={tag}
-              className={`px-3 py-1 rounded-full text-sm transition ${
+              className={`px-3 py-1 rounded-full text-sm transition-all duration-200 ${
                 selectedTags.includes(tag)
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
+                  ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                  : "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
               }`}
               onClick={() => toggleTag(tag)}
             >
@@ -157,7 +176,9 @@ export default function Projects() {
 
       {/* Show Loading State */}
       {loading ? (
-        <p className="text-center text-gray-500 mt-10">Fetching projects...</p>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        </div>
       ) : (
         <>
           {/* Projects List */}
@@ -165,19 +186,21 @@ export default function Projects() {
             {paginatedProjects.length > 0 ? (
               paginatedProjects.map((project) => (
                 <Link key={project._id} href={`/projects/${project.slug}`}>
-                  <div className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
+                  <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 transform hover:-translate-y-1">
                     {project.coverImage && (
-                      <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+                      <div className="relative w-full h-48 overflow-hidden">
                         <Image 
                           src={project.coverImage} 
                           alt={project.title} 
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-200"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                     )}
-                    <div>
-                      <div className="flex items-start justify-between">
+                    
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-3">
                         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
                           {project.title}
                         </h2>
@@ -185,9 +208,10 @@ export default function Projects() {
                           {project.category}
                         </span>
                       </div>
-                      <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">{project.description}</p>
                       
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      <p className="text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">{project.description}</p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {project.tags?.map((tag, index) => (
                           <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
                             {tag}
@@ -195,32 +219,38 @@ export default function Projects() {
                         ))}
                       </div>
 
-                      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-3">
-                        {project.link && (
-                          <a href={project.link} target="_blank" rel="noopener noreferrer" 
-                             className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
-                            <span>View Live</span> →
-                          </a>
-                        )}
-                        {project.github && (
-                          <a href={project.github} target="_blank" rel="noopener noreferrer"
-                             className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
-                            <span>GitHub</span> →
-                          </a>
-                        )}
-                        {project.customLinks?.map((link, index) => (
-                          <a key={index} href={link.url} target="_blank" rel="noopener noreferrer"
-                             className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
-                            <span>{link.title}</span> →
-                          </a>
-                        ))}
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                          <time>
+                            {project.manualDate 
+                              ? new Date(project.manualDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                              : new Date(project.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                          </time>
+                        </div>
+                        <div className="flex items-center gap-1 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300">
+                          <span className="text-sm">View Case Study</span>
+                          <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </Link>
               ))
             ) : (
-              <p className="text-center text-gray-500 col-span-2">No projects found matching your criteria.</p>
+              <div className="col-span-2 text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                <p className="text-gray-500 dark:text-gray-400">No projects found matching your criteria.</p>
+                <button 
+                  onClick={() => {
+                    setSearchQuery('');
+                    setFilter('All');
+                    setSelectedTags([]);
+                    setCurrentPage(1);
+                  }}
+                  className="mt-4 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  Clear filters
+                </button>
+              </div>
             )}
           </div>
 
@@ -230,8 +260,10 @@ export default function Projects() {
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <button
                   key={page}
-                  className={`px-4 py-2 rounded-lg transition ${
-                    currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                  className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                    currentPage === page 
+                      ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20" 
+                      : "bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
                   }`}
                   onClick={() => setCurrentPage(page)}
                 >
