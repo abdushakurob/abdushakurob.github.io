@@ -87,7 +87,7 @@ export default function Writings() {
       {/* Page Header */}
       <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">Writings</h1>
       <p className="text-lg text-gray-600 dark:text-gray-400">
-        A mix of raw thoughts, things that worked, and lessons learned—no teaching, just experience.
+        A mix of raw thoughts, things that worked, and lessons learned.
       </p>
 
       {/* Search Bar */}

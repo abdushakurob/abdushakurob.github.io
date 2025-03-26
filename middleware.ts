@@ -1,44 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  // Check if the path starts with /admin
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+export function middleware(request: NextRequest) {
+  const host = request.headers.get('host') || ''
+  const isAdminSubdomain = host.startsWith('admin.')
+  const isAdminPath = request.nextUrl.pathname.startsWith('/admin')
+  
+  // If it's the admin subdomain, rewrite to /admin path
+  if (isAdminSubdomain) {
+    const url = request.nextUrl.clone()
+    url.pathname = `/admin${url.pathname}`
+    return NextResponse.rewrite(url)
+  }
+
+  // Handle authentication for admin routes
+  if (isAdminPath || isAdminSubdomain) {
+    const token = request.cookies.get('token')?.value
+
     // Don't protect the login page
     if (request.nextUrl.pathname === '/admin/login') {
-      return NextResponse.next();
+      return NextResponse.next()
     }
-
-    // Check for auth token
-    const token = request.cookies.get('auth_token')?.value;
 
     if (!token) {
-      // Redirect to login if no token
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
-
-    try {
-      // Decode the token
-      const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
-      
-      // Check if user is admin
-      if (decoded.role !== 'admin') {
-        // Redirect to login if not admin
-        return NextResponse.redirect(new URL('/admin/login', request.url));
-      }
-      
-      // Allow access to admin routes
-      return NextResponse.next();
-    } catch (e) {
-      // Invalid token, redirect to login
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+      const loginUrl = new URL('/admin/login', request.url)
+      loginUrl.searchParams.set('from', request.nextUrl.pathname)
+      return NextResponse.redirect(loginUrl)
     }
   }
-  
-  // Continue for non-admin routes
-  return NextResponse.next();
+
+  return NextResponse.next()
 }
 
-// Configure the middleware to run on specific paths
+// Configure the middleware to run on all paths
 export const config = {
-  matcher: ['/admin/:path*'],
-}; 
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+} 

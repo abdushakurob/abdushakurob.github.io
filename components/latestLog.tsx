@@ -39,7 +39,7 @@ export default function LatestWritings() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">Latest Writings</h1> {/* Changed from "Log Updates" */}
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          Thoughts, mistakes, and occasional realizations. No grand lessons—just things I&apos;ve noticed.
+          Thoughts, mistakes, and occasional realizations.
         </p>
 
         {/* Show Loading State */}
