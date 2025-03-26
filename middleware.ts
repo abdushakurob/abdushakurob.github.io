@@ -6,6 +6,11 @@ export function middleware(request: NextRequest) {
 
   // Check if the request is coming from the admin subdomain
   if (host.startsWith('admin.')) {
+    // Skip authentication check for login page
+    if (pathname === '/login') {
+      return NextResponse.next()
+    }
+
     // Check for authentication on admin subdomain
     const token = request.cookies.get('token')
     if (!token) {
