@@ -172,7 +172,7 @@ export default function ProjectPage() {
         </div>
 
         {/* Project Content */}
-        <div className="prose prose-lg max-w-none dark:prose-invert" 
+        <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-blue-500 prose-a:no-underline hover:prose-a:underline" 
           dangerouslySetInnerHTML={{ __html: processQuillHtml(project.content || project.description) }} />
 
         {/* Tags */}
@@ -193,7 +193,7 @@ export default function ProjectPage() {
         {relatedWritings.length > 0 && (
           <div className="pt-12 border-t border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold mb-6">Related Projects</h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedWritings.map((writing) => (
                 <Link 
                   key={writing.slug} 

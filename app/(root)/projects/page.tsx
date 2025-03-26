@@ -182,11 +182,11 @@ export default function Projects() {
       ) : (
         <>
           {/* Projects List */}
-          <div className="grid md:grid-cols-2 gap-6 mt-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
             {paginatedProjects.length > 0 ? (
               paginatedProjects.map((project) => (
                 <Link key={project._id} href={`/projects/${project.slug}`}>
-                  <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 transform hover:-translate-y-1">
+                  <div className="group h-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 transform hover:-translate-y-1">
                     {project.coverImage && (
                       <div className="relative w-full h-48 overflow-hidden">
                         <Image 
@@ -199,7 +199,7 @@ export default function Projects() {
                       </div>
                     )}
                     
-                    <div className="p-6">
+                    <div className="p-6 flex flex-col h-full">
                       <div className="flex items-start justify-between mb-3">
                         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
                           {project.title}
@@ -209,7 +209,7 @@ export default function Projects() {
                         </span>
                       </div>
                       
-                      <p className="text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">{project.description}</p>
+                      <p className="text-gray-600 dark:text-gray-300 line-clamp-2 mb-4 flex-grow">{project.description}</p>
                       
                       <div className="flex flex-wrap gap-2 mb-4">
                         {project.tags?.map((tag, index) => (
@@ -219,7 +219,7 @@ export default function Projects() {
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto">
                         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                           <time>
                             {project.manualDate 
@@ -237,7 +237,7 @@ export default function Projects() {
                 </Link>
               ))
             ) : (
-              <div className="col-span-2 text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+              <div className="col-span-full text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
                 <p className="text-gray-500 dark:text-gray-400">No projects found matching your criteria.</p>
                 <button 
                   onClick={() => {
