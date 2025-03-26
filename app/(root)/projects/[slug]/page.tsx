@@ -220,7 +220,7 @@ export default function ProjectPage() {
               "
             >
               <Code size={18} />
-              <span>View Live Project</span>
+              <span>Visit Website</span>
             </a>
           )}
           {project.github && (
