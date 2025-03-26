@@ -28,7 +28,7 @@ export default function WritingsPage() {
   const fetchWritings = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/writings');
+      const response = await axios.get('/api/writings?includeDrafts=true');
       setWritings(response.data.writings);
       setError('');
     } catch (err) {
