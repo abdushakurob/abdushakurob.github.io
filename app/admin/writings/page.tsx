@@ -56,7 +56,7 @@ export default function WritingsPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Writings</h1>
         <Link 
-          href="/admin/writings/new" 
+          href="/writings/new" 
           className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700"
         >
           <Plus size={16} />
@@ -72,7 +72,7 @@ export default function WritingsPage() {
         <div className="text-center py-8 bg-gray-50 rounded-md">
           <p className="text-gray-500">No writings found</p>
           <Link 
-            href="/admin/writings/new" 
+            href="/writings/new" 
             className="mt-4 inline-block text-blue-600 hover:underline"
           >
             Create your first writing
@@ -122,7 +122,7 @@ export default function WritingsPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/writings/edit/${writing.slug}`}
+                        href={`/writings/edit/${writing.slug}`}
                         className="text-yellow-600 hover:text-yellow-900"
                       >
                         <Pencil size={18} />

@@ -9,21 +9,21 @@ export default function AdminDashboard() {
         <DashboardCard 
           title="Projects" 
           description="Manage your portfolio projects"
-          href="/admin/projects"
+          href="/projects"
           count="View all projects"
         />
         
         <DashboardCard 
           title="Writings" 
           description="Manage your blog posts and articles"
-          href="/admin/writings"
+          href="/writings"
           count="View all writings"
         />
         
         <DashboardCard 
           title="Build" 
           description="Manage your build content and tracking"
-          href="/admin/build"
+          href="/build"
           count="View all build content"
         />
       </div>

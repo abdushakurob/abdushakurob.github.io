@@ -19,7 +19,7 @@ export default function AdminLayout({
     try {
       setIsLoggingOut(true);
       await axios.post('/api/auth/logout');
-      router.push('/admin/login');
+      router.push('/login');
     } catch (error) {
       console.error('Logout failed:', error);
     } finally {
@@ -49,34 +49,34 @@ export default function AdminLayout({
               isActive={isActive('/admin')}
             />
             <SidebarItem 
-              href="/admin/projects" 
+              href="/projects" 
               icon={<FileText size={18} />} 
               text="Projects" 
-              isActive={pathname.startsWith('/admin/projects')}
+              isActive={pathname.startsWith('/projects')}
             />
             <SidebarItem 
-              href="/admin/writings" 
+              href="/writings" 
               icon={<BookOpen size={18} />} 
               text="Writings" 
-              isActive={pathname.startsWith('/admin/writings')}
+              isActive={pathname.startsWith('/writings')}
             />
             <SidebarItem 
-              href="/admin/build" 
+              href="/build" 
               icon={<Construction size={18} />} 
               text="Build" 
-              isActive={pathname.startsWith('/admin/build')}
+              isActive={pathname.startsWith('/build')}
             />
             <SidebarItem 
-              href="/admin/profile" 
+              href="/profile" 
               icon={<User size={18} />} 
               text="Profile" 
-              isActive={pathname.startsWith('/admin/profile')}
+              isActive={pathname.startsWith('/profile')}
             />
             <SidebarItem 
-              href="/admin/settings" 
+              href="/settings" 
               icon={<Settings size={18} />} 
               text="Settings" 
-              isActive={pathname.startsWith('/admin/settings')}
+              isActive={pathname.startsWith('/settings')}
             />
           </ul>
           <ul className="mt-auto space-y-1">

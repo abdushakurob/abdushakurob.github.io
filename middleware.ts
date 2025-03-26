@@ -22,6 +22,15 @@ export function middleware(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith('/')) {
+    const token = request.cookies.get('token')
+    if (!token) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
+  }
+
   return NextResponse.next()
 }
 

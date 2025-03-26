@@ -56,7 +56,7 @@ export default function BuildPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Build Tracks</h1>
         <Link 
-          href="/admin/build/new" 
+          href="/build/new" 
           className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700"
         >
           <Plus size={16} />
@@ -72,7 +72,7 @@ export default function BuildPage() {
         <div className="text-center py-8 bg-gray-50 rounded-md">
           <p className="text-gray-500">No build tracks found</p>
           <Link 
-            href="/admin/build/new" 
+            href="/build/new" 
             className="mt-4 inline-block text-blue-600 hover:underline"
           >
             Create your first track
@@ -122,7 +122,7 @@ export default function BuildPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/build/edit/${track.slug}`}
+                        href={`/build/edit/${track.slug}`}
                         className="text-yellow-600 hover:text-yellow-900"
                       >
                         <Pencil size={18} />

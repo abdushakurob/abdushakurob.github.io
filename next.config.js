@@ -13,7 +13,7 @@ const nextConfig = {
             value: 'admin.abdushakur.me',
           },
         ],
-        destination: '/admin/:path*',
+        destination: '/:path*',
       },
     ]
   },

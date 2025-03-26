@@ -55,7 +55,7 @@ export default function ProjectsPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Projects</h1>
         <Link 
-          href="/admin/projects/new" 
+          href="/projects/new" 
           className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center gap-2 hover:bg-blue-700"
         >
           <Plus size={16} />
@@ -71,7 +71,7 @@ export default function ProjectsPage() {
         <div className="text-center py-8 bg-gray-50 rounded-md">
           <p className="text-gray-500">No projects found</p>
           <Link 
-            href="/admin/projects/new" 
+            href="/projects/new" 
             className="mt-4 inline-block text-blue-600 hover:underline"
           >
             Create your first project
@@ -117,7 +117,7 @@ export default function ProjectsPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/projects/edit/${project.slug}`}
+                        href={`/projects/edit/${project.slug}`}
                         className="text-yellow-600 hover:text-yellow-900"
                       >
                         <Pencil size={18} />
