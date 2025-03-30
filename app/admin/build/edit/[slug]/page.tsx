@@ -203,7 +203,7 @@ export default function EditTrackPage() {
       setError('');
       
       await axios.put(`/api/build/${slug}`, formData);
-      router.push('/admin/build');
+      router.push('/build');
     } catch (err) {
       console.error('Error updating track:', err);
       setError('Failed to update track');
@@ -232,7 +232,7 @@ export default function EditTrackPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Link 
-            href="/admin/build" 
+            href="/build" 
             className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft size={16} />

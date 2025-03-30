@@ -87,7 +87,7 @@ export default function NewProjectPage() {
       };
 
       await axios.post('/api/projects', processedData);
-      router.push('/admin/projects');
+      router.push('/projects');
     } catch (err) {
       console.error('Error creating project:', err);
       setError('Failed to create project');
@@ -112,7 +112,7 @@ export default function NewProjectPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Link 
-            href="/admin/projects" 
+            href="/projects" 
             className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft size={16} />

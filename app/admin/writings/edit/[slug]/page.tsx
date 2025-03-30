@@ -130,7 +130,7 @@ export default function EditWritingPage() {
       };
       
       await axios.put(`/api/writings/${slug}`, writingData);
-      router.push('/admin/writings');
+      router.push('/writings');
     } catch (err) {
       console.error('Error updating writing:', err);
       setError('Failed to update writing');
@@ -179,7 +179,7 @@ export default function EditWritingPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Link 
-            href="/admin/writings" 
+            href="/writings" 
             className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft size={16} />

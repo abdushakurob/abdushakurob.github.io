@@ -116,7 +116,7 @@ export default function EditProjectPage() {
       };
 
       await axios.put(`/api/projects/${slug}`, processedData);
-      router.push('/admin/projects');
+      router.push('/projects');
     } catch (err) {
       console.error('Error updating project:', err);
       setError('Failed to update project');
@@ -145,7 +145,7 @@ export default function EditProjectPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <Link 
-            href="/admin/projects" 
+            href="/projects" 
             className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft size={16} />
