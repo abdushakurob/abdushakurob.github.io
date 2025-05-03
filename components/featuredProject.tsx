@@ -95,7 +95,7 @@ export default function FeaturedProject() {
                           {project.link && (
                             <a href={project.link} target="_blank" rel="noopener noreferrer" 
                                className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
-                              <span>View Live</span> →
+                              <span>View Case Study</span> →
                             </a>
                           )}
                           {project.github && (
