@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const adminHostname = process.env.ADMIN_HOSTNAME || 'admin.abdushakur.me'; // Use your admin hostname
     const isAdminRoute = referer ? new URL(referer).hostname === adminHostname : false;
 
-    let query: any = {};
+    const query: any = {}; // Changed let to const
 
     // Filter by status based on user role
     if (!isAdminRoute) {
