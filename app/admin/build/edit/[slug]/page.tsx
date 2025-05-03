@@ -39,6 +39,8 @@ export default function EditTrackPage() {
     isCompleted: false,
     updates: [] as Update[],
     milestones: [] as Milestone[],
+    status: 'draft' as 'draft' | 'published' | 'archived',
+    manualDate: '',
   });
 
   // For new updates
@@ -70,7 +72,9 @@ export default function EditTrackPage() {
           links: track.links || [],
           isCompleted: track.isCompleted || false,
           updates: track.updates || [],
-          milestones: track.milestones || []
+          milestones: track.milestones || [],
+          status: track.status || 'draft',
+          manualDate: track.manualDate ? new Date(track.manualDate).toISOString().split('T')[0] : '',
         });
       } catch (err) {
         console.error('Error fetching track:', err);
@@ -290,6 +294,35 @@ export default function EditTrackPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Manual Date
+            </label>
+            <input
+              type="date"
+              name="manualDate"
+              value={formData.manualDate}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Category
             </label>
             <select
@@ -414,10 +447,17 @@ export default function EditTrackPage() {
                 <div key={index} className="border border-gray-200 rounded-md p-4">
                   <div className="flex justify-between items-center mb-2">
                     <h4 className="font-medium">{update.title}</h4>
-                    <div className="flex items-center">
-                      <span className="text-sm text-gray-500 mr-2">
-                        {new Date(update.date).toLocaleDateString()}
-                      </span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="datetime-local"
+                        value={new Date(update.date).toISOString().slice(0, 16)}
+                        onChange={(e) => {
+                          const updates = [...formData.updates];
+                          updates[index] = { ...updates[index], date: new Date(e.target.value).toISOString() };
+                          setFormData({ ...formData, updates });
+                        }}
+                        className="text-sm border rounded px-2 py-1"
+                      />
                       <button
                         type="button"
                         onClick={() => removeUpdate(index)}
