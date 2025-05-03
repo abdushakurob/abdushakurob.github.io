@@ -12,7 +12,7 @@ export default function About() {
         and let the public hold me accountable.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Right now, my portfolio is basically “believe me, bro.” So this site is part work,  
+        Right now, my portfolio is basically &quot;believe me, bro.&quot; So this site is part work,  
         part experiment, and part personal notebook that somehow ended up online.  
       </p>
 
@@ -23,11 +23,11 @@ export default function About() {
         So I build, break things, fix them, and learn along the way.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        I like keeping things simple—whether it’s design, code, or problem-solving.  
-        Less noise, fewer distractions, just what’s necessary.  
+        I like keeping things simple—whether it&apos;s design, code, or problem-solving.  
+        Less noise, fewer distractions, just what&apos;s necessary.  
       </p>
       <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Also, I write things down because I forget. That’s basically what this site is.  
+        Also, I write things down because I forget. That&apos;s basically what this site is.  
       </p>
 
       {/* What I Do */}
@@ -41,7 +41,7 @@ export default function About() {
       </p>
 
       {/* Skills */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">Skills & Tools</h2>
+      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">Skills &amp; Tools</h2>
       <div className="grid md:grid-cols-2 gap-8 mt-4">
         <div>
           <h3 className="text-lg font-semibold text-green-600">Web Development</h3>
