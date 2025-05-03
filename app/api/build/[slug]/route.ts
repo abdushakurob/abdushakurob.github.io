@@ -2,103 +2,103 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConfig";
 import Track from "@/models/Track";
 
-// GET a specific track
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
-  await connectDB();
+// GET a single build by slug
+export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   try {
-    const { slug } = await params;
-    const track = await Track.findOne({ slug });
-    if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
-    return NextResponse.json(track);
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch track" }, { status: 500 });
-  }
-}
-
-// POST a new update to a track
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
-  await connectDB();
-  try {
-    const { title, content } = await req.json();
-    if (!title || !content) return NextResponse.json({ error: "Title and content required" }, { status: 400 });
-
-    const { slug } = await params;
-    const track = await Track.findOne({ slug });
-    if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
-
-    track.updates.push({ title, content, date: new Date() });
-    await track.save();
-    return NextResponse.json(track);
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to add update" }, { status: 500 });
-  }
-}
-
-// UPDATE a track
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
-  try {
-    const { slug } = await params;
     await connectDB();
-    
-    const track = await Track.findOne({ slug });
-    
-    if (!track) {
-      return NextResponse.json({ error: "Track not found" }, { status: 404 });
+    const slug = params.slug;
+
+    if (!slug) {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
     }
-    
-    const { title, description, category, updates, milestones, links, isCompleted } = await req.json();
-    
-    if (!title || !description) {
-      return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
+
+    const build = await Track.findOne({ slug });
+
+    if (!build) {
+      return NextResponse.json({ error: "Build not found" }, { status: 404 });
     }
-    
-    // Update the track
-    track.title = title;
-    track.description = description;
-    track.category = category;
-    track.updates = updates;
-    track.milestones = milestones;
-    track.links = links;
-    track.isCompleted = isCompleted;
-    
-    await track.save();
-    
-    return NextResponse.json(track);
+
+    return NextResponse.json({ build });
   } catch (error) {
-    console.error("Error updating track:", error);
-    return NextResponse.json({ error: "Failed to update track" }, { status: 500 });
+    console.error(`Failed to fetch build with slug ${params.slug}:`, error);
+    const errorMessage = (error as Error).message || "Unknown error";
+    return NextResponse.json({ error: "Failed to fetch build", details: errorMessage }, { status: 500 });
   }
 }
 
-// DELETE a track
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+// PUT update a build by slug
+export async function PUT(req: NextRequest, { params }: { params: { slug: string } }) {
   try {
-    const { slug } = await params;
     await connectDB();
-    
-    const track = await Track.findOne({ slug });
-    
-    if (!track) {
-      return NextResponse.json({ error: "Track not found" }, { status: 404 });
+    const slug = params.slug;
+
+    if (!slug) {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
     }
-    
-    await Track.findOneAndDelete({ slug });
-    
-    return NextResponse.json({ message: "Track deleted successfully" });
+
+    const {
+      title, description, content, category, tags,
+      status, // New field
+      manualDate // New field
+    } = await req.json();
+
+    const existingBuild = await Track.findOne({ slug });
+    if (!existingBuild) {
+      return NextResponse.json({ error: "Build not found" }, { status: 404 });
+    }
+
+    // Determine publishedAt based on status change
+    let publishedAt = existingBuild.publishedAt;
+    if (status === 'published' && (!existingBuild.publishedAt || existingBuild.status !== 'published')) {
+      publishedAt = new Date(); // Set publish date if status changes to published
+    } else if (status !== 'published') {
+      // publishedAt = null; // Optionally clear if moved away from published
+    }
+
+    const updatedBuild = await Track.findOneAndUpdate(
+      { slug },
+      {
+        title,
+        description,
+        content,
+        category,
+        tags,
+        status,
+        publishedAt, // Update publishedAt
+        manualDate: manualDate ? new Date(manualDate) : existingBuild.manualDate, // Update manualDate, keep old if not provided
+        // slug will be updated by pre-save hook if title changes
+      },
+      { new: true, runValidators: true } // Return the updated document and run schema validators
+    );
+
+    return NextResponse.json({ build: updatedBuild });
   } catch (error) {
-    console.error("Error deleting track:", error);
-    return NextResponse.json({ error: "Failed to delete track" }, { status: 500 });
+    console.error(`Failed to update build with slug ${params.slug}:`, error);
+    const errorMessage = (error as Error).message || "Unknown error";
+    return NextResponse.json({ error: "Failed to update build", details: errorMessage }, { status: 500 });
+  }
+}
+
+// DELETE a build by slug
+export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
+  try {
+    await connectDB();
+    const slug = params.slug;
+
+    if (!slug) {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+    }
+
+    const deletedBuild = await Track.findOneAndDelete({ slug });
+
+    if (!deletedBuild) {
+      return NextResponse.json({ error: "Build not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Build deleted successfully" });
+  } catch (error) {
+    console.error(`Failed to delete build with slug ${params.slug}:`, error);
+    const errorMessage = (error as Error).message || "Unknown error";
+    return NextResponse.json({ error: "Failed to delete build", details: errorMessage }, { status: 500 });
   }
 }

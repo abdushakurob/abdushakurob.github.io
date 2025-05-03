@@ -1,38 +1,89 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document, models, Model } from "mongoose";
 import slugify from "slugify";
 
-const TrackSchema = new mongoose.Schema(
+// Interface for the Track document
+export interface ITrack extends Document {
+  title: string;
+  slug: string;
+  description?: string;
+  content?: string; // Rich text content
+  category?: string; // e.g., 'Week', 'Month', 'Project Update'
+  tags?: string[];
+  status: 'draft' | 'published' | 'archived'; // Added status field
+  publishedAt?: Date | null; // Added publishedAt field
+  manualDate?: Date; // Added manualDate field
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Mongoose Schema for Track
+const TrackSchema: Schema<ITrack> = new Schema(
   {
-    title: { type: String, required: true },
-    slug: { type: String, unique: true },
-    description: { type: String, required: true },
-    category: { type: String, enum: ["Branding", "Web Dev", "Learning", "Other"], default: "Other" },
-    updates: [
-      {
-        title: String,
-        content: String,
-        date: { type: Date, default: Date.now },
-      },
-    ],
-    milestones: [
-      {
-        title: String,
-        achieved: { type: Boolean, default: false },
-        date: Date,
-      },
-    ],
-    links: [{ type: String }],
-    isCompleted: { type: Boolean, default: false },
+    title: {
+      type: String,
+      required: [true, "Title is required"],
+      trim: true,
+    },
+    slug: {
+      type: String,
+      unique: true,
+      index: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+    content: {
+      type: String, // Storing HTML content from Quill
+    },
+    category: {
+      type: String,
+      trim: true,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
+    // --- New Fields ---
+    status: {
+      type: String,
+      enum: ['draft', 'published', 'archived'],
+      default: 'draft',
+      required: true,
+    },
+    publishedAt: {
+      type: Date,
+      default: null,
+    },
+    manualDate: {
+      type: Date,
+    },
+    // --- End New Fields ---
   },
-  { timestamps: true }
+  {
+    timestamps: true, // Automatically adds createdAt and updatedAt
+  }
 );
 
-// Auto-generate slug
-TrackSchema.pre("save", function (next) {
-  if (this.isModified("title")) {
+// Pre-save hook to generate slug from title if not provided or changed
+TrackSchema.pre<ITrack>("save", function (next) {
+  if (this.isModified("title") || !this.slug) {
     this.slug = slugify(this.title, { lower: true, strict: true });
+  }
+  // Set publishedAt when status changes to 'published'
+  if (this.isModified("status") && this.status === 'published' && !this.publishedAt) {
+    this.publishedAt = new Date();
+  } else if (this.status !== 'published') {
+    // Optionally clear publishedAt if status is not 'published'
+    // this.publishedAt = null; // Uncomment if you want this behavior
   }
   next();
 });
 
-export default mongoose.models.Track || mongoose.model("Track", TrackSchema);
+// Define the model type explicitly
+interface ITrackModel extends Model<ITrack> {}
+
+// Check if the model already exists before defining it
+const Track: ITrackModel = models.Track || mongoose.model<ITrack, ITrackModel>("Track", TrackSchema);
+
+export default Track;
