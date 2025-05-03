@@ -5,25 +5,34 @@ import Writing from "@/models/Writings";
 // GET all writings with filtering options
 export async function GET(req: NextRequest) {
   try {
-    console.log('Connecting to database...');
     await connectDB();
-    console.log('Connected successfully');
 
     const searchParams = req.nextUrl.searchParams;
     const status = searchParams.get("status");
-    const isAdminRoute = req.headers.get('referer')?.includes('/admin');
+    const referer = req.headers.get('referer');
+    // Check if the referer hostname matches the expected admin domain
+    // Replace 'admin.abdushakurob.xyz' with your actual admin domain, or use an environment variable
+    const adminHostname = process.env.ADMIN_HOSTNAME || 'admin.abdushakur.me'; 
+    const isAdminRoute = referer ? new URL(referer).hostname === adminHostname : false;
+    const includeDraftsParam = searchParams.get("includeDrafts");
 
-    let query = {};
-    
-    // Only filter by status in admin routes or if explicitly requested
-    if (isAdminRoute && status && status !== 'all') {
-      query = { status };
+    let query: any = {};
+
+    // Filter by status based on user role or explicit request
+    if (!isAdminRoute && includeDraftsParam !== 'true') {
+      // Non-admin users only see published writings unless includeDrafts=true is explicitly passed
+      query.status = 'published';
+    } else if (isAdminRoute) {
+      // Admin users: Allow filtering by status if provided, otherwise show all statuses
+      if (status && status !== 'all') {
+        query.status = status;
+      }
+      // If no status filter from admin, query remains as is ({}), showing all statuses
     }
+    // If includeDrafts=true is passed for non-admin, query remains {} - showing all statuses
 
-    console.log('Fetching writings with query:', query);
     const writings = await Writing.find(query).sort({ createdAt: -1 });
-    console.log(`Found ${writings.length} writings`);
-    
+
     return NextResponse.json({ writings });
   } catch (error) {
     console.error("Failed to fetch writings:", error);

@@ -5,30 +5,34 @@ import Project from "@/models/Projects";
 // GET all projects or filter by featured
 export async function GET(req: NextRequest) {
   try {
-    console.log('Connecting to database...');
     await connectDB();
-    console.log('Connected successfully');
 
     const searchParams = req.nextUrl.searchParams;
     const featured = searchParams.get("featured");
     const status = searchParams.get("status");
-    const isAdminRoute = req.headers.get('referer')?.includes('/admin');
+    const referer = req.headers.get('referer');
+    // Check if the referer hostname matches the expected admin domain
+    // Replace 'admin.abdushakurob.xyz' with your actual admin domain, or use an environment variable
+    const adminHostname = process.env.ADMIN_HOSTNAME || 'admin.abdushakur.me'; 
+    const isAdminRoute = referer ? new URL(referer).hostname === adminHostname : false;
 
-    let query = {};
-    
+    let query: any = {};
+
     // Add featured filter if specified
     if (featured === 'true') {
-      query = { ...query, featured: true };
+      query.isFeatured = true;
     }
 
-    // Only filter by status in admin routes or if explicitly requested
-    if (isAdminRoute && status && status !== 'all') {
-      query = { ...query, status };
+    // Filter by status based on user role
+    if (!isAdminRoute) {
+      query.status = 'published';
+    } else {
+      if (status && status !== 'all') {
+        query.status = status;
+      }
     }
 
-    console.log('Fetching projects with query:', query);
-    const projects = await Project.find(query).sort({ createdAt: -1 });
-    console.log(`Found ${projects.length} projects`);
+    const projects = await Project.find(query).sort({ manualDate: -1, createdAt: -1 });
 
     return NextResponse.json({ projects });
   } catch (error) {
