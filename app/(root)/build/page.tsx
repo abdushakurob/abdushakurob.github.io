@@ -24,9 +24,10 @@ export default function Build() {
     async function fetchTracks() {
       try {
         const res = await axios.get("/api/build")
-        setTracks(res.data)
-        if (res.data.length > 0) {
-          setActiveTrack(res.data[0])
+        const tracks = res.data.builds || []
+        setTracks(tracks)
+        if (tracks.length > 0) {
+          setActiveTrack(tracks[0])
         }
       } catch (error) {
         console.error("Error fetching tracks:", error)
