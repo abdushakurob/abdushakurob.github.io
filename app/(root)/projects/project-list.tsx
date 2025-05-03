@@ -59,7 +59,7 @@ export default function ProjectList() {
     try {
       setError(null);
       const response = await axios.get('/api/projects');
-      const newProjects = response.data.projects;
+      const newProjects = response.data.projects || [];
       
       setProjects(prevProjects => {
         if (currentPage === 1) return newProjects;
@@ -68,8 +68,9 @@ export default function ProjectList() {
       
       setHasMore(newProjects.length === itemsPerPage);
     } catch (err) {
-      setError('Failed to load projects');
       console.error('Error fetching projects:', err);
+      setError('Failed to load projects');
+      setProjects(currentPage === 1 ? [] : projects); // Keep existing projects on error if not first page
     } finally {
       setLoading(false);
     }

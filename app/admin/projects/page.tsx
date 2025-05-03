@@ -28,11 +28,12 @@ export default function ProjectsPage() {
     try {
       setLoading(true);
       const response = await axios.get('/api/projects');
-      setProjects(response.data.projects);
+      setProjects(response.data.projects || []);
       setError('');
     } catch (err) {
-      setError('Failed to fetch projects');
       console.error(err);
+      setError('Failed to fetch projects');
+      setProjects([]); // Reset to empty array on error
     } finally {
       setLoading(false);
     }
@@ -45,8 +46,8 @@ export default function ProjectsPage() {
       await axios.delete(`/api/projects/${slug}`);
       setProjects(projects.filter(project => project.slug !== slug));
     } catch (err) {
-      setError('Failed to delete project');
       console.error(err);
+      setError('Failed to delete project');
     }
   };
 
@@ -138,4 +139,4 @@ export default function ProjectsPage() {
       )}
     </div>
   );
-} 
+}

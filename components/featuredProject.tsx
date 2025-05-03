@@ -30,9 +30,11 @@ export default function FeaturedProject() {
     async function fetchFeaturedProjects() {
       try {
         const res = await axios.get("/api/projects?featured=true");
-        setProjects(res.data.projects.filter((p: Project) => p.isFeatured));
+        const projectsData = res.data.projects || [];
+        setProjects(projectsData.filter((p: Project) => p.isFeatured));
       } catch (error) {
         console.error("Error fetching featured projects:", error);
+        setProjects([]);
       } finally {
         setLoading(false);
       }

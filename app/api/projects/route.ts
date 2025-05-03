@@ -31,10 +31,10 @@ export async function GET(req: NextRequest) {
 
     const projects = await Project.find(query).sort({ manualDate: -1, createdAt: -1 });
 
-    return NextResponse.json({ projects });
+    return NextResponse.json({ projects: projects || [] });
   } catch (error) {
     console.error("Failed to fetch projects:", error);
-    return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+    return NextResponse.json({ projects: [], error: "Failed to fetch projects" }, { status: 500 });
   }
 }
 
