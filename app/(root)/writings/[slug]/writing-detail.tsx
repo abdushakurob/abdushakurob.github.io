@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 import { processQuillHtml } from "@/lib/quill-html-processor";
 import { generateStructuredData, generateBreadcrumbData } from '@/lib/utils';
 
@@ -35,9 +36,7 @@ export default function WritingDetail({ slug }: { slug: string }) {
       try {
         setError(false);
         setLoading(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/writings/${slug}`);
-        if (!res.ok) throw new Error('Failed to fetch writing');
-        const data = await res.json();
+        const { data } = await axios.get(`/api/writings/${slug}`);
         setWriting(data.writing);
       } catch (err) {
         console.error("Failed to fetch writing:", err);

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 import { generateStructuredData, generateBreadcrumbData } from '@/lib/utils';
 
 interface Project {
@@ -36,9 +37,7 @@ export default function ProjectDetail({ slug }: { slug: string }) {
       try {
         setError(false);
         setLoading(true);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/projects/${slug}`);
-        if (!res.ok) throw new Error('Failed to fetch project');
-        const data = await res.json();
+        const { data } = await axios.get(`/api/projects/${slug}`);
         setProject(data.project);
       } catch (err) {
         console.error("Failed to fetch project:", err);
