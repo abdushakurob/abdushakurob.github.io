@@ -270,7 +270,7 @@ export default function EditProjectPage() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <p className="mt-1 text-sm text-gray-500">
-                  Leave empty to use the project's actual publication date
+                  Leave empty to use the project&apos;s actual publication date
                 </p>
               </div>
             </div>
