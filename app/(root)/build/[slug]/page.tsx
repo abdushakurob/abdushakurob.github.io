@@ -32,7 +32,7 @@ export default function TrackPage() {
     async function fetchTrack() {
       try {
         const res = await axios.get(`/api/build/${slug}`)
-        setTrack(res.data)
+        setTrack(res.data.build) // Access the build property from response data
       } catch (error) {
         console.error("Error fetching track:", error)
       } finally {

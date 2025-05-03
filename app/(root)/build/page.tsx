@@ -12,6 +12,7 @@ interface Track {
   category: string
   isCompleted: boolean
   createdAt: string
+  milestones: { title: string; achieved: boolean; date?: string }[]
 }
 
 export default function Build() {
@@ -130,7 +131,27 @@ export default function Build() {
               {/* ✅ Project Details */}
               <div className="bg-base-200 p-6 rounded-xl shadow-md">
                 <h3 className="text-lg font-medium mb-3 text-gray-700">About this project</h3>
-                <p className="text-gray-600 leading-relaxed">{activeTrack.description}</p>
+                <p className="text-gray-600 leading-relaxed mb-4">{activeTrack.description}</p>
+                
+                {/* ✅ Milestones Preview */}
+                {activeTrack.milestones && activeTrack.milestones.length > 0 && (
+                  <div className="mt-4">
+                    <h4 className="text-md font-medium mb-2 text-gray-700">Key Milestones</h4>
+                    <div className="space-y-2">
+                      {activeTrack.milestones.slice(0, 3).map((milestone, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div className={`h-2 w-2 rounded-full ${milestone.achieved ? 'bg-green-500' : 'bg-gray-300'}`} />
+                          <span className="text-sm text-gray-600">{milestone.title}</span>
+                        </div>
+                      ))}
+                      {activeTrack.milestones.length > 3 && (
+                        <p className="text-sm text-blue-600 mt-2">
+                          +{activeTrack.milestones.length - 3} more milestones
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* ✅ View Progress Button */}
