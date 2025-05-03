@@ -5,7 +5,9 @@ import Writing from "@/models/Writings";
 // GET all writings with filtering options
 export async function GET(req: NextRequest) {
   try {
+    console.log('Connecting to database...');
     await connectDB();
+    console.log('Connected successfully');
 
     const searchParams = req.nextUrl.searchParams;
     const status = searchParams.get("status");
@@ -19,7 +21,10 @@ export async function GET(req: NextRequest) {
       query = { status };
     }
 
+    console.log('Fetching writings with query:', query);
     const writings = await Writing.find(query).sort({ createdAt: -1 });
+    console.log(`Found ${writings.length} writings`);
+    
     return NextResponse.json({ writings });
   } catch (error) {
     console.error("Failed to fetch writings:", error);

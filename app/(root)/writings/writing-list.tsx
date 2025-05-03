@@ -59,8 +59,14 @@ export default function WritingList() {
   const fetchWritings = async () => {
     try {
       setError(null);
+      console.log('Fetching writings...');
       const response = await axios.get('/api/writings');
+      console.log('Response:', response.data);
       const newWritings = response.data.writings;
+      
+      if (!Array.isArray(newWritings)) {
+        throw new Error('Invalid response format: writings is not an array');
+      }
       
       setWritings(prevWritings => {
         if (currentPage === 1) return newWritings;
@@ -68,9 +74,14 @@ export default function WritingList() {
       });
       
       setHasMore(newWritings.length === itemsPerPage);
-    } catch (err) {
-      setError('Failed to load writings');
-      console.error('Error fetching writings:', err);
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.error || err.message || 'Failed to load writings';
+      console.error('Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status
+      });
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
