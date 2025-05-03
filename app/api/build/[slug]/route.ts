@@ -43,9 +43,15 @@ export async function PUT(
     }
 
     const {
-      title, description, content, category, tags,
-      status, // New field
-      manualDate // New field
+      title,
+      description,
+      category,
+      isCompleted,
+      updates,
+      milestones,
+      links,
+      status,
+      manualDate
     } = await request.json();
 
     const existingBuild = await Track.findOne({ slug });
@@ -56,9 +62,7 @@ export async function PUT(
     // Determine publishedAt based on status change
     let publishedAt = existingBuild.publishedAt;
     if (status === 'published' && (!existingBuild.publishedAt || existingBuild.status !== 'published')) {
-      publishedAt = new Date(); // Set publish date if status changes to published
-    } else if (status !== 'published') {
-      // publishedAt = null; // Optionally clear if moved away from published
+      publishedAt = new Date();
     }
 
     const updatedBuild = await Track.findOneAndUpdate(
@@ -66,15 +70,16 @@ export async function PUT(
       {
         title,
         description,
-        content,
         category,
-        tags,
+        isCompleted,
+        updates,
+        milestones,
+        links,
         status,
-        publishedAt, // Update publishedAt
-        manualDate: manualDate ? new Date(manualDate) : existingBuild.manualDate, // Update manualDate, keep old if not provided
-        // slug will be updated by pre-save hook if title changes
+        publishedAt,
+        manualDate: manualDate ? new Date(manualDate) : existingBuild.manualDate,
       },
-      { new: true, runValidators: true } // Return the updated document and run schema validators
+      { new: true, runValidators: true }
     );
 
     return NextResponse.json({ build: updatedBuild });

@@ -14,6 +14,18 @@ export interface ITrack extends Document {
   manualDate?: Date; // Added manualDate field
   createdAt: Date;
   updatedAt: Date;
+  isCompleted: boolean;
+  updates: Array<{
+    title: string;
+    content: string;
+    date: string;
+  }>;
+  milestones: Array<{
+    title: string;
+    achieved: boolean;
+    date?: string;
+  }>;
+  links: string[];
 }
 
 // Mongoose Schema for Track
@@ -57,6 +69,24 @@ const TrackSchema: Schema<ITrack> = new Schema(
     },
     manualDate: {
       type: Date,
+    },
+    isCompleted: {
+      type: Boolean,
+      default: false
+    },
+    updates: [{
+      title: String,
+      content: String,
+      date: String
+    }],
+    milestones: [{
+      title: String,
+      achieved: Boolean,
+      date: String
+    }],
+    links: {
+      type: [String],
+      default: []
     },
     // --- End New Fields ---
   },

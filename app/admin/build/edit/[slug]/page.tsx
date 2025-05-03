@@ -61,7 +61,7 @@ export default function EditTrackPage() {
       try {
         setLoadingTrack(true);
         const response = await axios.get(`/api/build/${slug}`);
-        const track = response.data;
+        const track = response.data.build; // Access the build property from response.data
         
         setFormData({
           title: track.title || '',
@@ -474,4 +474,4 @@ export default function EditTrackPage() {
       </form>
     </div>
   );
-} 
+}
