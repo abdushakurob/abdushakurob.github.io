@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const isAdminRoute = referer ? new URL(referer).hostname === adminHostname : false;
     const includeDraftsParam = searchParams.get("includeDrafts");
 
-    let query: any = {};
+    const query: any = {}; // Changed let to const
 
     // Filter by status based on user role or explicit request
     if (!isAdminRoute && includeDraftsParam !== 'true') {

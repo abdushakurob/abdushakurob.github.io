@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const adminHostname = process.env.ADMIN_HOSTNAME || 'admin.abdushakur.me'; 
     const isAdminRoute = referer ? new URL(referer).hostname === adminHostname : false;
 
-    let query: any = {};
+    const query: any = {}; // Changed let to const
 
     // Add featured filter if specified
     if (featured === 'true') {
