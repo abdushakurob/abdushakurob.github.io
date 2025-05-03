@@ -29,7 +29,7 @@ export default function BuildPage() {
     try {
       setLoading(true);
       const response = await axios.get('/api/build');
-      setTracks(response.data);
+      setTracks(response.data.builds);
       setError('');
     } catch (err) {
       setError('Failed to fetch build tracks');
