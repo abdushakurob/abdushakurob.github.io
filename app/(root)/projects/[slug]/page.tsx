@@ -1,14 +1,14 @@
 import { Metadata } from 'next';
 import { use } from 'react';
-import axios from 'axios';
 import ProjectDetail from './project-detail';
 
 // Metadata generation for the page (server-side)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
     const { slug } = await params;
-    const res = await axios.get(`/api/projects/${slug}`);
-    const project = res.data.project;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/projects/${slug}`);
+    if (!res.ok) throw new Error('Failed to fetch project');
+    const { project } = await res.json();
     
     return {
       title: `${project.title} | Abdul Shakur`,

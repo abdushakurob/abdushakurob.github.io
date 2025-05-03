@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
 import { use } from 'react';
-import axios from 'axios';
 import WritingDetail from './writing-detail';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
     const { slug } = await params;
-    const res = await axios.get(`/api/writings/${slug}`);
-    const writing = res.data.writing;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/writings/${slug}`);
+    if (!res.ok) throw new Error('Failed to fetch writing');
+    const { writing } = await res.json();
     
     return {
       title: `${writing.title} | Blog by Abdul Shakur`,
