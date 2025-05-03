@@ -1,11 +1,13 @@
 import { Metadata } from 'next';
+import { use } from 'react';
 import axios from 'axios';
 import ProjectDetail from './project-detail';
 
 // Metadata generation for the page (server-side)
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
-    const res = await axios.get(`/api/projects/${params.slug}`);
+    const { slug } = await params;
+    const res = await axios.get(`/api/projects/${slug}`);
     const project = res.data.project;
     
     return {
@@ -33,6 +35,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  return <ProjectDetail slug={params.slug} />;
+export default function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {  
+  const { slug } = use(params);
+  return <ProjectDetail slug={slug} />;
 }

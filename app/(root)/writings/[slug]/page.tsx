@@ -1,10 +1,12 @@
 import { Metadata } from 'next';
+import { use } from 'react';
 import axios from 'axios';
 import WritingDetail from './writing-detail';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
-    const res = await axios.get(`/api/writings/${params.slug}`);
+    const { slug } = await params;
+    const res = await axios.get(`/api/writings/${slug}`);
     const writing = res.data.writing;
     
     return {
@@ -35,6 +37,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function WritingPage({ params }: { params: { slug: string } }) {
-  return <WritingDetail slug={params.slug} />;
+export default function WritingPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  return <WritingDetail slug={slug} />;
 }
