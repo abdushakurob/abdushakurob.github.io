@@ -16,7 +16,7 @@ export async function GET(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    // Only return non-published projects in admin routes
+    // Use same admin check as main route
     const isAdminRoute = req.headers.get('referer')?.includes('/admin');
     if (!isAdminRoute && project.status !== 'published') {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });

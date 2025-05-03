@@ -11,12 +11,11 @@ export async function GET(req: NextRequest) {
     const featured = searchParams.get("featured");
     const status = searchParams.get("status");
     const referer = req.headers.get('referer');
-    // Check if the referer hostname matches the expected admin domain
-    // Replace 'admin.abdushakurob.xyz' with your actual admin domain, or use an environment variable
-    const adminHostname = process.env.ADMIN_HOSTNAME || 'admin.abdushakur.me'; 
-    const isAdminRoute = referer ? new URL(referer).hostname === adminHostname : false;
+    
+    // Simpler admin route check - just check if the path includes /admin
+    const isAdminRoute = referer?.includes('/admin');
 
-    const query: any = {}; // Changed let to const
+    const query: any = {};
 
     // Add featured filter if specified
     if (featured === 'true') {
@@ -26,10 +25,8 @@ export async function GET(req: NextRequest) {
     // Filter by status based on user role
     if (!isAdminRoute) {
       query.status = 'published';
-    } else {
-      if (status && status !== 'all') {
-        query.status = status;
-      }
+    } else if (status && status !== 'all') {
+      query.status = status;
     }
 
     const projects = await Project.find(query).sort({ manualDate: -1, createdAt: -1 });
