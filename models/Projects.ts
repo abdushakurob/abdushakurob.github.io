@@ -13,6 +13,13 @@ const ProjectSchema = new mongoose.Schema(
     link: { type: String },
     github: { type: String },
     isFeatured: { type: Boolean, default: false },
+    isDraft: { type: Boolean, default: true },
+    status: { 
+      type: String, 
+      enum: ['draft', 'published', 'archived'],
+      default: 'draft'
+    },
+    publishedAt: { type: Date },
     manualDate: { type: Date }, // For projects that happened in the past
     customLinks: [{
       title: { type: String, required: true },
@@ -23,11 +30,17 @@ const ProjectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-generate slug
+// Auto-generate slug and handle publishing
 ProjectSchema.pre("save", function (next) {
   if (this.isModified("title")) {
     this.slug = slugify(this.title, { lower: true, strict: true });
   }
+  
+  // Set publishedAt date when project is first published
+  if (this.isModified("status") && this.status === "published" && !this.publishedAt) {
+    this.publishedAt = new Date();
+  }
+  
   next();
 });
 

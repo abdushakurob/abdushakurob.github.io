@@ -3,6 +3,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Projects | Abdul Shakur',
+  description: 'A collection of things I\'ve built, designed, or experimented with. Some are finished, some are ongoing, and some are just ideas I started exploring.',
+  openGraph: {
+    title: 'Projects | Abdul Shakur',
+    description: 'A collection of things I\'ve built, designed, or experimented with.',
+    type: 'website',
+  },
+};
 
 // Add relative date function
 function getRelativeDate(dateString: string): string {
@@ -31,7 +42,10 @@ interface Project {
   github?: string;
   isFeatured: boolean;
   createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
   manualDate?: string;
+  status?: 'draft' | 'published' | 'archived';
   customLinks?: Array<{
     title: string;
     url: string;
@@ -50,6 +64,45 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [allTags, setAllTags] = useState<string[]>([]);
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    headline: 'Projects | Abdul Shakur',
+    description: 'A collection of things I\'ve built, designed, or experimented with.',
+    author: {
+      '@type': 'Person',
+      name: 'Abdul Shakur',
+      url: 'https://abdushakur.me'
+    },
+    url: 'https://abdushakur.me/projects',
+    inLanguage: 'en',
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: projects.map((project, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'CreativeWork',
+          name: project.title,
+          description: project.description,
+          creator: {
+            '@type': 'Person',
+            name: 'Abdul Shakur'
+          },
+          datePublished: project.publishedAt || project.createdAt,
+          dateModified: project.updatedAt,
+          url: `https://abdushakur.me/projects/${project.slug}`,
+          ...(project.coverImage && {
+            image: {
+              '@type': 'ImageObject',
+              url: project.coverImage
+            }
+          })
+        }
+      }))
+    }
+  };
 
   useEffect(() => {
     async function fetchProjects() {
@@ -110,6 +163,10 @@ export default function Projects() {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <h1 className="text-4xl font-bold text-green-600 mb-6">Projects</h1>
       <p className="text-lg text-gray-600 dark:text-gray-300">
         A collection of things I&apos;ve built, designed, or experimented with. Some are finished, some are ongoing, and some are just ideas I started exploring.

@@ -4,6 +4,17 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import { processQuillHtml } from "@/lib/quill-html-processor";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Blog | Abdul Shakur',
+  description: 'Articles, tutorials, and thoughts on web development, design, and technology.',
+  openGraph: {
+    title: 'Blog | Abdul Shakur',
+    description: 'Articles, tutorials, and thoughts on web development, design, and technology.',
+    type: 'website',
+  },
+};
 
 // Add relative date function
 function getRelativeDate(dateString: string): string {
@@ -26,14 +37,15 @@ interface Writing {
   content: string;
   category: string;
   tags?: string[];
-  coverImage?: string;
-  author: string;
-  isDraft: boolean;
-  createdAt: string;
-  updatedAt: string;
   slug: string;
   excerpt?: string;
   readingTime?: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  author: string;
+  isDraft: boolean;
+  coverImage?: string;
 }
 
 const itemsPerPage = 6;
@@ -99,8 +111,44 @@ export default function Writings() {
   const totalPages = Math.ceil(filteredWritings.length / itemsPerPage);
   const paginatedWritings = filteredWritings.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    headline: 'Blog | Abdul Shakur',
+    description: 'Articles, tutorials, and thoughts on web development, design, and technology.',
+    author: {
+      '@type': 'Person',
+      name: 'Abdul Shakur',
+      url: 'https://abdushakur.me'
+    },
+    url: 'https://abdushakur.me/writings',
+    inLanguage: 'en',
+    blogPost: writings.map(post => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt || '',
+      author: {
+        '@type': 'Person',
+        name: 'Abdul Shakur'
+      },
+      datePublished: post.publishedAt || post.createdAt,
+      dateModified: post.updatedAt,
+      url: `https://abdushakur.me/writings/${post.slug}`,
+      ...(post.coverImage && {
+        image: {
+          '@type': 'ImageObject',
+          url: post.coverImage
+        }
+      })
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Page Header */}
       <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">Writings</h1>
       <p className="text-lg text-gray-600 dark:text-gray-400">

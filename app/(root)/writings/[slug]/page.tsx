@@ -5,15 +5,59 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import { processQuillHtml } from "@/lib/quill-html-processor";
+import { Metadata } from 'next';
+import { generateStructuredData, generateBreadcrumbData } from '@/lib/utils';
 
 interface Writing {
   title: string;
   content: string;
   category: string;
   tags?: string[];
+  excerpt?: string;
+  coverImage?: string;
   createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
   readingTime?: number;
   slug: string;
+  seo?: {
+    title: string;
+    description: string;
+    keywords: string[];
+  };
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  try {
+    const res = await axios.get(`/api/writings/${params.slug}`);
+    const writing = res.data.writing;
+    
+    return {
+      title: `${writing.title} | Blog by Abdul Shakur`,
+      description: writing.excerpt || writing.content.substring(0, 160),
+      openGraph: {
+        title: writing.title,
+        description: writing.excerpt || writing.content.substring(0, 160),
+        type: 'article',
+        authors: ['Abdul Shakur'],
+        publishedTime: writing.createdAt,
+        modifiedTime: writing.updatedAt,
+        images: writing.coverImage ? [writing.coverImage] : [],
+        tags: writing.tags,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: writing.title,
+        description: writing.excerpt || writing.content.substring(0, 160),
+        images: writing.coverImage ? [writing.coverImage] : [],
+      },
+    };
+  } catch (error) {
+    return {
+      title: 'Blog Post | Abdul Shakur',
+      description: 'Blog post details',
+    };
+  }
 }
 
 export default function WritingPage() {
@@ -38,6 +82,23 @@ export default function WritingPage() {
     if (slug) fetchWriting();
   }, [slug]);
 
+  const jsonLd = writing ? generateStructuredData({
+    type: 'BlogPosting',
+    title: writing.title,
+    description: writing.excerpt || writing.content.substring(0, 160),
+    coverImage: writing.coverImage,
+    datePublished: writing.publishedAt || writing.createdAt,
+    dateModified: writing.updatedAt,
+    slug: writing.slug,
+    tags: writing.tags,
+  }) : null;
+
+  const breadcrumbData = writing ? generateBreadcrumbData([
+    { name: 'Home', item: '/' },
+    { name: 'Blog', item: '/writings' },
+    { name: writing.title, item: `/writings/${writing.slug}` }
+  ]) : null;
+
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -57,13 +118,36 @@ export default function WritingPage() {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      {/* Back Button */}
-      <div className="mb-8">
-        <Link href="/writings" className="inline-flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-          <span className="text-lg">←</span>
-          <span className="ml-2">Back to writings</span>
+      {jsonLd && (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
+          />
+        </>
+      )}
+      {/* Back Button - Update to show breadcrumb navigation */}
+      <nav className="mb-8 flex items-center text-sm">
+        <Link 
+          href="/"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Home
         </Link>
-      </div>
+        <span className="mx-2 text-gray-500">/</span>
+        <Link 
+          href="/writings"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Blog
+        </Link>
+        <span className="mx-2 text-gray-500">/</span>
+        <span className="text-gray-900 dark:text-gray-100">{writing.title}</span>
+      </nav>
 
       {/* Writing Details */}
       <div className="space-y-6">

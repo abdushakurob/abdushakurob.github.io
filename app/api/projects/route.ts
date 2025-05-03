@@ -2,41 +2,63 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConfig";
 import Project from "@/models/Projects";
 
-// ✅ GET all projects
-export async function GET(request: Request) {
+// GET all projects or filter by featured
+export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const featured = searchParams.get('featured') === 'true';
-
     await connectDB();
-    const query = featured ? { isFeatured: true } : {};
+
+    const searchParams = req.nextUrl.searchParams;
+    const featured = searchParams.get("featured");
+    const status = searchParams.get("status");
+
+    let query = {};
+    
+    // Only return published projects by default
+    if (!status) {
+      query = { status: 'published' };
+    } else if (status !== 'all') {
+      query = { status };
+    }
+
+    if (featured === "true") {
+      query = { ...query, isFeatured: true };
+    }
+
     const projects = await Project.find(query).sort({ createdAt: -1 });
     return NextResponse.json({ projects });
   } catch (error) {
+    console.error("Failed to fetch projects:", error);
     return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
   }
 }
 
-// ✅ POST a new project
+// POST a new project
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const { title, description, coverImage, tags, category, content, link, github, isFeatured, manualDate, customLinks } = await req.json();
+    const { 
+      title, description, content, coverImage, tags, category, 
+      link, github, isFeatured, status, manualDate, customLinks 
+    } = await req.json();
 
     if (!title || !description) {
       return NextResponse.json({ error: "Title and description are required" }, { status: 400 });
     }
 
+    const publishedAt = status === 'published' ? new Date() : null;
+
     const newProject = await Project.create({
       title,
       description,
+      content,
       coverImage,
       tags,
       category,
-      content,
       link,
       github,
       isFeatured,
+      status,
+      publishedAt,
       manualDate: manualDate ? new Date(manualDate) : undefined,
       customLinks: customLinks?.filter((link: any) => link.title && link.url)
     });

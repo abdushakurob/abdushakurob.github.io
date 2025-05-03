@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { Metadata } from 'next';
 import { 
   Code, 
   GithubIcon, 
@@ -13,6 +14,7 @@ import {
   Layers 
 } from "lucide-react";
 import { processQuillHtml } from "@/lib/quill-html-processor";
+import { generateStructuredData, generateBreadcrumbData } from '@/lib/utils';
 
 // Existing getRelativeDate function remains the same
 
@@ -26,6 +28,8 @@ interface Project {
   github?: string;
   isFeatured?: boolean;
   createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
   manualDate?: string;
   content?: string;
   customLinks?: Array<{
@@ -42,6 +46,37 @@ interface Writing {
   description: string;
   tags?: string[];
   createdAt: string;
+}
+
+// Add generateMetadata function
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  try {
+    const res = await axios.get(`/api/projects/${params.slug}`);
+    const project = res.data.project;
+    
+    return {
+      title: `${project.title} | Abdul Shakur`,
+      description: project.description,
+      openGraph: {
+        title: project.title,
+        description: project.description,
+        images: project.coverImage ? [project.coverImage] : [],
+        type: 'article',
+        authors: ['Abdul Shakur'],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: project.title,
+        description: project.description,
+        images: project.coverImage ? [project.coverImage] : [],
+      },
+    };
+  } catch (error) {
+    return {
+      title: 'Project | Abdul Shakur',
+      description: 'Project details',
+    };
+  }
 }
 
 // Custom Link Button Component
@@ -79,11 +114,30 @@ const ProjectLinkButton = ({
 );
 
 export default function ProjectPage() {
-  const { slug } = useParams();
+  const params = useParams();
+  const slugParam = params.slug;
+  const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
   const [project, setProject] = useState<Project | null>(null);
   const [relatedWritings, setRelatedWritings] = useState<Writing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const jsonLd = project ? generateStructuredData({
+    type: 'Project',
+    title: project.title,
+    description: project.description,
+    coverImage: project.coverImage,
+    datePublished: project.publishedAt || project.createdAt,
+    dateModified: project.updatedAt,
+    slug: slug || '',
+    tags: project.tags
+  }) : null;
+
+  const breadcrumbData = project ? generateBreadcrumbData([
+    { name: 'Home', item: '/' },
+    { name: 'Projects', item: '/projects' },
+    { name: project.title, item: `/projects/${slug}` }
+  ]) : null;
 
   useEffect(() => {
     async function fetchProject() {
@@ -153,21 +207,36 @@ export default function ProjectPage() {
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      {/* Back Button */}
-      <div className="mb-8">
+      {jsonLd && (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
+          />
+        </>
+      )}
+      {/* Back Button - Update to show breadcrumb navigation */}
+      <nav className="mb-8 flex items-center text-sm">
         <Link 
-          href="/projects" 
-          className="
-            inline-flex items-center 
-            text-gray-600 hover:text-blue-600 
-            dark:text-gray-400 dark:hover:text-blue-400 
-            group transition-colors
-          "
+          href="/"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
         >
-          <span className="text-lg transform group-hover:-translate-x-1 transition-transform">←</span>
-          <span className="ml-2 font-medium">Back to projects</span>
+          Home
         </Link>
-      </div>
+        <span className="mx-2 text-gray-500">/</span>
+        <Link 
+          href="/projects"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Projects
+        </Link>
+        <span className="mx-2 text-gray-500">/</span>
+        <span className="text-gray-900 dark:text-gray-100">{project.title}</span>
+      </nav>
 
       <div className="space-y-8">
         {/* Header Section */}

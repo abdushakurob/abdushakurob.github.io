@@ -2,18 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConfig";
 import Project from "@/models/Projects";
 
-// ✅ GET a single project by slug
-export async function GET(req: NextRequest, {params}: {params: Promise<{slug: string}>}) {
+// GET a single project
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
     await connectDB();
-    const { slug } = await params;
-    const project = await Project.findOne({ slug });
+    const { slug } = params;
 
+    const project = await Project.findOne({ slug });
     if (!project) {
-      return NextResponse.json(
-        { error: "Project not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    // Only return non-published projects in admin routes
+    const isAdminRoute = req.headers.get('referer')?.includes('/admin');
+    if (!isAdminRoute && project.status !== 'published') {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
     return NextResponse.json({ project });
@@ -29,11 +35,15 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{slug: st
 // UPDATE a project
 export async function PUT(
   req: NextRequest,
-  {params}: {params: Promise<{slug: string}>}
+  { params }: { params: { slug: string } }
 ) {
   try {
-    const body = await req.json();
-    const { title, description, content, coverImage, tags, category, link, github, isFeatured, manualDate, customLinks } = body;
+    await connectDB();
+    const { slug } = params;
+    const { 
+      title, description, content, coverImage, tags, category, 
+      link, github, isFeatured, status, manualDate, customLinks 
+    } = await req.json();
 
     if (!title || !description) {
       return NextResponse.json(
@@ -42,9 +52,16 @@ export async function PUT(
       );
     }
 
-    await connectDB();
-    const { slug } = await params;
-    const project = await Project.findOneAndUpdate(
+    // Get existing project to handle publishedAt date
+    const existingProject = await Project.findOne({ slug });
+    let publishedAt = existingProject.publishedAt;
+
+    // Set publishedAt when project is first published
+    if (status === 'published' && (!existingProject.publishedAt || existingProject.status !== 'published')) {
+      publishedAt = new Date();
+    }
+
+    const updatedProject = await Project.findOneAndUpdate(
       { slug },
       {
         title,
@@ -56,20 +73,19 @@ export async function PUT(
         link,
         github,
         isFeatured,
+        status,
+        publishedAt,
         manualDate: manualDate ? new Date(manualDate) : undefined,
         customLinks: customLinks?.filter((link: any) => link.title && link.url)
       },
       { new: true }
     );
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Project not found" },
-        { status: 404 }
-      );
+    if (!updatedProject) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ project });
+    return NextResponse.json({ project: updatedProject });
   } catch (error) {
     console.error("Failed to update project:", error);
     return NextResponse.json(
@@ -82,18 +98,15 @@ export async function PUT(
 // DELETE a project
 export async function DELETE(
   req: NextRequest,
-  {params}: {params: Promise<{slug: string}>}
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = await params;
-    const project = await Project.findOneAndDelete({ slug });
+    const { slug } = params;
 
-    if (!project) {
-      return NextResponse.json(
-        { error: "Project not found" },
-        { status: 404 }
-      );
+    const deletedProject = await Project.findOneAndDelete({ slug });
+    if (!deletedProject) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
     return NextResponse.json({ message: "Project deleted successfully" });

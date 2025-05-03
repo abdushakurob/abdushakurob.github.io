@@ -11,6 +11,24 @@ import Link from 'next/link';
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
 
+interface Project {
+  _id: string;
+  title: string;
+  description: string;
+  content: string;
+  coverImage: string;
+  category: string;
+  tags: string[];
+  link: string;
+  github: string;
+  isFeatured: boolean;
+  isDraft: boolean;
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string;
+  manualDate: string;
+  customLinks: Array<{ title: string; url: string }>;
+}
+
 export default function EditProjectPage() {
   const router = useRouter();
   const params = useParams();
@@ -29,6 +47,8 @@ export default function EditProjectPage() {
     link: '',
     github: '',
     isFeatured: false,
+    isDraft: true,
+    status: 'draft' as 'draft' | 'published' | 'archived',
     manualDate: '',
     customLinks: [{ title: '', url: '' }]
   });
@@ -81,6 +101,8 @@ export default function EditProjectPage() {
           link: project.link || '',
           github: project.github || '',
           isFeatured: project.isFeatured || false,
+          isDraft: project.isDraft || true,
+          status: project.status || 'draft',
           manualDate: project.manualDate || '',
           customLinks: project.customLinks?.length ? project.customLinks : [{ title: '', url: '' }]
         });
@@ -201,20 +223,57 @@ export default function EditProjectPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Custom Publish Date
-            </label>
-            <input
-              type="date"
-              name="manualDate"
-              value={formData.manualDate}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              Leave empty to use the project&apos;s creation date
-            </p>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Publishing Settings</label>
+            <div className="bg-gray-50 p-4 rounded-lg space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label htmlFor="status" className="block text-sm text-gray-600">Status</label>
+                  <select
+                    id="status"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center ml-6">
+                  <input
+                    type="checkbox"
+                    id="isFeatured"
+                    name="isFeatured"
+                    checked={formData.isFeatured}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                  />
+                  <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-900">
+                    Feature on homepage
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="manualDate" className="block text-sm text-gray-600">
+                  Custom Publish Date <span className="text-gray-400">(Optional)</span>
+                </label>
+                <input
+                  type="date"
+                  id="manualDate"
+                  name="manualDate"
+                  value={formData.manualDate}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  Leave empty to use the project's actual publication date
+                </p>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -288,22 +347,6 @@ export default function EditProjectPage() {
           </div>
 
           <div className="col-span-2">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="isFeatured"
-                name="isFeatured"
-                checked={formData.isFeatured}
-                onChange={handleChange}
-                className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-              />
-              <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-900">
-                Feature this project on homepage
-              </label>
-            </div>
-          </div>
-
-          <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Content (WYSIWYG)
             </label>
@@ -360,4 +403,4 @@ export default function EditProjectPage() {
       </form>
     </div>
   );
-} 
+}

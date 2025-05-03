@@ -11,19 +11,29 @@ const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
 
 interface Writing {
+  _id: string;
   title: string;
   content: string;
   category: string;
-  tags?: string[];
-  readingTime?: number;
-  slug: string;
+  tags: string[];
+  excerpt: string;
+  coverImage: string;
+  readingTime: string;
+  isDraft: boolean;
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string;
+  seo: {
+    title: string;
+    description: string;
+    keywords: string[];
+  };
 }
 
 export default function EditWritingPage() {
   const router = useRouter();
   const params = useParams();
   const slug = params.slug as string;
-  
+
   const [loading, setLoading] = useState(false);
   const [loadingWriting, setLoadingWriting] = useState(true);
   const [error, setError] = useState('');
@@ -36,7 +46,13 @@ export default function EditWritingPage() {
     readingTime: '',
     excerpt: '',
     coverImage: '',
-    isDraft: true
+    isDraft: true,
+    status: 'draft' as 'draft' | 'published' | 'archived',
+    seo: {
+      title: '',
+      description: '',
+      keywords: [] as string[],
+    }
   });
 
   useEffect(() => {
@@ -45,7 +61,7 @@ export default function EditWritingPage() {
         setLoadingWriting(true);
         const response = await axios.get(`/api/writings/${slug}`);
         const writing = response.data.writing;
-        
+
         setFormData({
           title: writing.title || '',
           content: writing.content || '',
@@ -54,7 +70,9 @@ export default function EditWritingPage() {
           readingTime: writing.readingTime?.toString() || '',
           excerpt: writing.excerpt || '',
           coverImage: writing.coverImage || '',
-          isDraft: writing.isDraft || false
+          isDraft: writing.isDraft || false,
+          status: writing.status || 'draft',
+          seo: writing.seo || { title: '', description: '', keywords: [] }
         });
       } catch (err) {
         console.error('Error fetching writing:', err);
@@ -69,7 +87,7 @@ export default function EditWritingPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
-    
+
     if (type === 'checkbox') {
       setFormData({
         ...formData,
@@ -88,15 +106,15 @@ export default function EditWritingPage() {
       ...formData,
       content
     });
-    
+
     // Auto-generate excerpt if it's empty
     if (!formData.excerpt) {
       // Strip HTML tags and limit to 150 characters
       const textContent = content.replace(/<[^>]*>/g, '');
-      const excerpt = textContent.length > 150 
-        ? textContent.substring(0, 150) + '...' 
+      const excerpt = textContent.length > 150
+        ? textContent.substring(0, 150) + '...'
         : textContent;
-        
+
       setFormData(prev => ({
         ...prev,
         excerpt
@@ -106,18 +124,18 @@ export default function EditWritingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.title || !formData.content) {
       setError('Title and content are required');
       return;
     }
-    
+
     try {
       setLoading(true);
       setError('');
-      
+
       const readingTimeNum = formData.readingTime ? parseInt(formData.readingTime) : undefined;
-      
+
       const writingData = {
         title: formData.title,
         content: formData.content,
@@ -126,9 +144,11 @@ export default function EditWritingPage() {
         readingTime: readingTimeNum,
         excerpt: formData.excerpt,
         coverImage: formData.coverImage,
-        isDraft: formData.isDraft
+        isDraft: formData.isDraft,
+        status: formData.status,
+        seo: formData.seo
       };
-      
+
       await axios.put(`/api/writings/${slug}`, writingData);
       router.push('/writings');
     } catch (err) {
@@ -163,7 +183,7 @@ export default function EditWritingPage() {
     toolbar: [
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
       ['blockquote', 'code-block'],
       ['link', 'image'],
       ['clean']
@@ -178,8 +198,8 @@ export default function EditWritingPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <Link 
-            href="/writings" 
+          <Link
+            href="/writings"
             className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft size={16} />
@@ -187,7 +207,7 @@ export default function EditWritingPage() {
           </Link>
           <h1 className="text-2xl font-bold">Edit Writing</h1>
         </div>
-        
+
         <button
           type="button"
           onClick={handleSubmit}
@@ -278,19 +298,74 @@ export default function EditWritingPage() {
             />
           </div>
 
-          <div>
-            <div className="flex items-center h-full">
-              <input
-                type="checkbox"
-                id="isDraft"
-                name="isDraft"
-                checked={formData.isDraft}
-                onChange={handleChange}
-                className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-              />
-              <label htmlFor="isDraft" className="ml-2 block text-sm text-gray-900">
-                Save as draft (won&apos;t be published)
-              </label>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Publishing Settings</label>
+            <div className="bg-gray-50 p-4 rounded-lg space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label htmlFor="status" className="block text-sm text-gray-600">Status</label>
+                  <select
+                    id="status"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                    <option value="archived">Archived</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center ml-6">
+                  <input
+                    type="checkbox"
+                    id="isDraft"
+                    name="isDraft"
+                    checked={formData.isDraft}
+                    onChange={handleChange}
+                    className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                  />
+                  <label htmlFor="isDraft" className="ml-2 block text-sm text-gray-900">
+                    Save as draft
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-600 mb-2">SEO Metadata</label>
+                <div className="space-y-3">
+                  <div>
+                    <label htmlFor="seoTitle" className="block text-xs text-gray-500">Title</label>
+                    <input
+                      type="text"
+                      id="seoTitle"
+                      value={formData.seo.title}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        seo: { ...prev.seo, title: e.target.value }
+                      }))}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Leave blank to use post title"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="seoDescription" className="block text-xs text-gray-500">Description</label>
+                    <textarea
+                      id="seoDescription"
+                      value={formData.seo.description}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        seo: { ...prev.seo, description: e.target.value }
+                      }))}
+                      rows={2}
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Leave blank to use excerpt"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -304,6 +379,7 @@ export default function EditWritingPage() {
               onChange={handleChange}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Brief summary of the post (will be auto-generated if left empty)"
             />
           </div>
 
@@ -338,4 +414,4 @@ export default function EditWritingPage() {
       </form>
     </div>
   );
-} 
+}
