@@ -5,11 +5,11 @@ import Track from "@/models/Track";
 // GET a single build by slug
 export async function GET(
   request: NextRequest,
-  context: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const slug = context.params.slug;
+    const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json({ error: "Slug is required" }, { status: 400 });
@@ -23,7 +23,7 @@ export async function GET(
 
     return NextResponse.json({ build });
   } catch (error) {
-    console.error(`Failed to fetch build with slug ${context.params.slug}:`, error);
+    console.error(`Failed to fetch build with slug ${(await params).slug}:`, error);
     const errorMessage = (error as Error).message || "Unknown error";
     return NextResponse.json({ error: "Failed to fetch build", details: errorMessage }, { status: 500 });
   }
@@ -32,11 +32,11 @@ export async function GET(
 // PUT update a build by slug
 export async function PUT(
   request: NextRequest,
-  context: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const slug = context.params.slug;
+    const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json({ error: "Slug is required" }, { status: 400 });
@@ -79,7 +79,7 @@ export async function PUT(
 
     return NextResponse.json({ build: updatedBuild });
   } catch (error) {
-    console.error(`Failed to update build with slug ${context.params.slug}:`, error);
+    console.error(`Failed to update build with slug ${(await params).slug}:`, error);
     const errorMessage = (error as Error).message || "Unknown error";
     return NextResponse.json({ error: "Failed to update build", details: errorMessage }, { status: 500 });
   }
@@ -88,11 +88,11 @@ export async function PUT(
 // DELETE a build by slug
 export async function DELETE(
   request: NextRequest,
-  context: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const slug = context.params.slug;
+    const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json({ error: "Slug is required" }, { status: 400 });
@@ -106,7 +106,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: "Build deleted successfully" });
   } catch (error) {
-    console.error(`Failed to delete build with slug ${context.params.slug}:`, error);
+    console.error(`Failed to delete build with slug ${(await params).slug}:`, error);
     const errorMessage = (error as Error).message || "Unknown error";
     return NextResponse.json({ error: "Failed to delete build", details: errorMessage }, { status: 500 });
   }
