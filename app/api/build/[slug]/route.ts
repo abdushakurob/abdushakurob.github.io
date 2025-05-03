@@ -3,7 +3,10 @@ import connectDB from "@/lib/dbConfig";
 import Track from "@/models/Track";
 
 // GET a single build by slug
-export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
     await connectDB();
     const slug = params.slug;
@@ -27,7 +30,10 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
 }
 
 // PUT update a build by slug
-export async function PUT(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
     await connectDB();
     const slug = params.slug;
@@ -40,7 +46,7 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
       title, description, content, category, tags,
       status, // New field
       manualDate // New field
-    } = await req.json();
+    } = await request.json();
 
     const existingBuild = await Track.findOne({ slug });
     if (!existingBuild) {
@@ -80,7 +86,10 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
 }
 
 // DELETE a build by slug
-export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
     await connectDB();
     const slug = params.slug;
