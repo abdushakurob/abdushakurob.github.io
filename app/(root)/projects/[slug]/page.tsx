@@ -33,7 +33,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-// Server component that renders the client component
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   return <ProjectDetail slug={params.slug} />;
 }
