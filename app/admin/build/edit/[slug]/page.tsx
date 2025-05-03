@@ -169,7 +169,10 @@ export default function EditTrackPage() {
   const toggleMilestone = (index: number) => {
     const milestones = [...formData.milestones];
     milestones[index].achieved = !milestones[index].achieved;
-    milestones[index].date = milestones[index].achieved ? new Date().toISOString() : undefined;
+    // Only set the date if it's not already set and milestone is being marked as achieved
+    if (milestones[index].achieved && !milestones[index].date) {
+      milestones[index].date = new Date().toISOString();
+    }
     setFormData({ ...formData, milestones });
   };
 
@@ -397,7 +400,7 @@ export default function EditTrackPage() {
             <h3 className="text-lg font-medium mb-2">Milestones</h3>
             <div className="space-y-2 mb-4">
               {formData.milestones.map((milestone, index) => (
-                <div key={index} className="flex items-center">
+                <div key={index} className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     checked={milestone.achieved}
@@ -407,32 +410,46 @@ export default function EditTrackPage() {
                   <input
                     type="text"
                     value={milestone.title}
-                    className="flex-1 ml-2 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    readOnly
+                    onChange={(e) => {
+                      const milestones = [...formData.milestones];
+                      milestones[index] = { ...milestones[index], title: e.target.value };
+                      setFormData({ ...formData, milestones });
+                    }}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    type="date"
+                    value={milestone.date ? new Date(milestone.date).toISOString().split('T')[0] : ''}
+                    onChange={(e) => {
+                      const milestones = [...formData.milestones];
+                      milestones[index] = { ...milestones[index], date: e.target.value ? new Date(e.target.value).toISOString() : undefined };
+                      setFormData({ ...formData, milestones });
+                    }}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="button"
                     onClick={() => removeMilestone(index)}
-                    className="ml-2 p-2 text-red-600 hover:text-red-900"
+                    className="p-2 text-red-600 hover:text-red-900"
                   >
                     <Trash size={16} />
                   </button>
                 </div>
               ))}
             </div>
-            <div className="flex">
+            <div className="flex gap-2">
               <input
                 type="text"
                 name="title"
                 value={newMilestone.title}
                 onChange={handleMilestoneChange}
                 placeholder="Add a new milestone"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 type="button"
                 onClick={addMilestone}
-                className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
                 <Plus size={16} />
               </button>
