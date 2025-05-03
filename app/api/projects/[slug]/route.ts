@@ -2,16 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConfig";
 import Project from "@/models/Projects";
 
-type RouteParams = { params: { slug: string } }
-
 // GET a single project
 export async function GET(
   req: NextRequest,
-  context: RouteParams
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
 
     const project = await Project.findOne({ slug });
     if (!project) {
@@ -37,11 +35,11 @@ export async function GET(
 // UPDATE a project
 export async function PUT(
   req: NextRequest,
-  context: RouteParams
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
     const { 
       title, description, content, coverImage, tags, category, 
       link, github, isFeatured, status, manualDate, customLinks 
@@ -100,11 +98,11 @@ export async function PUT(
 // DELETE a project
 export async function DELETE(
   req: NextRequest,
-  context: RouteParams
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
 
     const deletedProject = await Project.findOneAndDelete({ slug });
     if (!deletedProject) {

@@ -2,16 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConfig";
 import Writing from "@/models/Writings";
 
-type RouteParams = { params: { slug: string } }
-
 // GET a single writing
 export async function GET(
   req: NextRequest,
-  context: RouteParams
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
 
     const writing = await Writing.findOne({ slug });
     if (!writing) {
@@ -37,11 +35,11 @@ export async function GET(
 // UPDATE a writing
 export async function PUT(
   req: NextRequest,
-  context: RouteParams
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
     const { 
       title, content, category, tags, excerpt, coverImage,
       status, seo 
@@ -111,11 +109,11 @@ export async function PUT(
 // DELETE a writing
 export async function DELETE(
   req: NextRequest,
-  context: RouteParams
+  { params }: { params: { slug: string } }
 ) {
   try {
     await connectDB();
-    const { slug } = context.params;
+    const { slug } = params;
 
     const deletedWriting = await Writing.findOneAndDelete({ slug });
     if (!deletedWriting) {

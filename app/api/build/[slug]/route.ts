@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/dbConfig";
 import Track from "@/models/Track";
 
-// ✅ GET a specific track
-export async function GET(req: NextRequest, { params }: {params: Promise<{slug: string}>}) {
+// GET a specific track
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   await connectDB();
   try {
-    const { slug } = await params;
+    const { slug } = params;
     const track = await Track.findOne({ slug });
     if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
     return NextResponse.json(track);
@@ -15,14 +18,17 @@ export async function GET(req: NextRequest, { params }: {params: Promise<{slug: 
   }
 }
 
-// ✅ POST a new update to a track
-export async function POST(req: NextRequest, { params }: {params: Promise<{slug: string}>}) {
+// POST a new update to a track
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   await connectDB();
   try {
     const { title, content } = await req.json();
     if (!title || !content) return NextResponse.json({ error: "Title and content required" }, { status: 400 });
 
-    const { slug } = await params;
+    const { slug } = params;
     const track = await Track.findOne({ slug });
     if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
 
@@ -37,10 +43,10 @@ export async function POST(req: NextRequest, { params }: {params: Promise<{slug:
 // UPDATE a track
 export async function PUT(
   req: NextRequest,
-  {params}: {params: Promise<{slug: string}>}
+  { params }: { params: { slug: string } }
 ) {
   try {
-    const { slug } = await params;
+    const { slug } = params;
     await connectDB();
     
     const track = await Track.findOne({ slug });
@@ -76,10 +82,10 @@ export async function PUT(
 // DELETE a track
 export async function DELETE(
   req: NextRequest,
-  {params}: {params: Promise<{slug: string}>}
+  { params }: { params: { slug: string } }
 ) {
   try {
-    const { slug } = await params;
+    const { slug } = params;
     await connectDB();
     
     const track = await Track.findOne({ slug });
