@@ -11,13 +11,12 @@ export async function GET(req: NextRequest) {
 
     const searchParams = req.nextUrl.searchParams;
     const status = searchParams.get("status");
+    const isAdminRoute = req.headers.get('referer')?.includes('/admin');
 
     let query = {};
     
-    // Only return published writings by default
-    if (!status) {
-      query = { status: 'published' };
-    } else if (status !== 'all') {
+    // Only filter by status in admin routes or if explicitly requested
+    if (isAdminRoute && status && status !== 'all') {
       query = { status };
     }
 

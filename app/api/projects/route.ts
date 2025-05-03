@@ -5,26 +5,31 @@ import Project from "@/models/Projects";
 // GET all projects or filter by featured
 export async function GET(req: NextRequest) {
   try {
+    console.log('Connecting to database...');
     await connectDB();
+    console.log('Connected successfully');
 
     const searchParams = req.nextUrl.searchParams;
     const featured = searchParams.get("featured");
     const status = searchParams.get("status");
+    const isAdminRoute = req.headers.get('referer')?.includes('/admin');
 
     let query = {};
     
-    // Only return published projects by default
-    if (!status) {
-      query = { status: 'published' };
-    } else if (status !== 'all') {
-      query = { status };
+    // Add featured filter if specified
+    if (featured === 'true') {
+      query = { ...query, featured: true };
     }
 
-    if (featured === "true") {
-      query = { ...query, isFeatured: true };
+    // Only filter by status in admin routes or if explicitly requested
+    if (isAdminRoute && status && status !== 'all') {
+      query = { ...query, status };
     }
 
+    console.log('Fetching projects with query:', query);
     const projects = await Project.find(query).sort({ createdAt: -1 });
+    console.log(`Found ${projects.length} projects`);
+
     return NextResponse.json({ projects });
   } catch (error) {
     console.error("Failed to fetch projects:", error);
