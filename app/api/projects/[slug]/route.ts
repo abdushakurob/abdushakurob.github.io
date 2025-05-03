@@ -5,11 +5,11 @@ import Project from "@/models/Projects";
 // GET a single project
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = await params;
 
     const project = await Project.findOne({ slug });
     if (!project) {
@@ -35,11 +35,11 @@ export async function GET(
 // UPDATE a project
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = await params;
     const { 
       title, description, content, coverImage, tags, category, 
       link, github, isFeatured, status, manualDate, customLinks 
@@ -98,11 +98,11 @@ export async function PUT(
 // DELETE a project
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = await params;
 
     const deletedProject = await Project.findOneAndDelete({ slug });
     if (!deletedProject) {

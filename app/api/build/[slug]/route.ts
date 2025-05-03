@@ -5,11 +5,11 @@ import Track from "@/models/Track";
 // GET a specific track
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   await connectDB();
   try {
-    const { slug } = params;
+    const { slug } = await params;
     const track = await Track.findOne({ slug });
     if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
     return NextResponse.json(track);
@@ -21,14 +21,14 @@ export async function GET(
 // POST a new update to a track
 export async function POST(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   await connectDB();
   try {
     const { title, content } = await req.json();
     if (!title || !content) return NextResponse.json({ error: "Title and content required" }, { status: 400 });
 
-    const { slug } = params;
+    const { slug } = await params;
     const track = await Track.findOne({ slug });
     if (!track) return NextResponse.json({ error: "Track not found" }, { status: 404 });
 
@@ -43,10 +43,10 @@ export async function POST(
 // UPDATE a track
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     await connectDB();
     
     const track = await Track.findOne({ slug });
@@ -82,10 +82,10 @@ export async function PUT(
 // DELETE a track
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     await connectDB();
     
     const track = await Track.findOne({ slug });

@@ -5,11 +5,11 @@ import Writing from "@/models/Writings";
 // GET a single writing
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = await params;
 
     const writing = await Writing.findOne({ slug });
     if (!writing) {
@@ -35,11 +35,11 @@ export async function GET(
 // UPDATE a writing
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = await params;
     const { 
       title, content, category, tags, excerpt, coverImage,
       status, seo 
@@ -109,11 +109,11 @@ export async function PUT(
 // DELETE a writing
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     await connectDB();
-    const { slug } = params;
+    const { slug } = await params;
 
     const deletedWriting = await Writing.findOneAndDelete({ slug });
     if (!deletedWriting) {
