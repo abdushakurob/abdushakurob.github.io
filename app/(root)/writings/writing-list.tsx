@@ -102,49 +102,58 @@ export default function WritingList() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {writings.map((writing) => (
-          <Link
-            href={`/writings/${writing.slug}`}
-            key={writing._id}
-            className="group flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
-          >
-            {writing.coverImage && (
-              <div className="relative w-full h-48">
-                <Image
-                  src={writing.coverImage}
-                  alt={writing.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            )}
-            <div className="p-6 flex-1 flex flex-col">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                {writing.title}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-                {writing.excerpt || processQuillHtml(writing.content).substring(0, 150)}...
-              </p>
-              <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                <span>{writing.category}</span>
-                <time>{getRelativeDate(writing.publishedAt || writing.createdAt)}</time>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {hasMore && (
-        <div className="mt-8 text-center">
-          <button
-            onClick={loadMore}
-            disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Loading...' : 'Load More'}
-          </button>
+      {writings.length === 0 ? (
+        <div className="text-center py-12">
+          <h3 className="text-xl text-gray-600 dark:text-gray-400">No writings published yet.</h3>
+          <p className="mt-2 text-gray-500">Check back soon for new content!</p>
         </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {writings.map((writing) => (
+              <Link
+                href={`/writings/${writing.slug}`}
+                key={writing._id}
+                className="group flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+              >
+                {writing.coverImage && (
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={writing.coverImage}
+                      alt={writing.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                )}
+                <div className="p-6 flex-1 flex flex-col">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                    {writing.title}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+                    {writing.excerpt || processQuillHtml(writing.content).substring(0, 150)}...
+                  </p>
+                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                    <span>{writing.category}</span>
+                    <time>{getRelativeDate(writing.publishedAt || writing.createdAt)}</time>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="mt-8 text-center">
+              <button
+                onClick={loadMore}
+                disabled={loading}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Loading...' : 'Load More'}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

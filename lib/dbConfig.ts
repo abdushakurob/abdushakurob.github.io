@@ -1,23 +1,49 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
-const MONGO_URI: string | undefined = process.env.MONGO_URI || "mongodb://localhost:27017/qrmatrix"
+const MONGODB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/qrmatrix';
 
-if (!MONGO_URI){
-    throw new Error('No connection string')
+if (!process.env.MONGO_URI) {
+  console.warn('No MONGO_URI found in environment variables. Using localhost as fallback.');
 }
 
-const ConnectDB = async () => {
-    if (mongoose.connection.readyState >= 1){
-        console.log('Mongo DB Already connected')
-        return
-    }
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+    };
 
     try {
-        const connect = await mongoose.connect(MONGO_URI)
-        console.log("Connection successful")
-        // return connect
+      cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+        console.log('✅ Successfully connected to MongoDB.');
+        return mongoose;
+      }).catch((error) => {
+        console.error('❌ Error connecting to MongoDB:', error.message);
+        throw error;
+      });
     } catch (error) {
-        console.error('Error occured', error)
+      console.error('❌ Error initializing MongoDB connection:', error);
+      throw error;
     }
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (error) {
+    cached.promise = null;
+    throw error;
+  }
+
+  return cached.conn;
 }
-export default ConnectDB
+
+export default dbConnect;

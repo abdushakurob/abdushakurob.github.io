@@ -101,58 +101,67 @@ export default function ProjectList() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <Link
-            href={`/projects/${project.slug}`}
-            key={project._id}
-            className="group flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
-          >
-            {project.coverImage && (
-              <div className="relative w-full h-48">
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            )}
-            <div className="p-6 flex-1 flex flex-col">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                  {project.title}
-                </h2>
-                {project.isFeatured && (
-                  <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100 rounded-full">
-                    Featured
-                  </span>
-                )}
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-                {project.description}
-              </p>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500 dark:text-gray-400">{project.category}</span>
-                <time className="text-gray-500 dark:text-gray-400">
-                  {getRelativeDate(project.publishedAt || project.createdAt)}
-                </time>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {hasMore && (
-        <div className="mt-8 text-center">
-          <button
-            onClick={loadMore}
-            disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Loading...' : 'Load More'}
-          </button>
+      {projects.length === 0 ? (
+        <div className="text-center py-12">
+          <h3 className="text-xl text-gray-600 dark:text-gray-400">No projects published yet.</h3>
+          <p className="mt-2 text-gray-500">Check back soon for new projects!</p>
         </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project) => (
+              <Link
+                href={`/projects/${project.slug}`}
+                key={project._id}
+                className="group flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+              >
+                {project.coverImage && (
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={project.coverImage}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                )}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                      {project.title}
+                    </h2>
+                    {project.isFeatured && (
+                      <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100 rounded-full">
+                        Featured
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+                    {project.description}
+                  </p>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-500 dark:text-gray-400">{project.category}</span>
+                    <time className="text-gray-500 dark:text-gray-400">
+                      {getRelativeDate(project.publishedAt || project.createdAt)}
+                    </time>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="mt-8 text-center">
+              <button
+                onClick={loadMore}
+                disabled={loading}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+              >
+                {loading ? 'Loading...' : 'Load More'}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
