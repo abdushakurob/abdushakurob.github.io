@@ -6,7 +6,7 @@ export const contentType = 'image/png'
 
 export async function GET(request: NextRequest) {
   try {
-    // Font loading
+    // Font loading for Edge runtime
     const fontData = await fetch(
       new URL('/public/fonts/Satoshi-Variable.woff2', import.meta.url)
     ).then((res) => res.arrayBuffer())

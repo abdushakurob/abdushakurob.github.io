@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '404 - Page Not Found | Abdushakur',
-  description: 'The page you are looking for does not exist. Explore other pages on Abdushakur\'s website including projects, blog posts, and more.',
+  description: "The page you are looking for does not exist. Explore other pages on Abdushakur's website including projects, blog posts, and more.",
   robots: {
     index: false,
     follow: true,

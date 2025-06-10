@@ -18,9 +18,7 @@ const nextConfig: NextConfig = {
   },
   
   // OG Image generation support
-  experimental: {
-    serverComponentsExternalPackages: ['sharp'],
-  },
+  serverExternalPackages: ['sharp'],
   
   // Headers for SEO and security
   async headers() {

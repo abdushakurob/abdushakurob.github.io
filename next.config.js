@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: {
+const nextConfig = {  images: {
     domains: ['images.unsplash.com'],
   },
-  experimental: {
-    serverComponentsExternalPackages: ['sharp'],
-  },
+  serverExternalPackages: ['sharp'],
   async rewrites() {
     return [
       {
