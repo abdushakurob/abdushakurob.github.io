@@ -6,7 +6,7 @@ interface SeoProps {
   keywords?: string[];
   image?: string;
   url?: string;
-  type?: 'website' | 'article' | 'profile' | 'product';
+  type?: 'website' | 'article' | 'profile';
   publishedTime?: string;
   modifiedTime?: string;
   tags?: string[];
@@ -79,21 +79,20 @@ export function generateMetadata({
       images: [image.startsWith('http') ? image : `https://abdushakur.me${image}`],
     },
   };
-  
-  // Add article-specific metadata if type is 'article'
+    // Add article-specific metadata if type is 'article'
   if (type === 'article') {
     if (publishedTime) {
-      // @ts-ignore - Type issues with Next.js metadata
+      // @ts-expect-error - Type issues with Next.js metadata
       metadata.openGraph.publishedTime = publishedTime;
     }
     
     if (modifiedTime) {
-      // @ts-ignore - Type issues with Next.js metadata
+      // @ts-expect-error - Type issues with Next.js metadata
       metadata.openGraph.modifiedTime = modifiedTime;
     }
     
     if (tags && tags.length > 0) {
-      // @ts-ignore - Type issues with Next.js metadata
+      // @ts-expect-error - Type issues with Next.js metadata
       metadata.openGraph.tags = tags;
     }
   }
