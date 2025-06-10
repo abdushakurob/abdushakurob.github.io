@@ -2,7 +2,6 @@ import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
 
 export const runtime = 'edge'
-export const contentType = 'image/png'
 
 // This fixes the type error by ensuring the function matches Next.js Route Handler requirements
 export async function GET(request: NextRequest): Promise<Response> {
@@ -152,6 +151,9 @@ export async function GET(request: NextRequest): Promise<Response> {
             style: 'normal',
           },
         ],
+        headers: {
+          'content-type': 'image/png',
+        },
       }
     )
   } catch (e) {
