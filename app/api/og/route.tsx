@@ -137,6 +137,13 @@ export async function GET(request: NextRequest) {
       {
         width: 1200,
         height: 630,
+        fonts: [
+          {
+            name: 'Satoshi',
+            data: fontData,
+            style: 'normal',
+          },
+        ],
       }
     )
   } catch (e) {
