@@ -3,14 +3,15 @@ import React from 'react';
 import './globals.css';
 import { satoshi, plusJakarta, jetbrainsMono } from './fonts';
 import { createStaticSitemapData } from '@/lib/utils';
+import PlausibleAnalytics from '@/components/PlausibleAnalytics';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Abdushakur - Web Developer & Designer',
+    default: 'Abdushakur | Web Developer',
     template: '%s | Abdushakur'
   },
-  description: 'Abdushakur is a passionate web developer and designer who creates modern, user-friendly applications. Explore my projects, read my blog posts about web development, and follow my journey in building digital solutions.',
-  keywords: ['Abdushakur', 'Web Developer', 'Designer', 'Frontend Developer', 'React', 'Next.js', 'TypeScript', 'Portfolio', 'Blog'],
+  description: 'Web developer specializing in building modern, accessible web applications. View my portfolio and latest projects.',
+  keywords: ['Web Developer', 'Full Stack Developer', 'JavaScript', 'TypeScript', 'Portfolio'],
   authors: [{ name: 'Abdushakur', url: 'https://abdushakur.me' }],
   creator: 'Abdushakur',
   publisher: 'Abdushakur',
@@ -22,18 +23,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Abdushakur - Web Developer & Designer',
-    description: 'Abdushakur is a passionate web developer and designer who creates modern, user-friendly applications. Explore my projects, read my blog posts about web development, and follow my journey in building digital solutions.',
+    title: 'Abdushakur | Web Developer',
+    description: 'Web developer specializing in building modern, accessible web applications. Explore my projects, read my blog posts about web development, and follow my journey in building digital solutions.',
     url: 'https://abdushakur.me',
     siteName: 'Abdushakur',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-preview.png',
         width: 1200,
         height: 630,
-        alt: 'Abdushakur - Web Developer & Designer',
+        alt: 'Abdushakur - Frontend Developer & UI Designer Portfolio',
       },
     ],
   },
@@ -52,11 +53,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Abdushakur - Web Developer & Designer',
-    description: 'Abdushakur is a passionate web developer and designer who creates modern, user-friendly applications.',
+    title: 'Abdushakur | Web Developer',
+    description: 'Web developer specializing in building modern, accessible web applications.',
     creator: '@abdushakurob',
     site: '@abdushakurob',
-    images: ['/og-image.jpg'],
+    images: ['/og-preview.png'],
   },
   icons: {
     icon: [
@@ -96,13 +97,13 @@ export default function RootLayout({
       'https://github.com/abdushakurob',
       'https://linkedin.com/in/abdushakurob'
     ],
-    jobTitle: 'Web Developer & Designer',
+    jobTitle: 'Web Developer',
     worksFor: {
       '@type': 'Organization',
       name: 'Freelance'
     },
-    description: 'Web Developer and Designer specializing in modern web applications, React, Next.js, and TypeScript',
-    knowsAbout: ['Web Development', 'Frontend Development', 'React', 'Next.js', 'TypeScript', 'UI/UX Design'],
+    description: 'Web Developer specializing in modern web applications and full stack development',
+    knowsAbout: ['Web Development', 'Full Stack Development', 'JavaScript', 'TypeScript'],
     alumniOf: 'Software Engineering',
     email: 'mailto:hello@abdushakur.me',
     address: {
@@ -118,7 +119,7 @@ export default function RootLayout({
     name: 'Abdushakur',
     alternateName: 'Abdushakur Portfolio',
     url: 'https://abdushakur.me',
-    description: 'Personal portfolio and blog by Abdushakur - Web Developer and Designer',
+    description: 'Personal portfolio and blog by Abdushakur - Web Developer',
     inLanguage: 'en-US',
     copyrightYear: new Date().getFullYear(),
     copyrightHolder: {
@@ -129,7 +130,17 @@ export default function RootLayout({
       '@type': 'SearchAction',
       target: 'https://abdushakur.me/search?q={search_term_string}',
       'query-input': 'required name=search_term_string'
-    }
+    },
+    about: {
+      '@type': 'Thing',
+      name: 'Web Development',
+      description: 'Professional web development services'
+    },
+    audience: {
+      '@type': 'Audience',
+      audienceType: 'Tech Companies, Startups, Businesses'
+    },
+    keywords: 'Web development, JavaScript, TypeScript, portfolio'
   };
 
   const sitemapData = createStaticSitemapData();
@@ -140,6 +151,12 @@ export default function RootLayout({
       className={`${satoshi.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
     >
       <head>
+        <meta name="theme-color" content="#18181b" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#18181b" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -153,7 +170,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(sitemapData) }}
         />
       </head>
-      <body className="font-satoshi antialiased">{children}</body>
+      <body className="font-satoshi antialiased">
+        {children}
+        {/* Privacy-friendly analytics */}
+        {process.env.NODE_ENV === 'production' && 
+          <PlausibleAnalytics domain="abdushakur.me" trackOutboundLinks={true} />
+        }
+      </body>
     </html>
   );
 }

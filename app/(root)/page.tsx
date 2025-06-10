@@ -5,24 +5,32 @@ import LatestLog from "@/components/latestLog";
 import Now from "@/components/now";
 
 export const metadata: Metadata = {
-  title: 'Abdushakur - Web Developer & Designer | Portfolio & Blog',
-  description: 'Welcome to Abdushakur\'s portfolio and blog. Discover my latest projects, read insightful articles about web development, and follow my journey as a web developer and designer.',
-  keywords: ['Abdushakur', 'Portfolio', 'Web Developer', 'Blog', 'Projects', 'React', 'Next.js', 'Frontend'],
+  title: 'Abdushakur | Web Developer',
+  description: 'I build modern, responsive web applications. Explore my featured projects, writings, and design work — let\'s create something amazing together.',
+  keywords: ['Web Developer', 'Full Stack Developer', 'JavaScript', 'TypeScript', 'Web Applications', 'Portfolio'],
   alternates: {
-    canonical: '/',
+    canonical: 'https://abdushakur.me/',
   },
   openGraph: {
-    title: 'Abdushakur - Web Developer & Designer | Portfolio & Blog',
-    description: 'Welcome to Abdushakur\'s portfolio and blog. Discover my latest projects, read insightful articles about web development, and follow my journey as a web developer and designer.',
-    url: 'https://abdushakur.me',
+    title: 'Abdushakur | Web Developer',
+    description: 'I build modern, responsive web applications. Explore my featured projects, writings, and design work.',
+    url: 'https://abdushakur.me/',
     type: 'website',
-    images: ['/og-image.jpg'],
+    images: [
+      {
+        url: '/og-preview.png',
+        width: 1200,
+        height: 630,
+        alt: 'Abdushakur - Web Developer'
+      }
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Abdushakur - Web Developer & Designer | Portfolio & Blog',
-    description: 'Welcome to Abdushakur\'s portfolio and blog. Discover my latest projects and articles.',
-    images: ['/og-image.jpg'],
+    title: 'Abdushakur | Web Developer',
+    description: 'I build modern, responsive web applications. Explore my featured projects and writings.',
+    creator: '@abdushakurob',
+    images: ['/og-preview.png'],
   },
 };
 
@@ -30,14 +38,39 @@ export default function Home() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'Abdushakur - Home',
-    description: 'Welcome to Abdushakur\'s portfolio and blog. Discover my latest projects, read insightful articles about web development, and follow my journey as a web developer and designer.',
-    url: 'https://abdushakur.me',
+    name: 'Abdushakur | Web Developer',
+    description: 'I build modern, responsive web applications. Explore my featured projects, writings, and design work — let\'s create something amazing together.',
+    url: 'https://abdushakur.me/',
     mainEntity: {
       '@type': 'Person',
       name: 'Abdushakur',
-      jobTitle: 'Web Developer & Designer',
-      url: 'https://abdushakur.me'
+      jobTitle: 'Web Developer',
+      url: 'https://abdushakur.me/',
+      sameAs: [
+        'https://twitter.com/abdushakurob',
+        'https://github.com/abdushakurob',
+        'https://linkedin.com/in/abdushakurob'
+      ],
+      image: 'https://abdushakur.me/avatar.jpg',
+      description: 'Frontend developer specializing in crafting modern web experiences with React and Next.js',
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Freelance'
+      },
+      knowsAbout: ['React', 'Next.js', 'TypeScript', 'UI Design', 'Web Development', 'Frontend Architecture', 'Web Accessibility', 'Performance Optimization'],
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: 'Frontend Developer',
+        occupationLocation: {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressCountry: 'Remote'
+          }
+        },
+        skills: 'React, Next.js, TypeScript, UI/UX Design, Performance Optimization',
+        responsibilities: 'Developing accessible web applications, creating UI components, optimizing web performance'
+      }
     },
     breadcrumb: {
       '@type': 'BreadcrumbList',
@@ -45,9 +78,15 @@ export default function Home() {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://abdushakur.me'
+        item: 'https://abdushakur.me/'
       }]
-    }
+    },
+    specialty: 'Frontend Development with React & Next.js',
+    significantLink: [
+      'https://abdushakur.me/projects',
+      'https://abdushakur.me/writings',
+      'https://abdushakur.me/about'
+    ]
   };
 
   return (

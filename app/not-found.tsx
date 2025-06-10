@@ -10,6 +10,17 @@ export const metadata: Metadata = {
   robots: {
     index: false,
     follow: true,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    }
+  },
+  openGraph: {
+    title: '404 - Page Not Found | Abdushakur',
+    description: "Sorry, this page doesn't exist. Return to Abdushakur's homepage to explore projects and writings.",
+    type: 'website',
+    url: 'https://abdushakur.me/404',
   },
 };
 
@@ -24,6 +35,28 @@ export default function NotFound() {
       '@type': 'Person',
       name: 'Abdushakur',
       url: 'https://abdushakur.me'
+    },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://abdushakur.me/'
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Not Found',
+          item: 'https://abdushakur.me/404'
+        }
+      ]
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://abdushakur.me/search?q={search_term_string}',
+      'query-input': 'required name=search_term_string'
     }
   };
 
