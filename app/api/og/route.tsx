@@ -4,12 +4,20 @@ import { NextRequest } from 'next/server'
 export const runtime = 'edge'
 export const contentType = 'image/png'
 
-export async function GET(request: NextRequest) {
+// This fixes the type error by ensuring the function matches Next.js Route Handler requirements
+export async function GET(request: NextRequest): Promise<Response> {
   try {
-    // Font loading for Edge runtime
-    const fontData = await fetch(
+    // Font loading for Edge runtime - using fetch with explicit Response handling
+    const fontRes = await fetch(
       new URL('/public/fonts/Satoshi-Variable.woff2', import.meta.url)
-    ).then((res) => res.arrayBuffer())
+    )
+    
+    // Ensure we have a valid response for better error handling
+    if (!fontRes.ok) {
+      throw new Error(`Failed to load font: ${fontRes.status} ${fontRes.statusText}`)
+    }
+    
+    const fontData = await fontRes.arrayBuffer()
     
     const { searchParams } = new URL(request.url)
     const title = searchParams.get('title') || 'Abdushakur'
@@ -148,8 +156,12 @@ export async function GET(request: NextRequest) {
     )
   } catch (e) {
     console.error('Error generating OG image:', e)
+    // Create a simple fallback image using a standard Response
     return new Response('Failed to generate image', {
       status: 500,
+      headers: {
+        'Content-Type': 'text/plain',
+      }
     })
   }
 }
