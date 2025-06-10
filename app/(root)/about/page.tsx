@@ -1,3 +1,27 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About | Abdushakur - Web Developer & Designer',
+  description: 'Learn more about Abdushakur, a passionate web developer and designer. Discover my journey, work philosophy, and approach to creating digital solutions.',
+  keywords: ['About', 'Abdushakur', 'Web Developer', 'Designer', 'Biography', 'Background'],
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: 'About | Abdushakur - Web Developer & Designer',
+    description: 'Learn more about Abdushakur, a passionate web developer and designer.',
+    url: 'https://abdushakur.me/about',
+    type: 'profile',
+    images: ['/og-about.jpg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About | Abdushakur',
+    description: 'Learn more about Abdushakur, web developer and designer.',
+    images: ['/og-about.jpg'],
+  },
+};
+
 export default function About() {
   return (
     <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-4xl mx-auto">

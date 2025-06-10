@@ -6,30 +6,62 @@ import ProjectDetail from './project-detail';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {
     const { slug } = await params;
-    const { data } = await axios.get(`/api/projects/${slug}`);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://abdushakur.me';
+    const { data } = await axios.get(`${baseUrl}/api/projects/${slug}`);
     const project = data.project;
     
+    const title = `${project.title} | Abdushakur`;
+    const description = project.description || `Explore ${project.title}, a project by Abdushakur showcasing modern web development techniques.`;
+    const imageUrl = project.coverImage || '/og-project-default.jpg';
+    const url = `https://abdushakur.me/projects/${slug}`;
+    
     return {
-      title: `${project.title} | Abdul Shakur`,
-      description: project.description,
+      title,
+      description,
+      keywords: [...(project.tags || []), 'Project', 'Web Development', 'Abdushakur'],
+      authors: [{ name: 'Abdushakur', url: 'https://abdushakur.me' }],
+      alternates: {
+        canonical: `/projects/${slug}`,
+      },
       openGraph: {
         title: project.title,
-        description: project.description,
-        images: project.coverImage ? [project.coverImage] : [],
+        description,
+        url,
         type: 'article',
-        authors: ['Abdul Shakur'],
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: project.title,
+          },
+        ],
+        authors: ['Abdushakur'],
+        publishedTime: project.createdAt,
+        modifiedTime: project.updatedAt,
+        tags: project.tags || [],
       },
       twitter: {
         card: 'summary_large_image',
         title: project.title,
-        description: project.description,
-        images: project.coverImage ? [project.coverImage] : [],
+        description,
+        images: [imageUrl],
+        creator: '@abdushakurob',
+      },
+      robots: {
+        index: project.status === 'published',
+        follow: true,
       },
     };
   } catch (error) {
+    console.error('Error generating metadata for project:', error);
     return {
-      title: 'Project | Abdul Shakur',
-      description: 'Project details',
+      title: 'Project | Abdushakur',
+      description: 'Explore this project by Abdushakur showcasing modern web development techniques.',
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 }

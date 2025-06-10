@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export",
+    "seo:check": "echo 'Checking SEO...'; curl -s https://abdushakur.me/sitemap.xml | head -20",
+    "seo:validate": "echo 'Validating structured data...'; curl -s 'https://validator.schema.org/validate?uri=https://abdushakur.me' || echo 'Manual validation needed'",
+    "analyze:bundle": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",

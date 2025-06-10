@@ -26,7 +26,7 @@ export function generateStructuredData({
   dateModified,
   slug,
   tags = [],
-  author = 'Abdul Shakur'
+  author = 'Abdushakur'
 }: StructuredDataProps) {
   const baseUrl = 'https://abdushakur.me';
   const url = `${baseUrl}/${type === 'BlogPosting' ? 'writings' : 'projects'}/${slug}`;
@@ -98,7 +98,7 @@ export function generateSitemapData(pages: SitemapPage[]) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     description: 'Site Navigation',
-    name: 'Abdul Shakur - Website Sitemap',
+    name: 'Abdushakur - Website Sitemap',
     itemListOrder: 'https://schema.org/ItemListOrderAscending',
     numberOfItems: pages.length,
     itemListElement: pages.map((page, index) => ({
@@ -124,4 +124,113 @@ export function createStaticSitemapData() {
   ];
 
   return generateSitemapData(pages);
+}
+
+// SEO utility functions
+export function generatePageTitle(title: string, siteName = 'Abdushakur'): string {
+  return title === siteName ? title : `${title} | ${siteName}`;
+}
+
+export function truncateText(text: string, maxLength = 160): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).trim() + '...';
+}
+
+export function extractTextFromHTML(html: string): string {
+  // Remove HTML tags and extract plain text
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+export function generateKeywords(tags: string[] = [], additionalKeywords: string[] = []): string[] {
+  const baseKeywords = ['Abdushakur', 'Web Developer', 'Designer'];
+  return [...baseKeywords, ...tags, ...additionalKeywords];
+}
+
+export function calculateReadingTime(content: string): number {
+  const wordsPerMinute = 200;
+  const text = extractTextFromHTML(content);
+  const wordCount = text.split(/\s+/).length;
+  return Math.ceil(wordCount / wordsPerMinute);
+}
+
+export function generateCanonicalUrl(path: string, baseUrl = 'https://abdushakur.me'): string {
+  return `${baseUrl}${path.startsWith('/') ? path : '/' + path}`;
+}
+
+export function generateOGImageUrl(title: string, type: 'blog' | 'project' | 'page' = 'page'): string {
+  const encodedTitle = encodeURIComponent(title);
+  return `/api/og?title=${encodedTitle}&type=${type}`;
+}
+
+interface SEOData {
+  title: string;
+  description: string;
+  keywords?: string[];
+  image?: string;
+  type?: 'website' | 'article' | 'profile';
+  publishedTime?: string;
+  modifiedTime?: string;
+  tags?: string[];
+  section?: string;
+}
+
+export function generateComprehensiveMetadata(
+  seoData: SEOData,
+  path: string
+): {
+  title: string;
+  description: string;
+  keywords: string[];
+  canonical: string;
+  openGraph: any;
+  twitter: any;
+  alternates: any;
+} {
+  const baseUrl = 'https://abdushakur.me';
+  const canonical = generateCanonicalUrl(path, baseUrl);
+  const ogImage = seoData.image || generateOGImageUrl(seoData.title);
+  
+  return {
+    title: seoData.title,
+    description: seoData.description,
+    keywords: seoData.keywords || generateKeywords(),
+    canonical,
+    openGraph: {
+      title: seoData.title,
+      description: seoData.description,
+      url: canonical,
+      type: seoData.type || 'website',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: seoData.title,
+        },
+      ],
+      siteName: 'Abdushakur',
+      locale: 'en_US',
+      ...(seoData.type === 'article' && {
+        publishedTime: seoData.publishedTime,
+        modifiedTime: seoData.modifiedTime,
+        authors: ['Abdushakur'],
+        tags: seoData.tags || [],
+        section: seoData.section || 'Technology',
+      }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seoData.title,
+      description: seoData.description,
+      images: [ogImage],
+      creator: '@abdushakurob',
+      site: '@abdushakurob',
+    },
+    alternates: {
+      canonical,
+      types: {
+        'application/rss+xml': '/feed.xml',
+      },
+    },
+  };
 }
