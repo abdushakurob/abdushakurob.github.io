@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   
+  // OG Image generation support
+  experimental: {
+    serverComponentsExternalPackages: ['sharp'],
+  },
+  
   // Headers for SEO and security
   async headers() {
     return [
