@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './globals.css';
 import { satoshi, plusJakarta, jetbrainsMono } from './fonts';
 import { createStaticSitemapData } from '@/lib/utils';
@@ -144,6 +144,11 @@ export default function RootLayout({
   };
 
   const sitemapData = createStaticSitemapData();
+  // _app.tsx or layout.tsx
+useEffect(() => {
+  document.documentElement.setAttribute('data-theme', 'light'); // or 'dark'
+}, []);
+
 
   return (
     <html 
