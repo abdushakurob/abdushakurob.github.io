@@ -35,43 +35,44 @@ export default function LatestWritings() {
   }, []);
 
   return (
-    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
+    <section className="w-full py-16 border-b border-primary-200 dark:border-primary-700">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Latest Writings</h1> {/* Changed from "Log Updates" */}
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+        <h1 className="text-3xl font-bold mb-6 text-primary-600 dark:text-accent-300">Latest Writings</h1>
+        <p className="text-lg text-primary-600/80 dark:text-accent-200/90 mb-8">
           Thoughts, mistakes, and occasional realizations.
         </p>
 
         {/* Show Loading State */}
         {loading ? (
-          <p className="text-center text-gray-500">Fetching latest writings...</p>
+          <p className="text-center text-primary-400">Fetching latest writings...</p>
         ) : error ? (
-          <p className="text-center text-red-500">Failed to load writings.</p>
+          <p className="text-center text-accent-600 dark:text-accent-300">Failed to load writings.</p>
         ) : (
           <div className="space-y-6">
             {writings.length > 0 ? (
               writings.map((writing) => (
-                <div key={writing.slug} className="flex justify-between items-center border-b pb-4">
+                <div key={writing.slug} className="flex justify-between items-center border-b border-primary-200 dark:border-primary-700 pb-4">
                   <div>
-                    {/* ✅ Title is clickable now */}
-                    <Link href={`/writings/${writing.slug}`} className="text-lg font-medium hover:text-blue-600">
+                    <Link href={`/writings/${writing.slug}`} 
+                          className="text-lg font-medium text-primary-600 dark:text-accent-200 hover:text-accent-500 dark:hover:text-accent-300 transition-colors">
                       {writing.title}
                     </Link>
-                    <p className="text-sm text-gray-500">{writing.category}</p>
+                    <p className="text-sm text-primary-400 dark:text-accent-200/70">{writing.category}</p>
                   </div>
-                  <p className="text-sm text-gray-400 font-jetbrains-mono">
+                  <p className="text-sm text-primary-400 dark:text-accent-200/60 font-jetbrains-mono">
                     {new Date(writing.createdAt).toDateString()}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-500">No writings available.</p>
+              <p className="text-center text-primary-400 dark:text-accent-200/70">No writings available.</p>
             )}
           </div>
         )}
 
-        {/* ✅ "View More Writings" Link */}
-        <Link href="/writings" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+        {/* "View More Writings" Link */}
+        <Link href="/writings" 
+              className="inline-block mt-6 text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200 font-medium transition-colors">
           View More Writings →
         </Link>
       </div>

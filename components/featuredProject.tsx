@@ -43,23 +43,23 @@ export default function FeaturedProject() {
   }, []);
 
   return (
-    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
+    <section className="w-full py-16 border-b border-primary-200 dark:border-primary-700">
       <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-6">Featured Projects</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-8">
+        <h2 className="text-4xl font-bold text-center mb-6 text-primary-600 dark:text-accent-300">Featured Projects</h2>
+        <p className="text-lg text-primary-600/80 dark:text-accent-200 text-center mb-8">
           A few projects that survived my attention span.
         </p>
 
         {/* Show loading state */}
         {loading ? (
-          <p className="text-center text-gray-500">Fetching featured projects...</p>
+          <p className="text-center text-primary-400">Fetching featured projects...</p>
         ) : (
           <>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projects.length > 0 ? (
                 projects.map((project) => (
                   <Link key={project._id} href={`/projects/${project.slug}`}>
-                    <div className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
+                    <div className="group bg-surface-light dark:bg-primary-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-primary-200 dark:border-primary-700">
                       {project.coverImage && (
                         <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
                           <Image 
@@ -72,31 +72,31 @@ export default function FeaturedProject() {
                       )}
                       <div>
                         <div className="flex items-start justify-between">
-                          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+                          <h3 className="text-xl font-semibold text-primary-600 dark:text-accent-200 group-hover:text-accent-500 dark:group-hover:text-accent-300 transition-colors">
                             {project.title}
                           </h3>
-                          <span className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                          <span className="px-2.5 py-0.5 text-xs font-medium bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300 rounded-full">
                             {project.category}
                           </span>
                         </div>
-                        <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
+                        <p className="mt-2 text-primary-600/80 dark:text-accent-200/90 line-clamp-2">
                           {project.description}
                         </p>
                         
                         {project.tags && project.tags.length > 0 && (
                           <div className="mt-4 flex flex-wrap gap-2">
                             {project.tags.map((tag, index) => (
-                              <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                              <span key={index} className="px-2 py-1 text-xs bg-primary-100 dark:bg-primary-700 text-primary-600 dark:text-accent-200 rounded-full">
                                 {tag}
                               </span>
                             ))}
                           </div>
                         )}
 
-                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-3">
+                        <div className="mt-4 pt-4 border-t border-primary-200 dark:border-primary-700 flex flex-wrap gap-3">
                           {project.link && (
                             <a href={project.link} target="_blank" rel="noopener noreferrer" 
-                               className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                               className="text-sm text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200 flex items-center gap-1">
                               <span>View Case Study</span> →
                             </a>
                           )}

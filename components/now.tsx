@@ -36,40 +36,41 @@ export default function Now() {
   }, [])
 
   return (
-    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
+    <section className="w-full py-16 border-b border-primary-200 dark:border-primary-700">
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl font-bold mb-6">What&apos;s Cooking in My Brain</h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+        <h2 className="text-3xl font-bold mb-6 text-primary-600 dark:text-accent-300">What&apos;s Cooking in My Brain</h2>
+        <p className="text-lg text-primary-600/80 dark:text-accent-200/90 mb-8">
           Stuff I&apos;m building, learning, and overthinking at the moment.
         </p>
 
         {loading ? (
-          <p className="text-gray-500 text-center">Fetching latest updates...</p>
+          <p className="text-primary-400 text-center">Fetching latest updates...</p>
         ) : tracks.length > 0 ? (
           <div className="space-y-6">
             {tracks.map((track) => (
-              <div key={track._id} className="flex justify-between items-center border-b pb-4">
-                <p className="text-gray-900 dark:text-gray-100">{track.title}</p>
-                <span className="text-xs text-blue-500 font-jetbrains-mono">
+              <div key={track._id} className="flex justify-between items-center border-b border-primary-200 dark:border-primary-700 pb-4">
+                <p className="text-primary-600 dark:text-accent-200">{track.title}</p>
+                <span className="text-xs text-accent-500 dark:text-accent-300 font-jetbrains-mono">
                   [{track.category}]
                 </span>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500">No active builds right now.</p>
+          <p className="text-center text-primary-400 dark:text-accent-200/70">No active builds right now.</p>
         )}
 
-        <Link href="/build" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+        <Link href="/build" 
+              className="inline-block mt-6 text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200 font-medium transition-colors">
           View More →
         </Link>
 
-        <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 font-jetbrains-mono">
+        <p className="mt-8 text-sm text-primary-400 dark:text-accent-200/70 font-jetbrains-mono">
           Last updated:{" "}
-          <span className="text-green-500">
+          <span className="text-accent-500 dark:text-accent-300">
             {lastUpdated || "just now"}
           </span>{" "}
-          <i>(or maybe forever ago)</i>
+          <i className="text-primary-400/80 dark:text-accent-200/60">(or maybe forever ago)</i>
         </p>
       </div>
     </section>
