@@ -1,131 +1,140 @@
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
-
+@import "tailwindcss";
+@plugin "daisyui";
 :root {
-  --lapis-DEFAULT: #22577a;
-  --lapis-100: #071219;
-  --lapis-200: #0e2331;
-  --lapis-300: #15354a;
-  --lapis-400: #1c4663;
-  --lapis-500: #22577a;
-  --lapis-600: #327fb2;
-  --lapis-700: #5aa1d1;
-  --lapis-800: #91c1e0;
-  --lapis-900: #c8e0f0;
-
-  --verdigris-DEFAULT: #38a3a5;
-  --verdigris-100: #0b2021;
-  --verdigris-200: #164141;
-  --verdigris-300: #226162;
-  --verdigris-400: #2d8183;
-  --verdigris-500: #38a3a5;
-  --verdigris-600: #52c2c4;
-  --verdigris-700: #7dd1d3;
-  --verdigris-800: #a8e0e1;
-  --verdigris-900: #d4f0f0;
-
-  --emerald-DEFAULT: #57cc99;
-  --emerald-100: #0e2c1f;
-  --emerald-200: #1b593e;
-  --emerald-300: #29855d;
-  --emerald-400: #37b27c;
-  --emerald-500: #57cc99;
-  --emerald-600: #79d6ad;
-  --emerald-700: #9ae0c2;
-  --emerald-800: #bcead6;
-  --emerald-900: #ddf5eb;
+  /* --background: #e8f5e9; Light green background */
+  --foreground: #004d40; /* Dark green text */
+  --primary: #0288d1;    /* Blue for buttons and highlights */
+  --secondary: #81c784;  /* Light green for accents */
 }
 
-/* Component Classes */
-.btn-primary {
-  background-color: var(--lapis-DEFAULT);
-  color: white;
-  transition: background-color 0.2s;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
-.btn-primary:hover {
-  background-color: var(--lapis-600);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #00251a; /* Dark green background */
+    --foreground: #e0f7fa; /* Light blue text */
+    --primary: #03a9f4;    /* Bright blue for buttons and highlights */
+    --secondary: #4caf50;  /* Green for accents */
+  }
 }
 
-.btn-secondary {
-  background-color: var(--verdigris-DEFAULT);
-  color: white;
-  transition: background-color 0.2s;
-}
-
-.btn-secondary:hover {
-  background-color: var(--verdigris-600);
-}
-
-.btn-accent {
-  background-color: var(--emerald-DEFAULT);
-  color: white;
-  transition: background-color 0.2s;
-}
-
-.btn-accent:hover {
-  background-color: var(--emerald-600);
-}
-
-/* Base styles */
 body {
-  background-color: var(--tea-900);
-  color: var(--lapis-200);
+  background: var(--background);
+  color: var(--foreground); 
+  /* font-family: Arial, Helvetica, sans-serif; */
   font-family: var(--font-satoshi), sans-serif;
 }
 
-[data-theme='dark'] body {
-  background-color: var(--lapis-200);
-  color: var(--tea-800);
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,h2,h3,h4,h5,h6{
   font-family: var(--font-plus-jakarta-sans), sans-serif !important;
 }
 
-/* Prose Styles */
-.prose h1, 
-.prose h2, 
-.prose h3, 
-.prose h4, 
-.prose h5, 
-.prose h6 {
-  font-weight: 700;
-  color: var(--lapis-DEFAULT);
-  margin-bottom: 1rem;
+ 
+pre {
+  background-color: #f5f5f5;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
 }
 
-.prose p {
-  color: var(--lapis-200);
-  margin-bottom: 1rem;
+code {
+  font-family: var(--font-jetbrains-mono), monospace;
+  color: #e63946;
 }
 
-[data-theme='dark'] .prose p {
-  color: var(--tea-800);
-}
-
-.prose a {
-  color: var(--verdigris-DEFAULT);
-  text-decoration: underline;
-}
-
-.prose a:hover {
-  color: var(--verdigris-600);
-}
-
-.prose blockquote {
-  border-left: 4px solid var(--verdigris-DEFAULT);
-  padding-left: 1rem;
-  font-style: italic;
+/* React Quill Content Styling */
+.prose .ql-code-block-container {
+  background-color: #f5f5f5;
+  border-radius: 0.375rem;
+  padding: 1rem;
   margin: 1.5rem 0;
+  overflow-x: auto;
+  display: block;
+  white-space: pre-wrap;
 }
 
+.prose .ql-code-block {
+  font-family: var(--font-jetbrains-mono), monospace;
+  color: #333;
+  white-space: pre;
+  display: block;
+}
+
+/* Target Quill-specific list items */
+.prose ol li,
+.prose ol li[data-list="ordered"] {
+  display: list-item !important;
+  list-style-type: decimal !important;
+  padding-left: 1rem;
+  margin-left: 1.5rem;
+}
+
+.prose ul li,
+.prose ul li[data-list="bullet"] {
+  display: list-item !important;
+  list-style-type: disc !important;
+  padding-left: 1rem;
+  margin-left: 1.5rem;
+}
+
+/* Hide Quill UI elements */
+.prose li .ql-ui {
+  display: none !important;
+}
+
+/* Headings from Quill */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  font-weight: bold;
+  color: #059669; /* green-600 */
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.prose h1 {
+  font-size: 2rem;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+}
+
+/* Inline code */
 .prose code {
-  background-color: var(--tea-900);
-  color: var(--lapis-DEFAULT);
-  padding: 0.25rem 0.5rem;
+  background-color: #f3f4f6;
+  color: #ef4444;
+  padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.875em;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 1.5rem 0;
+  color: #4b5563;
+}
+
+/* Links */
+.prose a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Paragraphs */
+.prose p {
+  margin: 1rem 0;
+  line-height: 1.7;
 }
