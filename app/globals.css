@@ -8,25 +8,25 @@
 @theme {
   /* 🌲 Primary Green: Deep forest green range */
   --color-primary-100: #e8f5f0;
-  --color-primary-200: #c7e6d7;
-  --color-primary-300: #94c5ae;
-  --color-primary-400: #5a9c82;
+  --color-primary-200: #c3e6d9;
+  --color-primary-300: #9ed7c2;
+  --color-primary-400: #79c8ab;
   --color-primary-500: #2c7a5f; /* Main brand green - darker and more sophisticated */
-  --color-primary-600: #1f5c46;
-  --color-primary-700: #164634;
-  --color-primary-800: #0e3424;
+  --color-primary-600: #236a51;
+  --color-primary-700: #1a5943;
+  --color-primary-800: #124835;
   --color-primary-900: #082218;
 
   /* 🌱 Accent: Sage green for balanced contrast */
-  --color-accent-100: #f0f5e9;
-  --color-accent-200: #dce8cc;
-  --color-accent-300: #b8cc9c;
-  --color-accent-400: #96b574;
-  --color-accent-500: #779656; /* More muted and natural */
-  --color-accent-600: #5c7642;
-  --color-accent-700: #455831;
-  --color-accent-800: #2e3b21;
-  --color-accent-900: #1a2112;
+  --color-accent-100: #e6f7f3;
+  --color-accent-200: #b3e6da;
+  --color-accent-300: #80d6c2;
+  --color-accent-400: #4dc5a9;
+  --color-accent-500: #1ab491; /* More muted and natural */
+  --color-accent-600: #159077;
+  --color-accent-700: #106c5d;
+  --color-accent-800: #0a4844;
+  --color-accent-900: #05242a;
 
   /* 🌓 Enhanced backgrounds and depth */
   --color-bg-light: #ffffff;
@@ -35,9 +35,9 @@
   --color-surface-dark: #102820;
   
   /* 📝 Improved text contrast */
-  --color-text-base: #1a2023;
-  --color-text-muted: #4a5558;
-  --color-text-inverse: #f0f4f2;
+  --color-text-base: #1f2937;
+  --color-text-muted: #4b5563;
+  --color-text-inverse: #f9fafb;
 
   --font-display: var(--font-satoshi), system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
@@ -213,5 +213,63 @@ input:focus, textarea:focus {
   }
   ::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-primary-300);
+  }
+}
+
+:root {
+  /* Primary Colors - Darker, more sophisticated greens */
+  --color-primary-100: #e8f5f0;
+  --color-primary-200: #c3e6d9;
+  --color-primary-300: #9ed7c2;
+  --color-primary-400: #79c8ab;
+  --color-primary-500: #2c7a5f; /* Main brand green */
+  --color-primary-600: #236a51;
+  --color-primary-700: #1a5943;
+  --color-primary-800: #124835;
+  --color-primary-900: #082218;
+
+  /* Accent Colors - More vibrant for interactive elements */
+  --color-accent-100: #e6f7f3;
+  --color-accent-200: #b3e6da;
+  --color-accent-300: #80d6c2;
+  --color-accent-400: #4dc5a9;
+  --color-accent-500: #1ab491;
+  --color-accent-600: #159077;
+  --color-accent-700: #106c5d;
+  --color-accent-800: #0a4844;
+  --color-accent-900: #05242a;
+
+  /* Surface Colors - For backgrounds and containers */
+  --color-surface-light: #ffffff;
+  --color-surface-100: #f8faf9;
+  --color-surface-200: #f0f4f2;
+  --color-surface-300: #e8eeed;
+  --color-surface-400: #dfe7e5;
+  --color-surface-500: #1f3830; /* Dark mode card background */
+  --color-surface-600: #182b25; /* Dark mode surface */
+  --color-surface-700: #121f1c;
+  --color-surface-800: #0d1812; /* Dark mode background */
+  --color-surface-900: #080c0a;
+
+  /* Rich Colors - For darker mode containers and depth */
+  --color-rich-100: #edf1f0;
+  --color-rich-200: #dbe3e1;
+  --color-rich-300: #c9d5d2;
+  --color-rich-400: #172e27; /* Dark mode card background */
+  --color-rich-500: #132420; /* Dark mode surface */
+  --color-rich-600: #0f1b18;
+  --color-rich-700: #0b1311;
+  --color-rich-800: #070a09;
+  --color-rich-900: #040505;
+
+  /* Text Colors */
+  --color-text-base: #1f2937;
+  --color-text-muted: #4b5563;
+  --color-text-inverted: #f9fafb;
+}
+
+@layer base {
+  body {
+    @apply bg-surface-light text-text-base dark:bg-primary-900 dark:text-surface-100;
   }
 }
