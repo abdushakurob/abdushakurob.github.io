@@ -3,7 +3,6 @@
 
 /* ===============================
    🌿 Refined Green Theme
-   
    Modern, confident, vibrant
 ================================= */
 @theme {
@@ -20,9 +19,9 @@
 
   /* ⚡ Accent: Deep emerald for authority */
   --color-accent-100: #e6f2ed;
-  --color-accent-200: #b3e0d0;
-  --color-accent-300: #33b58a;  /* Brighter for better contrast */
-  --color-accent-400: #29a37c;
+  --color-accent-200: #a3d5c3;
+  --color-accent-300: #2a8c6a;
+  --color-accent-400: #1c7355;
   --color-accent-500: #155c44;
   --color-accent-600: #0f4432;
   --color-accent-700: #0b3526;
@@ -31,15 +30,13 @@
 
   /* 🌓 Backgrounds and depth */
   --color-bg-light: #ffffff;
-  --color-bg-dark: #02100a;    /* Darker background for better contrast */
+  --color-bg-dark: #041710;  /* Deep forest background */
   --color-surface-light: #f4f8f6;
-  --color-surface-dark: #051812;
+  --color-surface-dark: #082318;
 
-  /* Text colors adjusted for dark mode */
   --color-text-base: #141414;
   --color-text-muted: #4b4b4b;
-  --color-text-inverse: #ffffff;  /* Pure white for better contrast */
-  --color-text-accent: #4cd4a9;   /* Bright accent for dark mode */
+  --color-text-inverse: #e8f2ed;  /* Slightly warmer white for better contrast */
 
   --font-display: var(--font-satoshi), system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
@@ -71,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-text-accent);  /* Brighter, more visible headers */
+    color: #a3d5c3;  /* Lighter shade for better visibility */
   }
 }
 
@@ -124,35 +121,35 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   .prose {
-    color: var(--color-text-inverse);
+    color: #e8f2ed;  /* Ensuring readable text color */
   }
 
   .prose h1, .prose h2, .prose h3 {
-    color: var(--color-text-accent);
-  }
-
-  .prose a {
-    color: var(--color-accent-300);  /* Brighter links for better visibility */
-  }
-
-  .prose a:hover {
-    color: var(--color-accent-200);
+    color: #a3d5c3;  /* Making headings stand out */
   }
 
   .prose blockquote {
-    background-color: #0a2318;  /* Slightly lighter than bg for contrast */
-    color: #b3e0d0;            /* Lighter text for better readability */
-    border-left-color: var(--color-accent-300);
+    background-color: #0c2d23;  /* Slightly lighter than bg for contrast */
+    color: #b3d5c3;  /* More visible quote text */
+    border-left-color: #2a8c6a;
   }
 
   .prose code {
-    background-color: #0d2c20;  /* Adjusted for better contrast */
-    color: var(--color-accent-200);
+    background-color: #133629;  /* Better contrast for code blocks */
+    color: #b3e6d5;  /* More visible code text */
   }
 
   .prose pre {
-    background-color: #071c14;
-    color: #e6f2ed;  /* Light color for better code readability */
+    background-color: #0c2d23;  /* Consistent with blockquote background */
+    color: #e6f2ed;  /* Very visible code text */
+  }
+
+  .prose a {
+    color: #3d9f7c;  /* Brighter link color for visibility */
+  }
+
+  .prose a:hover {
+    color: #4db892;  /* Even brighter on hover */
   }
 }
 
@@ -175,13 +172,14 @@ input:focus, textarea:focus {
 
 @media (prefers-color-scheme: dark) {
   input, textarea {
-    background-color: #0f2a22;
-    color: var(--color-text-inverse);
-    border-color: var(--color-primary-600);
+    background-color: #0c2d23;  /* Slightly lighter than bg for contrast */
+    color: #e8f2ed;
+    border-color: #1a472a;
   }
 
   input:focus, textarea:focus {
-    box-shadow: 0 0 0 2px var(--color-accent-400);
+    border-color: #2a8c6a;
+    box-shadow: 0 0 0 2px #1c7355;
   }
 }
 
