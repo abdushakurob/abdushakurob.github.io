@@ -3,7 +3,6 @@
 
 /* Color System */
 @theme {
-  :root {
     --midnight-green-100: #030f13;
     --midnight-green-200: #071e26;
     --midnight-green-300: #0a2d39;
@@ -64,7 +63,6 @@
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in: cubic-bezier(0.4, 0, 1, 1);
   }
-}
 
 /* Base Styles */
 body {
