@@ -4,48 +4,47 @@
 /* ===============================
    ✅ Design Tokens (Color System)
 ================================= */
-@theme {  /* Primary Brand Palette (Ocean Blue) */
-  --color-primary-100: #0a1f2d;
-  --color-primary-200: #133040;
-  --color-primary-300: #1b4154;
-  --color-primary-400: #1d4d69;
-  --color-primary-500: #22577a; /* Main brand color */
-  --color-primary-600: #38a3a5;
-  --color-primary-700: #57cc99;
-  --color-primary-800: #80ed99;
-  --color-primary-900: #c7f9cc;
+@theme {  /* Primary Brand Palette (Green) */
+  --color-primary-100: #036666;
+  --color-primary-200: #14746f;
+  --color-primary-300: #248277;
+  --color-primary-400: #358f80;
+  --color-primary-500: #469d89; /* Main brand color */
+  --color-primary-600: #56ab91;
+  --color-primary-700: #67b99a;
+  --color-primary-800: #78c6a3;
+  --color-primary-900: #88d4ab;
 
-  /* Accent Palette (Teal to Green) */
-  --color-accent-100: #133638;
-  --color-accent-200: #1d4d4e;
-  --color-accent-300: #276466;
-  --color-accent-400: #318486;
-  --color-accent-500: #38a3a5; /* Accent color */
-  --color-accent-600: #57cc99;
-  --color-accent-700: #6de0ac;
-  --color-accent-800: #80ed99;
-  --color-accent-900: #c7f9cc;
+  /* Accent Palette (Light Green) */
+  --color-accent-100: #14746f;
+  --color-accent-200: #248277;
+  --color-accent-300: #358f80;
+  --color-accent-400: #469d89;
+  --color-accent-500: #56ab91; /* Accent color */
+  --color-accent-600: #67b99a;
+  --color-accent-700: #78c6a3;
+  --color-accent-800: #88d4ab;
+  --color-accent-900: #99e2b4;
 
   /* Rich Green for Depth */
-  --color-rich-100: #0a1f1d;
-  --color-rich-200: #133230;
-  --color-rich-300: #1b4440;
-  --color-rich-400: #225750;
-  --color-rich-500: #2a6a60;
+  --color-rich-100: #036666;
+  --color-rich-200: #14746f;
+  --color-rich-300: #248277;
+  --color-rich-400: #358f80;
+  --color-rich-500: #469d89;
   --color-rich-600: #254a66;
   --color-rich-700: #3d7baa;
   --color-rich-800: #77a8ce;
-  --color-rich-900: #bbd3e6;
-  /* Neutrals */
+  --color-rich-900: #bbd3e6;  /* Neutrals */
   --color-bg-light: #f8faf8;
-  --color-bg-dark: #133040;
+  --color-bg-dark: #036666;
   --color-surface-light: #e8f3ed;
-  --color-surface-dark: #22577a;
+  --color-surface-dark: #14746f;
 
   /* Text + UI Elements */
-  --color-text-base: #22577a;
-  --color-text-muted: #38a3a5;
-  --color-border: #c7f9cc;
+  --color-text-base: #036666;
+  --color-text-muted: #358f80;
+  --color-border: #88d4ab;
 
   /* Fonts */
   --font-display: var(--font-satoshi), system-ui, sans-serif;
@@ -66,19 +65,19 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--color-bg-dark);
-    color: var(--color-surface-light);
+    color: var(--color-accent-900);
   }
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  color: var(--color-primary-600);
+  color: var(--color-primary-500);
 }
 
 @media (prefers-color-scheme: dark) {
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-accent-300);
+    color: var(--color-accent-800);
   }
 }
 
@@ -130,21 +129,23 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   .prose {
-    color: var(--color-surface-light);
+    color: var(--color-accent-900);
   }
 
   .prose blockquote {
-    background-color: var(--color-primary-700);
-    color: var(--color-accent-200);
+    background-color: var(--color-rich-200);
+    color: var(--color-accent-800);
+    border-left-color: var(--color-accent-600);
   }
 
   .prose code {
-    background-color: var(--color-primary-800);
-    color: var(--color-accent-300);
+    background-color: var(--color-rich-300);
+    color: var(--color-accent-800);
   }
 
   .prose pre {
-    background-color: var(--color-primary-800);
+    background-color: var(--color-rich-200);
+    color: var(--color-accent-900);
   }
 }
 
