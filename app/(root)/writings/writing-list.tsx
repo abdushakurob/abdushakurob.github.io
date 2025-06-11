@@ -219,368 +219,268 @@ export default function WritingList() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-      {/* Page Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-          Writings & Articles
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Thoughts, tutorials, and insights on web development, design, and technology.
-        </p>
-      </div>
-
-      {/* Control Panel */}
-      <div className="mb-8 space-y-6">
-        {/* Search Bar */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search articles by title, content, or tags..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
-          />
-          <svg
-            className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+    <section className="w-full py-16 bg-gradient-to-b from-transparent to-surface-light/50 dark:to-rich-500/10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="mb-12">
+          <h1 className="text-4xl font-bold mb-4 text-primary-500 dark:text-accent-300">Writings</h1>
+          <p className="text-lg text-primary-600/90 dark:text-accent-200/90 max-w-2xl">
+            Thoughts, tutorials, and insights about web development, design, and technology.
+          </p>
         </div>
 
-        {/* Controls Row */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-          {/* View Toggle & Sort */}
-          <div className="flex items-center gap-4">
-            {/* View Toggle */}
-            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-              <button
-                onClick={() => setViewType('grid')}
-                className={`p-2 rounded-md transition-colors ${
-                  viewType === 'grid'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-              </button>
-              <button
-                onClick={() => setViewType('list')}
-                className={`p-2 rounded-md transition-colors ${
-                  viewType === 'list'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
+        {/* Main grid layout */}
+        <div className="lg:grid lg:grid-cols-12 gap-8">
+          {/* Sidebar with filters */}
+          <aside className="lg:col-span-3 mb-8 lg:mb-0 space-y-6">
+            {/* Search */}
+            <div className="bg-surface-light dark:bg-rich-500 p-4 rounded-xl border border-primary-200/50 dark:border-primary-700/50">
+              <label className="block text-sm font-medium text-primary-600 dark:text-accent-300 mb-2">
+                Search Writings
+              </label>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search..."
+                className="w-full px-4 py-2 rounded-lg bg-white/50 dark:bg-rich-400 border border-primary-300/50 dark:border-primary-600/50 text-primary-600 dark:text-accent-200 placeholder:text-primary-400 dark:placeholder:text-accent-200/50 focus:outline-none focus:ring-2 focus:ring-accent-500/50"
+              />
             </div>
 
-            {/* Sort Dropdown */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-gray-300"
-            >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="title">Title A-Z</option>
-            </select>
-          </div>
-
-          {/* Active Filters Display */}
-          {(selectedCategory !== 'all' || selectedTags.length > 0 || searchQuery) && (
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500 dark:text-gray-400">
-                {filteredWritings.length} results
-              </span>
-              <button
-                onClick={clearFilters}
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Clear filters
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Filters Section */}
-        <div className="space-y-4">
-          {/* Categories Section */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setShowCategoriesSection(!showCategoriesSection)}
-              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
-            >
-              <span className="font-medium text-gray-900 dark:text-gray-100">Categories</span>
-              <svg
-                className={`w-5 h-5 transform transition-transform ${
-                  showCategoriesSection ? 'rotate-180' : ''
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {showCategoriesSection && (
-              <div className="p-4 flex flex-wrap gap-2">
+            {/* Categories */}
+            <div className="bg-surface-light dark:bg-rich-500 p-4 rounded-xl border border-primary-200/50 dark:border-primary-700/50">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-medium text-primary-600 dark:text-accent-300">Categories</h3>
                 <button
-                  onClick={() => setSelectedCategory("all")}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === "all"
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                      : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                  }`}
+                  onClick={() => setShowCategoriesSection(!showCategoriesSection)}
+                  className="text-accent-500 dark:text-accent-300 hover:text-accent-600 dark:hover:text-accent-200"
                 >
-                  All Categories
+                  {showCategoriesSection ? '−' : '+'}
                 </button>
-                {Array.from(categories).map((category) => (
+              </div>
+              {showCategoriesSection && (
+                <div className="space-y-2">
                   <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                      selectedCategory === category
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                        : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    onClick={() => setSelectedCategory("all")}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                      selectedCategory === "all"
+                        ? "bg-accent-500 text-white dark:bg-accent-600"
+                        : "text-primary-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-rich-400"
                     }`}
                   >
-                    {category}
+                    All Categories
                   </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Tags Section */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setShowTagsSection(!showTagsSection)}
-              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
-            >
-              <span className="font-medium text-gray-900 dark:text-gray-100">Tags</span>
-              <svg
-                className={`w-5 h-5 transform transition-transform ${
-                  showTagsSection ? 'rotate-180' : ''
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {showTagsSection && (
-              <div className="p-4 space-y-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search tags..."
-                    value={tagSearch}
-                    onChange={(e) => setTagSearch(e.target.value)}
-                    className="w-full px-3 py-2 text-sm rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {getFilteredTags().map(({ tag, count }) => (
+                  {Array.from(categories).map((category) => (
                     <button
-                      key={tag}
-                      onClick={() => handleTagToggle(tag)}
-                      className={`group px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                        selectedTags.includes(tag)
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
-                          : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                        selectedCategory === category
+                          ? "bg-accent-500 text-white dark:bg-accent-600"
+                          : "text-primary-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-rich-400"
                       }`}
                     >
-                      <span>{tag}</span>
-                      <span className="ml-1.5 px-1.5 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-gray-300 dark:group-hover:bg-gray-600">
-                        {count}
-                      </span>
+                      {category}
                     </button>
                   ))}
                 </div>
-                {!tagSearch && tagCounts.length > INITIAL_TAGS_TO_SHOW && (
-                  <button
-                    onClick={() => setShowAllTags(!showAllTags)}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {showAllTags ? 'Show Less' : `Show More (${tagCounts.length - INITIAL_TAGS_TO_SHOW} more)`}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Active Filters */}
-          {(selectedCategory !== 'all' || selectedTags.length > 0) && (
-            <div className="flex flex-wrap items-center gap-2 pt-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Active filters:</span>
-              {selectedCategory !== 'all' && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
-                  {selectedCategory}
-                  <button
-                    onClick={() => setSelectedCategory('all')}
-                    className="ml-1.5 hover:text-blue-900 dark:hover:text-blue-100"
-                  >
-                    ×
-                  </button>
-                </span>
               )}
-              {selectedTags.map(tag => (
-                <span key={tag} className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">
-                  {tag}
-                  <button
-                    onClick={() => handleTagToggle(tag)}
-                    className="ml-1.5 hover:text-green-900 dark:hover:text-green-100"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-              <button
-                onClick={clearFilters}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Clear all
-              </button>
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* Results Section */}
-      {filteredWritings.length === 0 ? (
-        <div className="text-center py-12">
-          <h3 className="text-xl text-gray-600 dark:text-gray-400">No matching articles found</h3>
-          <p className="mt-2 text-gray-500">Try adjusting your search or filter criteria</p>
-          <button
-            onClick={clearFilters}
-            className="mt-4 text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Clear all filters
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className={`
-            transition-all duration-300 
-            ${isFiltering ? 'opacity-50' : 'opacity-100'}
-            ${viewType === 'grid' 
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'
-              : 'space-y-6'
-            }
-          `}>
-            {filteredWritings.map((writing) => (
-              <Link
-                href={`/writings/${writing.slug}`}
-                key={writing._id}
-                className={`block group ${viewType === 'list' ? 'w-full' : ''}`}
+            {/* Tags */}
+            <div className="bg-surface-light dark:bg-rich-500 p-4 rounded-xl border border-primary-200/50 dark:border-primary-700/50">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-medium text-primary-600 dark:text-accent-300">Tags</h3>
+                <button
+                  onClick={() => setShowTagsSection(!showTagsSection)}
+                  className="text-accent-500 dark:text-accent-300 hover:text-accent-600 dark:hover:text-accent-200"
+                >
+                  {showTagsSection ? '−' : '+'}
+                </button>
+              </div>
+              {showTagsSection && (
+                <>
+                  <input
+                    type="text"
+                    value={tagSearch}
+                    onChange={(e) => setTagSearch(e.target.value)}
+                    placeholder="Search tags..."
+                    className="w-full px-3 py-1.5 mb-2 rounded-lg bg-white/50 dark:bg-rich-400 border border-primary-300/50 dark:border-primary-600/50 text-primary-600 dark:text-accent-200 placeholder:text-primary-400 dark:placeholder:text-accent-200/50 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/50"
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {tagCounts
+                      .filter(({ tag }) => 
+                        tag.toLowerCase().includes(tagSearch.toLowerCase())
+                      )
+                      .slice(0, showAllTags ? undefined : INITIAL_TAGS_TO_SHOW)
+                      .map(({ tag, count }) => (
+                        <button
+                          key={tag}
+                          onClick={() => {
+                            setSelectedTags(
+                              selectedTags.includes(tag)
+                                ? selectedTags.filter((t) => t !== tag)
+                                : [...selectedTags, tag]
+                            );
+                          }}
+                          className={`px-2 py-1 text-xs rounded-full transition-colors ${
+                            selectedTags.includes(tag)
+                              ? "bg-accent-500 text-white dark:bg-accent-600"
+                              : "bg-primary-100 text-primary-600 dark:bg-rich-600 dark:text-accent-200 border border-primary-200 dark:border-primary-600"
+                          }`}
+                        >
+                          {tag} ({count})
+                        </button>
+                      ))}
+                    {tagCounts.length > INITIAL_TAGS_TO_SHOW && (
+                      <button
+                        onClick={() => setShowAllTags(!showAllTags)}
+                        className="text-sm text-accent-500 dark:text-accent-300 hover:text-accent-600 dark:hover:text-accent-200"
+                      >
+                        {showAllTags ? "Show Less" : "Show More"}
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </aside>
+
+          {/* Main content area */}
+          <main className="lg:col-span-9">
+            {/* View options and sort */}
+            <div className="flex justify-between items-center mb-6 bg-surface-light dark:bg-rich-500 p-4 rounded-xl border border-primary-200/50 dark:border-primary-700/50">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setViewType("grid")}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewType === "grid"
+                      ? "bg-accent-500 text-white dark:bg-accent-600"
+                      : "text-primary-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-rich-400"
+                  }`}
+                >
+                  Grid
+                </button>
+                <button
+                  onClick={() => setViewType("list")}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewType === "list"
+                      ? "bg-accent-500 text-white dark:bg-accent-600"
+                      : "text-primary-600 dark:text-accent-200 hover:bg-primary-100 dark:hover:bg-rich-400"
+                  }`}
+                >
+                  List
+                </button>
+              </div>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="px-4 py-2 rounded-lg bg-white/50 dark:bg-rich-400 border border-primary-300/50 dark:border-primary-600/50 text-primary-600 dark:text-accent-200 focus:outline-none focus:ring-2 focus:ring-accent-500/50"
               >
-                <div className={`
-                  bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md 
-                  transition-all duration-200 border border-gray-100 dark:border-gray-700
-                  ${viewType === 'list' 
-                    ? 'flex gap-6 p-4 sm:p-6' 
-                    : 'p-6 h-full'
-                  }
-                `}>
-                  <div className={`
-                    relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700
-                    ${viewType === 'list' 
-                      ? 'w-48 h-32 flex-shrink-0' 
-                      : 'w-full h-40 mb-4'
-                    }
-                  `}>
-                    {writing.coverImage ? (
-                      <Image
-                        src={writing.coverImage}
-                        alt={writing.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-200"
-                        sizes={viewType === 'list' 
-                          ? "(max-width: 640px) 192px, 192px"
-                          : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        }
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 text-gray-300 dark:text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                          </svg>
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title">By Title</option>
+              </select>
+            </div>
+
+            {/* Writings grid/list */}
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-primary-500 dark:text-accent-300 animate-pulse">Loading writings...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <p className="text-accent-600 dark:text-accent-300">{error}</p>
+              </div>
+            ) : filteredWritings.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-primary-500 dark:text-accent-300">No writings found matching your criteria.</p>
+              </div>
+            ) : (
+              <div className={`${
+                viewType === "grid" 
+                  ? "grid grid-cols-1 md:grid-cols-2 gap-6" 
+                  : "space-y-6"
+              }`}>
+                {/* Writing cards */}
+                {filteredWritings.map((writing) => (
+                  <Link
+                    key={writing._id}
+                    href={`/writings/${writing.slug}`}
+                    className={`block group ${
+                      viewType === "grid"
+                        ? "h-full"
+                        : "flex gap-6 items-start"
+                    }`}
+                  >
+                    <article className={`h-full bg-surface-light dark:bg-rich-500 rounded-xl border border-primary-200/50 dark:border-primary-700/50 overflow-hidden transition-all duration-300 hover:shadow-lg ${
+                      viewType === "grid"
+                        ? ""
+                        : "flex gap-6"
+                    }`}>
+                      {writing.coverImage && (
+                        <div className={`relative ${
+                          viewType === "grid"
+                            ? "h-48"
+                            : "w-48 h-32"
+                        }`}>
+                          <Image
+                            src={writing.coverImage}
+                            alt={writing.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
+                      <div className="p-6">
+                        <div className="flex items-start justify-between gap-4 mb-2">
+                          <h2 className="text-xl font-bold text-primary-600 dark:text-accent-300 group-hover:text-accent-500 dark:group-hover:text-accent-200 transition-colors">
+                            {writing.title}
+                          </h2>
+                          <span className="px-3 py-1 text-xs rounded-full whitespace-nowrap bg-accent-100 text-accent-600 dark:bg-accent-500/10 dark:text-accent-300">
+                            {writing.category}
+                          </span>
+                        </div>
+                        {writing.excerpt && (
+                          <p className="text-primary-600/80 dark:text-accent-200/80 line-clamp-2 mb-4">
+                            {writing.excerpt}
+                          </p>
+                        )}
+                        <div className="flex items-center justify-between mt-4">
+                          <div className="flex flex-wrap gap-2">
+                            {writing.tags?.slice(0, 3).map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-1 text-xs rounded-full bg-primary-100 text-primary-600 dark:bg-rich-600 dark:text-accent-200 border border-primary-200 dark:border-primary-600"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          <time className="text-sm text-primary-500/70 dark:text-accent-200/60 font-mono">
+                            {getRelativeDate(writing.createdAt)}
+                          </time>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            )}
 
-                  <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
-                    <div className="flex items-start justify-between gap-3">
-                      <h2 className={`
-                        font-semibold text-gray-800 dark:text-gray-100 
-                        group-hover:text-blue-500 transition-colors
-                        ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
-                      `}>
-                        {writing.title}
-                      </h2>
-                    </div>
-
-                    <p className={`
-                      mt-2 text-gray-600 dark:text-gray-300
-                      ${viewType === 'list' ? 'line-clamp-2' : 'line-clamp-3'}
-                    `}>
-                      {writing.excerpt || processQuillHtml(writing.content).slice(0, 150) + '...'}
-                    </p>
-                    
-                    {writing.tags && writing.tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {writing.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className={`
-                      mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 
-                      flex items-center justify-between
-                      ${viewType === 'list' ? 'mt-auto' : ''}
-                    `}>
-                      <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
-                        {writing.category}
-                      </span>
-                      <time className="text-sm text-gray-500 dark:text-gray-400">
-                        {getRelativeDate(writing.publishedAt || writing.createdAt)}
-                      </time>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {hasMore && (
-            <div className="text-center mt-12">
-              <button
-                onClick={loadMore}
-                disabled={loading}
-                className="px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? 'Loading...' : 'Load More'}
-              </button>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+            {/* Load more button */}
+            {hasMore && !isFiltering && (
+              <div className="text-center mt-12">
+                <button
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-accent-500 hover:bg-accent-600 text-white dark:bg-accent-600 dark:hover:bg-accent-500 rounded-lg transition-colors"
+                >
+                  Load More
+                </button>
+              </div>
+            )}
+          </main>
+        </div>
+      </div>
+    </section>
   );
 }
