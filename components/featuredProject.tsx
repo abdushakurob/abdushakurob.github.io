@@ -85,9 +85,8 @@ export default function FeaturedProject() {
                         </p>
                         
                         {project.tags && project.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {project.tags.map((tag, index) => (
-                              <span key={index} className="px-2.5 py-1 text-xs bg-primary-100/70 dark:bg-primary-700/50 text-primary-600 dark:text-accent-200/90 rounded-full border border-primary-200/50 dark:border-primary-600/50">
+                          <div className="flex flex-wrap gap-2">                            {project.tags.map((tag, index) => (
+                              <span key={index} className="px-2.5 py-1 text-xs font-medium bg-rich-100 dark:bg-rich-600 text-white dark:white rounded-full border border-rich-500 dark:border-rich-500">
                                 {tag}
                               </span>
                             ))}
@@ -109,7 +108,7 @@ export default function FeaturedProject() {
                           )}
                           {project.customLinks?.map((link, index) => (
                             <a key={index} href={link.url} target="_blank" rel="noopener noreferrer"
-                               className="text-sm font-medium text-primary-500 hover:text-primary-600 dark:text-accent-200 dark:hover:text-accent-300 flex items-center gap-1.5 hover:gap-2.5 transition-all">
+                               className="text-sm font-medium text-primary-900 hover:text-primary-600 dark:text-accent-200 dark:hover:text-accent-300 flex items-center gap-1.5 hover:gap-2.5 transition-all">
                               <span>{link.title}</span> →
                             </a>
                           ))}

@@ -27,8 +27,7 @@ export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
-  return (
+}) {  return (
     <>
       <Header />
       <main className="min-h-screen">
