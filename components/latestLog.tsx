@@ -21,7 +21,7 @@ export default function LatestWritings() {
       try {
         const res = await axios.get("/api/writings");
         const fetchedWritings: Writing[] = res.data.writings
-          .filter(writing => !writing.isDraft)
+          .filter((writing) => !writing.isDraft)
           .slice(0, 3); // Get only the latest 3 non-draft writings
         setWritings(fetchedWritings);
       } catch (err) {
@@ -35,46 +35,60 @@ export default function LatestWritings() {
   }, []);
 
   return (
-    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Latest Writings</h1> {/* Changed from "Log Updates" */}
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          Thoughts, mistakes, and occasional realizations.
-        </p>
+    <section className="mt-16">
+      <h2 className="text-xl md:text-2xl font-semibold text-midnight-green-500 dark:text-parchment-500 mb-6">
+        Latest Logs
+      </h2>
 
-        {/* Show Loading State */}
-        {loading ? (
-          <p className="text-center text-gray-500">Fetching latest writings...</p>
-        ) : error ? (
-          <p className="text-center text-red-500">Failed to load writings.</p>
-        ) : (
-          <div className="space-y-6">
-            {writings.length > 0 ? (
-              writings.map((writing) => (
-                <div key={writing.slug} className="flex justify-between items-center border-b pb-4">
-                  <div>
-                    {/* ✅ Title is clickable now */}
-                    <Link href={`/writings/${writing.slug}`} className="text-lg font-medium hover:text-blue-600">
-                      {writing.title}
-                    </Link>
-                    <p className="text-sm text-gray-500">{writing.category}</p>
-                  </div>
-                  <p className="text-sm text-gray-400 font-jetbrains-mono">
-                    {new Date(writing.createdAt).toDateString()}
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-sea-green-500 border-t-transparent mx-auto" />
+        </div>
+      ) : error ? (
+        <div className="text-center py-12 text-red-500">{error}</div>
+      ) : (
+        <div className="space-y-6">
+          {writings.length > 0 ? (
+            writings.map((writing) => (
+              <div
+                key={writing.slug}
+                className="flex justify-between items-center border-b border-tea-green-300 dark:border-midnight-green-300 pb-4"
+              >
+                <div>
+                  <Link
+                    href={`/writings/${writing.slug}`}
+                    className="text-lg font-medium text-midnight-green-500 dark:text-parchment-500 hover:text-sea-green-500 dark:hover:text-sea-green-400"
+                  >
+                    {writing.title}
+                  </Link>
+                  <p className="text-sm text-midnight-green-400 dark:text-tea-green-400">
+                    {writing.category}
                   </p>
                 </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No writings available.</p>
-            )}
-          </div>
-        )}
+                <p className="text-sm text-midnight-green-300 dark:text-tea-green-300 font-jetbrains-mono">
+                  {new Date(writing.createdAt).toDateString()}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-midnight-green-400 dark:text-tea-green-400">
+              No writings available.
+            </p>
+          )}
+        </div>
+      )}
 
-        {/* ✅ "View More Writings" Link */}
-        <Link href="/writings" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
-          View More Writings →
-        </Link>
-      </div>
+      {writings.length > 0 && (
+        <div className="mt-8 text-center">
+          <Link
+            href="/writings"
+            className="inline-flex items-center gap-2 text-sea-green-500 dark:text-sea-green-400 hover:text-sea-green-600 dark:hover:text-sea-green-300"
+          >
+            View All Writings
+            <span>→</span>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

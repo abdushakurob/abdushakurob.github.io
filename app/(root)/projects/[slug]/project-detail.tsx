@@ -91,100 +91,71 @@ export default function ProjectDetail({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      {jsonLd && (
-        <>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
-          />
-        </>
-      )}
-      {/* Back Button - Update to show breadcrumb navigation */}
+    <div className="min-h-screen bg-parchment-500 dark:bg-midnight-green-500 text-midnight-green-500 dark:text-parchment-500 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+      {/* Navigation */}
       <nav className="mb-8 flex items-center text-sm">
         <Link 
-          href="/"
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+          href="/" 
+          className="text-midnight-green-400 hover:text-sea-green-500 dark:text-tea-green-400 dark:hover:text-sea-green-400"
         >
           Home
         </Link>
-        <span className="mx-2 text-gray-500">/</span>
+        <span className="mx-2 text-midnight-green-300 dark:text-tea-green-300">/</span>
         <Link 
           href="/projects"
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+          className="text-midnight-green-400 hover:text-sea-green-500 dark:text-tea-green-400 dark:hover:text-sea-green-400"
         >
           Projects
         </Link>
-        <span className="mx-2 text-gray-500">/</span>
-        <span className="text-gray-900 dark:text-gray-100">{project.title}</span>
+        <span className="mx-2 text-midnight-green-300 dark:text-tea-green-300">/</span>
+        <span className="text-midnight-green-500 dark:text-parchment-500">{project.title}</span>
       </nav>
 
-      {/* Project Details */}
+      {/* Project Info */}
       <div className="space-y-8">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">{project.title}</h1>
-          <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold text-midnight-green-500 dark:text-parchment-500">{project.title}</h1>
+          <div className="flex flex-wrap gap-4 text-sm">
+            <span className="px-2.5 py-0.5 bg-sea-green-500/10 text-sea-green-500 dark:bg-sea-green-400/10 dark:text-sea-green-400 rounded-full">
               {project.category}
             </span>
-            <span>•</span>
-            <time>
-              {project.manualDate 
-                ? new Date(project.manualDate).toLocaleDateString()
-                : new Date(project.createdAt).toLocaleDateString()}
-            </time>
+            <span className="text-midnight-green-400 dark:text-tea-green-400">
+              {new Date(project.publishedAt || project.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </span>
           </div>
         </div>
 
-        {/* Cover Image */}
-        {project.coverImage && (
-          <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-            <Image 
-              src={project.coverImage} 
-              alt={project.title} 
-              fill
-              className="object-cover transition-transform duration-300 hover:scale-105"
-              priority
-            />
-          </div>
-        )}
-
         {/* Project Links */}
-        <div className="flex flex-wrap gap-4">          {project.link && (
-            <a 
-              href={project.link.startsWith('http') ? project.link : `https://${project.link}`}
+        <div className="flex flex-wrap gap-4">
+          {project.link && (
+            <a
+              href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-sea-green-500 text-parchment-500 dark:bg-sea-green-400 dark:text-midnight-green-500 rounded-lg hover:bg-sea-green-600 dark:hover:bg-sea-green-300 transition-colors"
             >
               <span>View Live</span>
               <span>↗</span>
             </a>
           )}
-          
           {project.github && (
-            <a 
-              href={project.github.startsWith('http') ? project.github : `https://${project.github}`}
+            <a
+              href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 border border-midnight-green-500 text-midnight-green-500 dark:border-parchment-500 dark:text-parchment-500 rounded-lg hover:bg-midnight-green-500/5 dark:hover:bg-parchment-500/5 transition-colors"
             >
               <span>View Code</span>
               <span>↗</span>
             </a>
           )}
-
           {project.customLinks?.map((link, index) => (
             <a
               key={index}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 text-midnight-green-400 dark:text-tea-green-400 bg-parchment-600 dark:bg-midnight-green-400 rounded-lg hover:bg-parchment-700 dark:hover:bg-midnight-green-300 transition-colors"
             >
               <span>{link.title}</span>
               <span>↗</span>
@@ -194,8 +165,8 @@ export default function ProjectDetail({ slug }: { slug: string }) {
 
         {/* Project Content */}
         <div>
-          <div className="prose prose-lg max-w-none dark:prose-invert">
-            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+          <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-midnight-green-500 dark:prose-headings:text-parchment-500 prose-p:text-midnight-green-400 dark:prose-p:text-tea-green-400 prose-a:text-sea-green-500 dark:prose-a:text-sea-green-400 hover:prose-a:text-sea-green-600 dark:hover:prose-a:text-sea-green-300 prose-strong:text-midnight-green-500 dark:prose-strong:text-parchment-500">
+            <p className="text-xl text-midnight-green-400 dark:text-tea-green-400 leading-relaxed">
               {project.description}
             </p>
             {project.content && (
@@ -210,7 +181,7 @@ export default function ProjectDetail({ slug }: { slug: string }) {
             {project.tags.map((tag, index) => (
               <span 
                 key={index}
-                className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full"
+                className="px-3 py-1 text-sm bg-parchment-600 dark:bg-midnight-green-300 text-midnight-green-400 dark:text-tea-green-400 rounded-full"
               >
                 {tag}
               </span>

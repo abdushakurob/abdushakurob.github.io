@@ -1,218 +1,237 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-@layer base {
+/* Color System */
+@layer theme {
   :root {
-    /* Color System */
-    --color-midnight-green-100: #030f13;
-    --color-midnight-green-200: #071e26;
-    --color-midnight-green-300: #0a2d39;
-    --color-midnight-green-400: #0d3d4c;
-    --color-midnight-green-500: #114b5f;
-    --color-midnight-green-600: #1d81a3;
-    --color-midnight-green-700: #34b1db;
-    --color-midnight-green-800: #78cbe7;
-    --color-midnight-green-900: #bbe5f3;
+    --midnight-green-100: #030f13;
+    --midnight-green-200: #071e26;
+    --midnight-green-300: #0a2d39;
+    --midnight-green-400: #0d3d4c;
+    --midnight-green-500: #114b5f;
+    --midnight-green-600: #1d81a3;
+    --midnight-green-700: #34b1db;
+    --midnight-green-800: #78cbe7;
+    --midnight-green-900: #bbe5f3;
 
-    --color-sea-green-100: #051d16;
-    --color-sea-green-200: #0a3b2c;
-    --color-sea-green-300: #105843;
-    --color-sea-green-400: #157659;
-    --color-sea-green-500: #1a936f;
-    --color-sea-green-600: #24cd9a;
-    --color-sea-green-700: #53e1b6;
-    --color-sea-green-800: #8debcf;
-    --color-sea-green-900: #c6f5e7;
+    --sea-green-100: #051d16;
+    --sea-green-200: #0a3b2c;
+    --sea-green-300: #105843;
+    --sea-green-400: #157659;
+    --sea-green-500: #1a936f;
+    --sea-green-600: #24cd9a;
+    --sea-green-700: #53e1b6;
+    --sea-green-800: #8debcf;
+    --sea-green-900: #c6f5e7;
 
-    --color-celadon-100: #123319;
-    --color-celadon-200: #256633;
-    --color-celadon-300: #37994c;
-    --color-celadon-400: #54c16c;
-    --color-celadon-500: #88d498;
-    --color-celadon-600: #9fdcac;
-    --color-celadon-700: #b7e5c1;
-    --color-celadon-800: #cfeed6;
-    --color-celadon-900: #e7f6ea;
+    --celadon-100: #123319;
+    --celadon-200: #256633;
+    --celadon-300: #37994c;
+    --celadon-400: #54c16c;
+    --celadon-500: #88d498;
+    --celadon-600: #9fdcac;
+    --celadon-700: #b7e5c1;
+    --celadon-800: #cfeed6;
+    --celadon-900: #e7f6ea;
 
-    --color-tea-green-100: #24341e;
-    --color-tea-green-200: #47683c;
-    --color-tea-green-300: #6b9b59;
-    --color-tea-green-400: #98bc8a;
-    --color-tea-green-500: #c6dabf;
-    --color-tea-green-600: #d1e1cb;
-    --color-tea-green-700: #dde9d8;
-    --color-tea-green-800: #e8f0e5;
-    --color-tea-green-900: #f4f8f2;
+    --tea-green-100: #24341e;
+    --tea-green-200: #47683c;
+    --tea-green-300: #6b9b59;
+    --tea-green-400: #98bc8a;
+    --tea-green-500: #c6dabf;
+    --tea-green-600: #d1e1cb;
+    --tea-green-700: #dde9d8;
+    --tea-green-800: #e8f0e5;
+    --tea-green-900: #f4f8f2;
 
-    --color-parchment-100: #483813;
-    --color-parchment-200: #8f7026;
-    --color-parchment-300: #cda443;
-    --color-parchment-400: #e0c78b;
-    --color-parchment-500: #f3e9d2;
-    --color-parchment-600: #f6eedc;
-    --color-parchment-700: #f8f2e4;
-    --color-parchment-800: #faf6ed;
-    --color-parchment-900: #fdfbf6;
+    --parchment-100: #483813;
+    --parchment-200: #8f7026;
+    --parchment-300: #cda443;
+    --parchment-400: #e0c78b;
+    --parchment-500: #f3e9d2;
+    --parchment-600: #f6eedc;
+    --parchment-700: #f8f2e4;
+    --parchment-800: #faf6ed;
+    --parchment-900: #fdfbf6;
 
-    /* Semantic Colors - Light Mode */
-    --color-background: var(--color-parchment-500);
-    --color-foreground: var(--color-midnight-green-500);
-    --color-primary: var(--color-sea-green-500);
-    --color-primary-foreground: var(--color-parchment-500);
-    --color-secondary: var(--color-celadon-500);
-    --color-accent: var(--color-tea-green-500);
-    
-    /* Typography */
-    --font-sans: var(--font-satoshi);
-    --font-heading: var(--font-plus-jakarta-sans);
-    --font-mono: var(--font-jetbrains-mono);
+    /* Fonts */
+    --font-display: var(--font-satoshi), system-ui, sans-serif;
+    --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), monospace;
 
-    /* Animation */
+    /* Animations */
     --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-out: cubic-bezier(0, 0, 0.2, 1);
     --ease-in: cubic-bezier(0.4, 0, 1, 1);
-
-    /* Spacing */
-    --space-page: 2rem;
-    --space-section: 4rem;
-  }
-
-  /* Dark Mode Variables */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-background: var(--color-midnight-green-200);
-      --color-foreground: var(--color-parchment-500);
-      --color-primary: var(--color-sea-green-400);
-      --color-primary-foreground: var(--color-parchment-500);
-      --color-secondary: var(--color-celadon-400);
-      --color-accent: var(--color-tea-green-400);
-    }
   }
 }
 
 /* Base Styles */
 body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
+  background-color: var(--parchment-500);
+  color: var(--midnight-green-500);
+  font-family: var(--font-display);
 }
 
-/* Typography */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--midnight-green-500);
+    color: var(--parchment-500);
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
+  color: var(--midnight-green-500);
   font-family: var(--font-heading);
-  color: var(--color-foreground);
+  font-weight: 600;
 }
 
-pre, code {
-  font-family: var(--font-mono);
+@media (prefers-color-scheme: dark) {
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--parchment-500);
+  }
 }
 
-/* Existing styles */
-h1,h2,h3,h4,h5,h6{
-  font-family: var(--font-plus-jakarta-sans), sans-serif !important;
+/* Prose Styles */
+.prose {
+  color: var(--midnight-green-400);
 }
 
- 
-pre {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 5px;
-  overflow-x: auto;
+@media (prefers-color-scheme: dark) {
+  .prose {
+    color: var(--tea-green-400);
+  }
 }
 
-code {
-  font-family: var(--font-jetbrains-mono), monospace;
-  color: #e63946;
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--sea-green-500);
+  font-weight: 700;
 }
 
-/* React Quill Content Styling */
-.prose .ql-code-block-container {
-  background-color: #f5f5f5;
-  border-radius: 0.375rem;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  display: block;
-  white-space: pre-wrap;
+@media (prefers-color-scheme: dark) {
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: var(--sea-green-400);
+  }
 }
 
-.prose .ql-code-block {
-  font-family: var(--font-jetbrains-mono), monospace;
-  color: #333;
-  white-space: pre;
-  display: block;
-}
-
-/* Target Quill-specific list items */
-.prose ol li,
-.prose ol li[data-list="ordered"] {
-  display: list-item !important;
-  list-style-type: decimal !important;
-  padding-left: 1rem;
-  margin-left: 1.5rem;
-}
-
-.prose ul li,
-.prose ul li[data-list="bullet"] {
-  display: list-item !important;
-  list-style-type: disc !important;
-  padding-left: 1rem;
-  margin-left: 1.5rem;
-}
-
-/* Hide Quill UI elements */
-.prose li .ql-ui {
-  display: none !important;
-}
-
-/* Headings from Quill */
-.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  font-weight: bold;
-  color: #059669; /* green-600 */
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-  line-height: 1.2;
-}
-
-.prose h1 {
-  font-size: 2rem;
-}
-
-.prose h2 {
-  font-size: 1.5rem;
-}
-
-.prose h3 {
-  font-size: 1.25rem;
-}
-
-/* Inline code */
-.prose code {
-  background-color: #f3f4f6;
-  color: #ef4444;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.875em;
-}
-
-/* Blockquotes */
-.prose blockquote {
-  border-left: 4px solid #3b82f6;
-  padding-left: 1rem;
-  font-style: italic;
-  margin: 1.5rem 0;
-  color: #4b5563;
-}
-
-/* Links */
 .prose a {
-  color: #3b82f6;
+  color: var(--sea-green-500);
+  text-decoration: none;
+}
+
+.prose a:hover {
   text-decoration: underline;
 }
 
-/* Paragraphs */
-.prose p {
-  margin: 1rem 0;
-  line-height: 1.7;
+@media (prefers-color-scheme: dark) {
+  .prose a {
+    color: var(--sea-green-400);
+  }
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--sea-green-500);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--midnight-green-400);
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose blockquote {
+    color: var(--tea-green-400);
+  }
+}
+
+.prose code {
+  background-color: color-mix(in srgb, var(--tea-green-200) 20%, transparent);
+  color: var(--sea-green-600);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose code {
+    background-color: color-mix(in srgb, var(--midnight-green-400) 20%, transparent);
+    color: var(--sea-green-400);
+  }
+}
+
+.prose pre {
+  background-color: var(--midnight-green-100);
+  color: var(--parchment-500);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose pre {
+    background-color: var(--midnight-green-400);
+  }
+}
+
+/* Form Elements */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  background-color: var(--parchment-500);
+  border: 1px solid var(--tea-green-300);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--sea-green-500);
+  border-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    background-color: var(--midnight-green-400);
+    border-color: var(--midnight-green-300);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--parchment-500);
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background-color: var(--midnight-green-500);
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--sea-green-500) 50%, transparent);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--sea-green-500);
 }

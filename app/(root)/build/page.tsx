@@ -39,11 +39,10 @@ export default function Build() {
     fetchTracks()
   }, [])
 
-  return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+  return (    <div className="min-h-screen bg-parchment-500 dark:bg-midnight-green-500 text-midnight-green-500 dark:text-parchment-500 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       {/* ✅ Page Title */}
-      <h1 className="text-4xl font-bold text-green-600 mb-6">Build in Public</h1>
-      <p className="text-lg text-gray-600 mb-10">
+      <h1 className="text-4xl font-bold text-sea-green-500 dark:text-sea-green-400 mb-6">Build in Public</h1>
+      <p className="text-lg text-midnight-green-400 dark:text-tea-green-400 mb-10">
         Tracking my progress on projects, challenges, and experiments. This is where I stay accountable.
       </p>
 
@@ -52,17 +51,16 @@ export default function Build() {
         <p className="text-center text-gray-500 mt-10">Fetching projects...</p>
       ) : (
         <div className="flex flex-col md:flex-row gap-8">
-          {/* ✅ Mobile Dropdown for Sidebar */}
-          <div className="md:hidden mb-6">
-            <button
-              className="w-full flex items-center justify-between px-4 py-3 bg-blue-500 text-white rounded-lg shadow-md"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {activeTrack ? activeTrack.title : "Select a Project"}
-              <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-            </button>
-            {isOpen && (
-              <div className="mt-2 bg-white shadow-md rounded-lg">
+          {/* ✅ Mobile Dropdown for Sidebar */}            <div className="md:hidden mb-6">
+              <button
+                className="w-full flex items-center justify-between px-4 py-3 bg-sea-green-500 dark:bg-sea-green-400 text-parchment-500 dark:text-midnight-green-500 rounded-lg shadow-md"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                {activeTrack ? activeTrack.title : "Select a Project"}
+                <ChevronDown className={`h-5 w-5 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+              </button>
+              {isOpen && (
+                <div className="mt-2 bg-parchment-500 dark:bg-midnight-green-400 shadow-md rounded-lg">
                 {tracks.map((track) => (
                   <div
                     key={track._id}

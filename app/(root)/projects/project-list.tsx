@@ -56,31 +56,46 @@ const INITIAL_TAGS_TO_SHOW = 10;
 export default function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [categories, setCategories] = useState<Set<string>>(new Set());
-  const [tags, setTags] = useState<Set<string>>(new Set());
-  const [viewType, setViewType] = useState<ViewType>('grid');
-  const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [isFiltering, setIsFiltering] = useState(false);
-  const [showAllTags, setShowAllTags] = useState(false);
-  const [tagSearch, setTagSearch] = useState("");
-  const [showTagsSection, setShowTagsSection] = useState(false);
-  const [showCategoriesSection, setShowCategoriesSection] = useState(true);
+  const [viewType, setViewType] = useState<ViewType>('grid');
+  const [sortOption, setSortOption] = useState<SortOption>('newest');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showFilterSection, setShowFilterSection] = useState(false);
+  
+  // Category and tag state
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagCounts, setTagCounts] = useState<TagCount[]>([]);
+  const [tagSearch, setTagSearch] = useState('');
+  const [showAllTags, setShowAllTags] = useState(false);
+
+  const handleCategoryToggle = (category: string) => {
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
 
   useEffect(() => {
     fetchProjects();
-  }, [currentPage]);
+  }, [page]);
 
   useEffect(() => {
     if (projects.length > 0) {
-      setIsFiltering(true);
       // Extract unique categories and calculate tag frequencies
       const cats = new Set(projects.map(p => p.category));
       const tagFrequency: Record<string, number> = {};
@@ -96,9 +111,9 @@ export default function ProjectList() {
         .map(([tag, count]) => ({ tag, count }))
         .sort((a, b) => b.count - a.count);
 
-      setCategories(cats);
+      setCategories(Array.from(cats));
       setTagCounts(sortedTags);
-      setTags(new Set(sortedTags.map(t => t.tag)));
+      setTags(sortedTags.map(t => t.tag));
 
       // Filter and sort projects
       let filtered = [...projects];
@@ -112,8 +127,10 @@ export default function ProjectList() {
         );
       }
 
-      if (selectedCategory !== "all") {
-        filtered = filtered.filter(project => project.category === selectedCategory);
+      if (selectedCategories.length > 0) {
+        filtered = filtered.filter(project => 
+          selectedCategories.includes(project.category)
+        );
       }
 
       if (selectedTags.length > 0) {
@@ -127,7 +144,7 @@ export default function ProjectList() {
         const dateA = new Date(a.publishedAt || a.createdAt).getTime();
         const dateB = new Date(b.publishedAt || b.createdAt).getTime();
         
-        switch (sortBy) {
+        switch (sortOption) {
           case 'newest':
             return dateB - dateA;
           case 'oldest':
@@ -140,50 +157,40 @@ export default function ProjectList() {
       });
 
       setFilteredProjects(filtered);
-      setIsFiltering(false);
     }
-  }, [searchQuery, selectedCategory, selectedTags, sortBy, projects]);
+  }, [searchQuery, selectedCategories, selectedTags, sortOption, projects]);
 
   const fetchProjects = async () => {
     try {
-      setError(null);
       const response = await axios.get('/api/projects');
       const newProjects = response.data.projects || [];
       
       setProjects(prevProjects => {
-        if (currentPage === 1) return newProjects;
+        if (page === 1) return newProjects;
         return [...prevProjects, ...newProjects];
       });
       
       setHasMore(newProjects.length === itemsPerPage);
     } catch (err) {
       console.error('Error fetching projects:', err);
-      setError('Failed to load projects');
-      setProjects(currentPage === 1 ? [] : projects); // Keep existing projects on error if not first page
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
   const loadMore = () => {
     if (!loading && hasMore) {
-      setCurrentPage(prev => prev + 1);
+      setLoadingMore(true);
+      setPage(prev => prev + 1);
     }
-  };
-
-  const handleTagToggle = (tag: string) => {
-    setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
   };
 
   const clearFilters = () => {
     setSearchQuery("");
-    setSelectedCategory("all");
+    setSelectedCategories([]);
     setSelectedTags([]);
-    setSortBy('newest');
+    setSortOption('newest');
   };
 
   const getFilteredTags = () => {
@@ -200,7 +207,7 @@ export default function ProjectList() {
     return filtered;
   };
 
-  if (loading && currentPage === 1) {
+  if (loading && page === 1) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-pulse text-gray-600 dark:text-gray-400">
@@ -210,377 +217,261 @@ export default function ProjectList() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500">{error}</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-      {/* Page Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-          Projects & Works
-        </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          A collection of my work, side projects, and experiments in web development and design.
-        </p>
+    <div className="w-full">
+      {/* Search Bar */}
+      <div className="relative w-full mb-8">
+        <input
+          type="text"
+          placeholder="Search projects..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full px-4 py-3 pl-12 text-midnight-green-500 dark:text-parchment-500 bg-parchment-500 dark:bg-midnight-green-400 border border-tea-green-300 dark:border-midnight-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sea-green-500 focus:border-transparent"
+        />
+        <svg
+          className="absolute right-3 top-3.5 h-5 w-5 text-midnight-green-400 dark:text-tea-green-400"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
       </div>
 
-      {/* Control Panel */}
-      <div className="mb-8 space-y-6">
-        {/* Search Bar */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search projects by name, description, or tags..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
-          />
-          <svg
-            className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+      {/* Controls Row */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-8">
+        {/* View Toggle & Sort */}
+        <div className="flex items-center gap-4">
+          {/* View Toggle */}
+          <div className="flex items-center bg-parchment-600 dark:bg-midnight-green-400 rounded-lg p-1">
+            <button
+              onClick={() => setViewType('grid')}
+              className={`p-2 rounded-md transition-colors ${
+                viewType === 'grid'
+                  ? 'bg-white dark:bg-midnight-green-300 text-sea-green-500 dark:text-sea-green-400'
+                  : 'text-midnight-green-400 dark:text-tea-green-400 hover:text-midnight-green-500 dark:hover:text-parchment-500'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setViewType('list')}
+              className={`p-2 rounded-md transition-colors ${
+                viewType === 'list'
+                  ? 'bg-white dark:bg-midnight-green-300 text-sea-green-500 dark:text-sea-green-400'
+                  : 'text-midnight-green-400 dark:text-tea-green-400 hover:text-midnight-green-500 dark:hover:text-parchment-500'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Sort Dropdown */}
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value as SortOption)}
+            className="px-3 py-2 bg-parchment-500 dark:bg-midnight-green-400 border border-tea-green-300 dark:border-midnight-green-300 rounded-lg text-midnight-green-500 dark:text-parchment-500 focus:outline-none focus:ring-2 focus:ring-sea-green-500"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title">By Title</option>
+          </select>
         </div>
 
-        {/* Controls Row */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-          {/* View Toggle & Sort */}
-          <div className="flex items-center gap-4">
-            {/* View Toggle */}
-            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-              <button
-                onClick={() => setViewType('grid')}
-                className={`p-2 rounded-md transition-colors ${
-                  viewType === 'grid'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-              </button>
-              <button
-                onClick={() => setViewType('list')}
-                className={`p-2 rounded-md transition-colors ${
-                  viewType === 'list'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Sort Dropdown */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-gray-300"
+        {/* Filter Section */}
+        <div className="w-full sm:w-auto">
+          <button
+            onClick={() => setShowFilterSection(!showFilterSection)}
+            className="w-full sm:w-auto px-4 py-2 flex items-center justify-between bg-parchment-600 dark:bg-midnight-green-400 text-midnight-green-500 dark:text-parchment-500 rounded-lg"
+          >
+            <span className="text-sm">Filter Projects</span>
+            <svg
+              className={`w-5 h-5 transform transition-transform ${showFilterSection ? 'rotate-180' : ''}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="title">Title A-Z</option>
-            </select>
-          </div>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-          {/* Active Filters Display */}
-          {(selectedCategory !== 'all' || selectedTags.length > 0 || searchQuery) && (
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500 dark:text-gray-400">
-                {filteredProjects.length} results
-              </span>
-              <button
-                onClick={clearFilters}
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Clear filters
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Filters Section */}
-        <div className="space-y-4">
-          {/* Categories Section */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setShowCategoriesSection(!showCategoriesSection)}
-              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
-            >
-              <span className="font-medium text-gray-900 dark:text-gray-100">Categories</span>
-              <svg
-                className={`w-5 h-5 transform transition-transform ${
-                  showCategoriesSection ? 'rotate-180' : ''
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {showCategoriesSection && (
-              <div className="p-4 flex flex-wrap gap-2">
-                <button
-                  onClick={() => setSelectedCategory("all")}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    selectedCategory === "all"
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                      : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                  }`}
-                >
-                  All Categories
-                </button>
-                {Array.from(categories).map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                      selectedCategory === category
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                        : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Tags Section */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setShowTagsSection(!showTagsSection)}
-              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
-            >
-              <span className="font-medium text-gray-900 dark:text-gray-100">Tags</span>
-              <svg
-                className={`w-5 h-5 transform transition-transform ${
-                  showTagsSection ? 'rotate-180' : ''
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            {showTagsSection && (
-              <div className="p-4 space-y-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search tags..."
-                    value={tagSearch}
-                    onChange={(e) => setTagSearch(e.target.value)}
-                    className="w-full px-3 py-2 text-sm rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-                  />
+          {showFilterSection && (
+            <div className="mt-2 p-4 bg-parchment-500 dark:bg-midnight-green-400 rounded-lg border border-tea-green-300 dark:border-midnight-green-300">
+              <div className="space-y-4">
+                {/* Categories */}
+                <div>
+                  <h3 className="text-sm font-medium text-midnight-green-500 dark:text-parchment-500 mb-2">Categories</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map((category) => (
+                      <button
+                        key={category}
+                        onClick={() => handleCategoryToggle(category)}
+                        className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                          selectedCategories.includes(category)
+                            ? 'bg-sea-green-500 text-parchment-500'
+                            : 'bg-parchment-600 text-midnight-green-400 dark:bg-midnight-green-300 dark:text-tea-green-400 hover:bg-sea-green-500/10'
+                        }`}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {getFilteredTags().map(({ tag, count }) => (
+
+                {/* Tags */}
+                <div>
+                  <h3 className="text-sm font-medium text-midnight-green-500 dark:text-parchment-500 mb-2">Tags</h3>
+                  <div className="relative mb-2">
+                    <input
+                      type="text"
+                      placeholder="Search tags..."
+                      value={tagSearch}
+                      onChange={(e) => setTagSearch(e.target.value)}
+                      className="w-full px-3 py-2 text-sm bg-parchment-600 dark:bg-midnight-green-300 text-midnight-green-500 dark:text-parchment-500 rounded-md border border-tea-green-300 dark:border-midnight-green-400 focus:outline-none focus:ring-2 focus:ring-sea-green-500"
+                    />
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {getFilteredTags()
+                      .slice(0, showAllTags ? undefined : INITIAL_TAGS_TO_SHOW)
+                      .map(({ tag, count }) => (
+                        <button
+                          key={tag}
+                          onClick={() => handleTagToggle(tag)}
+                          className={`group px-3 py-1 rounded-full text-sm transition-colors ${
+                            selectedTags.includes(tag)
+                              ? 'bg-sea-green-500 text-parchment-500'
+                              : 'bg-parchment-600 text-midnight-green-400 dark:bg-midnight-green-300 dark:text-tea-green-400 hover:bg-sea-green-500/10'
+                          }`}
+                        >
+                          <span>{tag}</span>
+                          <span className="ml-1.5 px-1.5 py-0.5 text-xs rounded-full bg-parchment-500/20 dark:bg-midnight-green-500/20">
+                            {count}
+                          </span>
+                        </button>
+                      ))}
+                  </div>
+                  {tagCounts.length > INITIAL_TAGS_TO_SHOW && (
                     <button
-                      key={tag}
-                      onClick={() => handleTagToggle(tag)}
-                      className={`group px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                        selectedTags.includes(tag)
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
-                          : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-                      }`}
+                      onClick={() => setShowAllTags(!showAllTags)}
+                      className="mt-2 text-sm text-sea-green-500 dark:text-sea-green-400 hover:underline"
                     >
-                      <span>{tag}</span>
-                      <span className="ml-1.5 px-1.5 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-gray-300 dark:group-hover:bg-gray-600">
-                        {count}
-                      </span>
+                      {showAllTags ? 'Show Less' : 'Show All Tags'}
                     </button>
-                  ))}
+                  )}
                 </div>
-                {!tagSearch && tagCounts.length > INITIAL_TAGS_TO_SHOW && (
+
+                {/* Clear Filters */}
+                {(selectedCategories.length > 0 || selectedTags.length > 0) && (
                   <button
-                    onClick={() => setShowAllTags(!showAllTags)}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                    onClick={clearFilters}
+                    className="mt-4 px-3 py-1 text-sm text-sea-green-500 dark:text-sea-green-400 hover:underline"
                   >
-                    {showAllTags ? 'Show Less' : `Show More (${tagCounts.length - INITIAL_TAGS_TO_SHOW} more)`}
+                    Clear All Filters
                   </button>
                 )}
               </div>
-            )}
-          </div>
-
-          {/* Active Filters */}
-          {(selectedCategory !== 'all' || selectedTags.length > 0) && (
-            <div className="flex flex-wrap items-center gap-2 pt-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Active filters:</span>
-              {selectedCategory !== 'all' && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
-                  {selectedCategory}
-                  <button
-                    onClick={() => setSelectedCategory('all')}
-                    className="ml-1.5 hover:text-blue-900 dark:hover:text-blue-100"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-              {selectedTags.map(tag => (
-                <span key={tag} className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">
-                  {tag}
-                  <button
-                    onClick={() => handleTagToggle(tag)}
-                    className="ml-1.5 hover:text-green-900 dark:hover:text-green-100"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-              <button
-                onClick={clearFilters}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Clear all
-              </button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Results Section */}
-      {filteredProjects.length === 0 ? (
-        <div className="text-center py-12">
-          <h3 className="text-xl text-gray-600 dark:text-gray-400">No matching projects found</h3>
-          <p className="mt-2 text-gray-500">Try adjusting your search or filter criteria</p>
-          <button
-            onClick={clearFilters}
-            className="mt-4 text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Clear all filters
-          </button>
+      {/* Main Content */}
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-sea-green-500 border-t-transparent"></div>
         </div>
       ) : (
         <>
-          <div className={`
-            transition-all duration-300 
-            ${isFiltering ? 'opacity-50' : 'opacity-100'}
-            ${viewType === 'grid' 
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'
-              : 'space-y-6'
-            }
-          `}>
+          <div className={`grid gap-6 ${viewType === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : ''}`}>
             {filteredProjects.map((project) => (
               <Link
-                href={`/projects/${project.slug}`}
                 key={project._id}
-                className={`block group ${viewType === 'list' ? 'w-full' : ''}`}
-              >
-                <div className={`
-                  bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md 
-                  transition-all duration-200 border border-gray-100 dark:border-gray-700
+                href={`/projects/${project.slug}`}
+                className={`
+                  group block 
+                  bg-parchment-500 dark:bg-midnight-green-400 rounded-xl shadow-sm hover:shadow-md 
+                  transition-all duration-200 border border-tea-green-300 dark:border-midnight-green-300
                   ${viewType === 'list' 
                     ? 'flex gap-6 p-4 sm:p-6' 
                     : 'p-6 h-full'
                   }
+                `}
+              >
+                <div className={`
+                  relative rounded-lg overflow-hidden bg-parchment-600 dark:bg-midnight-green-300
+                  ${viewType === 'list' 
+                    ? 'w-48 h-32 flex-shrink-0' 
+                    : 'w-full h-40 mb-4'
+                  }
                 `}>
-                  <div className={`
-                    relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700
-                    ${viewType === 'list' 
-                      ? 'w-48 h-32 flex-shrink-0' 
-                      : 'w-full h-40 mb-4'
-                    }
+                  {project.coverImage ? (
+                    <Image
+                      src={project.coverImage}
+                      alt={project.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      sizes={viewType === 'list' 
+                        ? "(max-width: 640px) 192px, 192px"
+                        : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      }
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 text-tea-green-400 dark:text-midnight-green-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
+                  <div className="flex items-start justify-between gap-3">
+                    <h2 className={`
+                      text-midnight-green-500 dark:text-parchment-500 font-semibold
+                      group-hover:text-sea-green-500 dark:group-hover:text-sea-green-400 transition-colors
+                      ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
+                    `}>
+                      {project.title}
+                    </h2>
+                  </div>
+
+                  <p className={`
+                    mt-2 text-midnight-green-400 dark:text-tea-green-400
+                    ${viewType === 'list' ? 'line-clamp-2' : 'line-clamp-3'}
                   `}>
-                    {project.coverImage ? (
-                      <Image
-                        src={project.coverImage}
-                        alt={project.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-200"
-                        sizes={viewType === 'list' 
-                          ? "(max-width: 640px) 192px, 192px"
-                          : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        }
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 text-gray-300 dark:text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
-                    <div className="flex items-start justify-between gap-3">
-                      <h2 className={`
-                        font-semibold text-gray-800 dark:text-gray-100 
-                        group-hover:text-blue-500 transition-colors
-                        ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
-                      `}>
-                        {project.title}
-                      </h2>
-                      {project.isFeatured && (
-                        <span className="flex-shrink-0 px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
-                          Featured
+                    {project.description}
+                  </p>
+                  
+                  {project.tags && project.tags.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {project.tags.map((tag, index) => (
+                        <span key={index} className="px-2 py-1 text-xs bg-parchment-600 dark:bg-midnight-green-300 text-midnight-green-400 dark:text-tea-green-400 rounded-full">
+                          {tag}
                         </span>
-                      )}
+                      ))}
                     </div>
-
-                    <p className={`
-                      mt-2 text-gray-600 dark:text-gray-300
-                      ${viewType === 'list' ? 'line-clamp-1' : 'line-clamp-2'}
-                    `}>
-                      {project.description}
-                    </p>
-                    
-                    {project.tags && project.tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {project.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className={`
-                      mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 
-                      flex items-center justify-between
-                      ${viewType === 'list' ? 'mt-auto' : ''}
-                    `}>
-                      <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
-                        {project.category}
-                      </span>
-                      <time className="text-sm text-gray-500 dark:text-gray-400">
-                        {getRelativeDate(project.publishedAt || project.createdAt)}
-                      </time>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </Link>
             ))}
           </div>
 
+          {/* Load More Button */}
           {hasMore && (
-            <div className="text-center mt-12">
+            <div className="text-center mt-8">
               <button
                 onClick={loadMore}
-                disabled={loading}
-                className="px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loadingMore}
+                className="px-6 py-3 text-lg font-medium bg-sea-green-500 text-parchment-500 rounded-lg hover:bg-sea-green-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Loading...' : 'Load More'}
+                {loadingMore ? 'Loading...' : 'Load More'}
               </button>
             </div>
           )}
