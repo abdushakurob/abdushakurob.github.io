@@ -6,33 +6,33 @@
    Modern, confident, vibrant
 ================================= */
 @theme {
-  /* 🍃 Primary Green: Deep forest green with rich variations */
-  --color-primary-100: #e8f5e9;
-  --color-primary-200: #c8e6c9;
-  --color-primary-300: #2e7d32;
-  --color-primary-400: #1b5e20;
-  --color-primary-500: #0d4716; /* Main brand deep green */
-  --color-primary-600: #0a3b12;
-  --color-primary-700: #072f0e;
-  --color-primary-800: #05230a;
-  --color-primary-900: #031705;
+  /* 🍃 Primary Green: Commanding dark green palette */
+  --color-primary-100: #e3ebe6;
+  --color-primary-200: #c7d8ce;
+  --color-primary-300: #1a472a;  /* Powerful dark green */
+  --color-primary-400: #143d23;
+  --color-primary-500: #0f331c;  /* Main brand commanding green */
+  --color-primary-600: #0a2815;
+  --color-primary-700: #081f11;
+  --color-primary-800: #05160c;
+  --color-primary-900: #030c06;
 
-  /* ⚡ Accent: Rich emerald for contrast */
-  --color-accent-100: #e8f8f3;
-  --color-accent-200: #b3e6d5;
-  --color-accent-300: #66d9af;
-  --color-accent-400: #2ecc8f;
-  --color-accent-500: #25a673;
-  --color-accent-600: #1c8058;
-  --color-accent-700: #155f41;
-  --color-accent-800: #0e3d2a;
-  --color-accent-900: #071c13;
+  /* ⚡ Accent: Deep emerald for authority */
+  --color-accent-100: #e6f2ed;
+  --color-accent-200: #a3d5c3;
+  --color-accent-300: #2a8c6a;
+  --color-accent-400: #1c7355;
+  --color-accent-500: #155c44;
+  --color-accent-600: #0f4432;
+  --color-accent-700: #0b3526;
+  --color-accent-800: #08261b;
+  --color-accent-900: #041710;
 
   /* 🌓 Backgrounds and depth */
   --color-bg-light: #ffffff;
-  --color-bg-dark: #071a12;
-  --color-surface-light: #f5faf7;
-  --color-surface-dark: #0a241b;
+  --color-bg-dark: #041710;
+  --color-surface-light: #f4f8f6;
+  --color-surface-dark: #082318;
 
   --color-text-base: #141414;
   --color-text-muted: #4b4b4b;
