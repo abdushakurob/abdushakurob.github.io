@@ -42,6 +42,9 @@ interface Project {
   publishedAt?: string;
 }
 
+type ViewType = 'grid' | 'list';
+type SortOption = 'newest' | 'oldest' | 'title';
+
 const itemsPerPage = 3;
 
 export default function ProjectList() {
@@ -49,11 +52,16 @@ export default function ProjectList() {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [categories, setCategories] = useState<Set<string>>(new Set());
+  const [tags, setTags] = useState<Set<string>>(new Set());
+  const [viewType, setViewType] = useState<ViewType>('grid');
+  const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -61,11 +69,16 @@ export default function ProjectList() {
 
   useEffect(() => {
     if (projects.length > 0) {
-      // Extract unique categories
+      setIsFiltering(true);
+      // Extract unique categories and tags
       const cats = new Set(projects.map(p => p.category));
+      const tagSet = new Set<string>();
+      projects.forEach(p => p.tags?.forEach(tag => tagSet.add(tag)));
+      
       setCategories(cats);
+      setTags(tagSet);
 
-      // Filter projects based on search and category
+      // Filter and sort projects
       let filtered = [...projects];
       
       if (searchQuery) {
@@ -81,9 +94,33 @@ export default function ProjectList() {
         filtered = filtered.filter(project => project.category === selectedCategory);
       }
 
+      if (selectedTags.length > 0) {
+        filtered = filtered.filter(project => 
+          selectedTags.every(tag => project.tags?.includes(tag))
+        );
+      }
+
+      // Sort projects
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.publishedAt || a.createdAt).getTime();
+        const dateB = new Date(b.publishedAt || b.createdAt).getTime();
+        
+        switch (sortBy) {
+          case 'newest':
+            return dateB - dateA;
+          case 'oldest':
+            return dateA - dateB;
+          case 'title':
+            return a.title.localeCompare(b.title);
+          default:
+            return dateB - dateA;
+        }
+      });
+
       setFilteredProjects(filtered);
+      setIsFiltering(false);
     }
-  }, [searchQuery, selectedCategory, projects]);
+  }, [searchQuery, selectedCategory, selectedTags, sortBy, projects]);
 
   const fetchProjects = async () => {
     try {
@@ -112,6 +149,21 @@ export default function ProjectList() {
     }
   };
 
+  const handleTagToggle = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setSelectedCategory("all");
+    setSelectedTags([]);
+    setSortBy('newest');
+  };
+
   if (loading && currentPage === 1) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -133,7 +185,7 @@ export default function ProjectList() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
       {/* Page Header */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
           Projects & Works
         </h1>
@@ -142,8 +194,9 @@ export default function ProjectList() {
         </p>
       </div>
 
-      {/* Search and Filter Section */}
-      <div className="mb-8 space-y-4">
+      {/* Control Panel */}
+      <div className="mb-8 space-y-6">
+        {/* Search Bar */}
         <div className="relative">
           <input
             type="text"
@@ -159,66 +212,171 @@ export default function ProjectList() {
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setSelectedCategory("all")}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              selectedCategory === "all"
-                ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-            }`}
-          >
-            All
-          </button>
-          {Array.from(categories).map((category) => (
+        {/* Controls Row */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+          {/* View Toggle & Sort */}
+          <div className="flex items-center gap-4">
+            {/* View Toggle */}
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+              <button
+                onClick={() => setViewType('grid')}
+                className={`p-2 rounded-md transition-colors ${
+                  viewType === 'grid'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+              </button>
+              <button
+                onClick={() => setViewType('list')}
+                className={`p-2 rounded-md transition-colors ${
+                  viewType === 'list'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Sort Dropdown */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-gray-300"
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="title">Title A-Z</option>
+            </select>
+          </div>
+
+          {/* Active Filters Display */}
+          {(selectedCategory !== 'all' || selectedTags.length > 0 || searchQuery) && (
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-500 dark:text-gray-400">
+                {filteredProjects.length} results
+              </span>
+              <button
+                onClick={clearFilters}
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Filters Section */}
+        <div className="space-y-4">
+          {/* Categories */}
+          <div className="flex flex-wrap gap-2">
             <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => setSelectedCategory("all")}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === category
+                selectedCategory === "all"
                   ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
                   : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
-              {category}
+              All Categories
             </button>
-          ))}
+            {Array.from(categories).map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
+                    : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {Array.from(tags).map((tag) => (
+              <button
+                key={tag}
+                onClick={() => handleTagToggle(tag)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  selectedTags.includes(tag)
+                    ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
+                    : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
+      {/* Results Section */}
       {filteredProjects.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl text-gray-600 dark:text-gray-400">No matching projects found</h3>
           <p className="mt-2 text-gray-500">Try adjusting your search or filter criteria</p>
+          <button
+            onClick={clearFilters}
+            className="mt-4 text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Clear all filters
+          </button>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className={`
+            transition-all duration-300 
+            ${isFiltering ? 'opacity-50' : 'opacity-100'}
+            ${viewType === 'grid' 
+              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'
+              : 'space-y-6'
+            }
+          `}>
             {filteredProjects.map((project) => (
               <Link
                 href={`/projects/${project.slug}`}
                 key={project._id}
-                className="block group"
+                className={`block group ${viewType === 'list' ? 'w-full' : ''}`}
               >
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 h-full">
-                  <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                <div className={`
+                  bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md 
+                  transition-all duration-200 border border-gray-100 dark:border-gray-700
+                  ${viewType === 'list' 
+                    ? 'flex gap-6 p-4 sm:p-6' 
+                    : 'p-6 h-full'
+                  }
+                `}>
+                  <div className={`
+                    relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700
+                    ${viewType === 'list' 
+                      ? 'w-48 h-32 flex-shrink-0' 
+                      : 'w-full h-40 mb-4'
+                    }
+                  `}>
                     {project.coverImage ? (
                       <Image
                         src={project.coverImage}
                         alt={project.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-200"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes={viewType === 'list' 
+                          ? "(max-width: 640px) 192px, 192px"
+                          : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        }
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -230,9 +388,14 @@ export default function ProjectList() {
                       </div>
                     )}
                   </div>
-                  <div>
+
+                  <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
                     <div className="flex items-start justify-between gap-3">
-                      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors line-clamp-2">
+                      <h2 className={`
+                        font-semibold text-gray-800 dark:text-gray-100 
+                        group-hover:text-blue-500 transition-colors
+                        ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
+                      `}>
                         {project.title}
                       </h2>
                       {project.isFeatured && (
@@ -241,7 +404,11 @@ export default function ProjectList() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
+
+                    <p className={`
+                      mt-2 text-gray-600 dark:text-gray-300
+                      ${viewType === 'list' ? 'line-clamp-1' : 'line-clamp-2'}
+                    `}>
                       {project.description}
                     </p>
                     
@@ -255,7 +422,11 @@ export default function ProjectList() {
                       </div>
                     )}
 
-                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                    <div className={`
+                      mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 
+                      flex items-center justify-between
+                      ${viewType === 'list' ? 'mt-auto' : ''}
+                    `}>
                       <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
                         {project.category}
                       </span>
@@ -268,6 +439,7 @@ export default function ProjectList() {
               </Link>
             ))}
           </div>
+
           {hasMore && (
             <div className="text-center mt-12">
               <button
