@@ -112,7 +112,7 @@ export default function WritingList() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {writings.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl text-gray-600 dark:text-gray-400">No writings published yet.</h3>
@@ -120,45 +120,64 @@ export default function WritingList() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {writings.map((writing) => (
               <Link
                 href={`/writings/${writing.slug}`}
                 key={writing._id}
-                className="group flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                className="block group"
               >
-                {writing.coverImage && (
-                  <div className="relative w-full h-48">
-                    <Image
-                      src={writing.coverImage}
-                      alt={writing.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                )}
-                <div className="p-6 flex-1 flex flex-col">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                    {writing.title}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-                    {writing.excerpt || processQuillHtml(writing.content).substring(0, 150)}...
-                  </p>
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                    <span>{writing.category}</span>
-                    <time>{getRelativeDate(writing.publishedAt || writing.createdAt)}</time>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 h-full">
+                  {writing.coverImage && (
+                    <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+                      <Image
+                        src={writing.coverImage}
+                        alt={writing.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <div className="flex items-start justify-between">
+                      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors line-clamp-2">
+                        {writing.title}
+                      </h2>
+                    </div>
+                    <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-3">
+                      {writing.excerpt || processQuillHtml(writing.content).slice(0, 150) + '...'}
+                    </p>
+                    
+                    {writing.tags && writing.tags.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {writing.tags.map((tag, index) => (
+                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                      <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                        {writing.category}
+                      </span>
+                      <time className="text-sm text-gray-500 dark:text-gray-400">
+                        {getRelativeDate(writing.publishedAt || writing.createdAt)}
+                      </time>
+                    </div>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-
           {hasMore && (
-            <div className="mt-8 text-center">
+            <div className="text-center mt-12">
               <button
                 onClick={loadMore}
                 disabled={loading}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Loading...' : 'Load More'}
               </button>

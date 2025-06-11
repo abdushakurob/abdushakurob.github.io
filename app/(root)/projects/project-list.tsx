@@ -101,7 +101,7 @@ export default function ProjectList() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       {projects.length === 0 ? (
         <div className="text-center py-12">
           <h3 className="text-xl text-gray-600 dark:text-gray-400">No projects published yet.</h3>
@@ -109,54 +109,69 @@ export default function ProjectList() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {projects.map((project) => (
               <Link
                 href={`/projects/${project.slug}`}
                 key={project._id}
-                className="group flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+                className="block group"
               >
-                {project.coverImage && (
-                  <div className="relative w-full h-48">
-                    <Image
-                      src={project.coverImage}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                )}
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                      {project.title}
-                    </h2>
-                    {project.isFeatured && (
-                      <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100 rounded-full">
-                        Featured
-                      </span>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700 h-full">
+                  {project.coverImage && (
+                    <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+                      <Image
+                        src={project.coverImage}
+                        alt={project.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <div className="flex items-start justify-between gap-3">
+                      <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors line-clamp-2">
+                        {project.title}
+                      </h2>
+                      {project.isFeatured && (
+                        <span className="flex-shrink-0 px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
+                      {project.description}
+                    </p>
+                    
+                    {project.tags && project.tags.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {project.tags.map((tag, index) => (
+                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     )}
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500 dark:text-gray-400">{project.category}</span>
-                    <time className="text-gray-500 dark:text-gray-400">
-                      {getRelativeDate(project.publishedAt || project.createdAt)}
-                    </time>
+
+                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                      <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                        {project.category}
+                      </span>
+                      <time className="text-sm text-gray-500 dark:text-gray-400">
+                        {getRelativeDate(project.publishedAt || project.createdAt)}
+                      </time>
+                    </div>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-
           {hasMore && (
-            <div className="mt-8 text-center">
+            <div className="text-center mt-12">
               <button
                 onClick={loadMore}
                 disabled={loading}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Loading...' : 'Load More'}
               </button>
