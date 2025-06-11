@@ -36,16 +36,15 @@ const Hero: React.FC = () => {
             Welcome to my little corner on the internet where I throw things—ideas, half-baked projects, weird thoughts, and whatever else I&apos;m figuring out. Some things will make sense, most won&apos;t. Either way, you&apos;re free to look around.
           </p>
           
-          <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-            <Link
+          <div className="flex flex-wrap gap-4 pt-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>            <Link
               href="/projects"
-              className="px-6 py-3 text-lg font-medium text-parchment-500 bg-sea-green-500 rounded-lg shadow-md hover:bg-sea-green-600 transition"
+              className="px-6 py-3 text-lg font-medium text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 transform hover:scale-[1.02] transition-all"
             >
               Stuff I&apos;ve Built
             </Link>
             <Link
               href="/about"
-              className="px-6 py-3 text-lg font-medium text-sea-green-500 border border-sea-green-500 rounded-lg hover:bg-sea-green-500/10 transition"
+              className="px-6 py-3 text-lg font-medium text-indigo-600 dark:text-indigo-400 border-2 border-indigo-600 dark:border-indigo-400 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950 transform hover:scale-[1.02] transition-all"
             >
               What&apos;s This All About?
             </Link>

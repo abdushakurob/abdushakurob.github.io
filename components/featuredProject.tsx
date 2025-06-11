@@ -43,86 +43,84 @@ export default function FeaturedProject() {
   }, []);
 
   return (
-    <section className="mt-16">
+    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
       <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-xl md:text-2xl font-semibold text-midnight-green-500 dark:text-parchment-500 mb-6">
-          Featured Projects
-        </h2>
+        <h2 className="text-4xl font-bold text-center mb-6">Featured Projects</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-8">
+          A few projects that survived my attention span.
+        </p>
 
         {/* Show loading state */}
         {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-sea-green-500 border-t-transparent mx-auto" />
-          </div>
+          <p className="text-center text-gray-500">Fetching featured projects...</p>
         ) : (
           <>
-            {projects.length === 0 ? (
-              <div className="text-center py-12 text-midnight-green-400 dark:text-tea-green-400">
-                No featured projects yet.
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {projects.map((project) => (
-                  <Link
-                    key={project._id}
-                    href={`/projects/${project.slug}`}
-                    className="group block bg-parchment-500 dark:bg-midnight-green-400 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-tea-green-300 dark:border-midnight-green-300 overflow-hidden"
-                  >
-                    <div className="relative h-48">
-                      {project.coverImage ? (
-                        <Image
-                          src={project.coverImage}
-                          alt={project.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-200"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-parchment-600 dark:bg-midnight-green-300">
-                          <div className="w-16 h-16 text-tea-green-400 dark:text-midnight-green-500">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                              />
-                            </svg>
-                          </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {projects.length > 0 ? (
+                projects.map((project) => (
+                  <Link key={project._id} href={`/projects/${project.slug}`}>
+                    <div className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100 dark:border-gray-700">
+                      {project.coverImage && (
+                        <div className="relative w-full h-40 mb-4 rounded-lg overflow-hidden">
+                          <Image 
+                            src={project.coverImage} 
+                            alt={project.title} 
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-200"
+                          />
                         </div>
                       )}
-                    </div>
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 group-hover:text-blue-500 transition-colors">
+                            {project.title}
+                          </h3>
+                          <span className="px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                            {project.category}
+                          </span>
+                        </div>
+                        <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        {project.tags && project.tags.length > 0 && (
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {project.tags.map((tag, index) => (
+                              <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-midnight-green-500 dark:text-parchment-500 group-hover:text-sea-green-500 dark:group-hover:text-sea-green-400 transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="mt-2 text-midnight-green-400 dark:text-tea-green-400">
-                        {project.description}
-                      </p>
-
-                      {project.tags && project.tags.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {project.tags.map((tag, index) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 text-xs bg-parchment-600 dark:bg-midnight-green-300 text-midnight-green-400 dark:text-tea-green-400 rounded-full"
-                            >
-                              {tag}
-                            </span>
+                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex flex-wrap gap-3">
+                          {project.link && (
+                            <a href={project.link} target="_blank" rel="noopener noreferrer" 
+                               className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1">
+                              <span>View Case Study</span> →
+                            </a>
+                          )}
+                          {project.github && (
+                            <a href={project.github} target="_blank" rel="noopener noreferrer"
+                               className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
+                              <span>GitHub</span> →
+                            </a>
+                          )}
+                          {project.customLinks?.map((link, index) => (
+                            <a key={index} href={link.url} target="_blank" rel="noopener noreferrer"
+                               className="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex items-center gap-1">
+                              <span>{link.title}</span> →
+                            </a>
                           ))}
                         </div>
-                      )}
+                      </div>
                     </div>
                   </Link>
-                ))}
-              </div>
-            )}
+                ))
+              ) : (
+                <p className="text-center text-gray-500">No featured projects found.</p>
+              )}
+            </div>
 
             {/* View All Projects Button */}
             <div className="text-center mt-12">

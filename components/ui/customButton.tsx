@@ -21,14 +21,14 @@ const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ...props 
   }, ref) => {
     
-    const baseStyles = "inline-flex items-center justify-center font-medium transition-all rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-sea-green-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none btn-hover-effect";
+    const baseStyles = "inline-flex items-center justify-center font-medium transition-all rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none btn-hover-effect";
     
     const variantStyles = {
-      primary: "bg-sea-green-500 text-parchment-500 hover:bg-sea-green-600 dark:bg-sea-green-600 dark:hover:bg-sea-green-700",
-      secondary: "bg-midnight-green-500 text-parchment-500 hover:bg-midnight-green-600 dark:bg-midnight-green-400 dark:hover:bg-midnight-green-500",
-      outline: "border border-sea-green-500 text-sea-green-500 dark:text-sea-green-400 hover:bg-sea-green-500/10 dark:hover:bg-sea-green-500/10",
-      ghost: "text-midnight-green-500 dark:text-parchment-500 hover:bg-sea-green-500/10 dark:hover:bg-sea-green-500/10",
-      link: "text-sea-green-500 dark:text-sea-green-400 underline-offset-4 hover:underline"
+      primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+      secondary: "bg-green-500 text-white hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700",
+      outline: "border border-input bg-background hover:bg-accent hover:border-accent",
+      ghost: "hover:bg-accent/10 text-foreground",
+      link: "text-blue-500 dark:text-blue-400 underline-offset-4 hover:underline"
     };
     
     const sizeStyles = {

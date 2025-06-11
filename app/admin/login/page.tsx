@@ -33,20 +33,20 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-parchment-500 dark:bg-midnight-green-500 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-midnight-green-500 dark:text-parchment-500">
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Admin Login
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/50 p-4">
-              <p className="text-sm text-red-700 dark:text-red-200">{error}</p>
+            <div className="rounded-md bg-red-50 p-4">
+              <p className="text-sm text-red-700">{error}</p>
             </div>
           )}
-          <div className="-space-y-px rounded-md">
+          <div className="-space-y-px rounded-md shadow-sm">
             <div>
               <label htmlFor="username" className="sr-only">
                 Username
@@ -56,7 +56,7 @@ export default function AdminLogin() {
                 name="username"
                 type="text"
                 required
-                className="relative block w-full rounded-t-md px-3 py-1.5 text-midnight-green-500 dark:text-parchment-500 bg-tea-green-300 dark:bg-midnight-green-400 border-0 ring-1 ring-inset ring-celadon-300 dark:ring-midnight-green-300 placeholder:text-midnight-green-400 dark:placeholder:text-tea-green-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-sea-green-500 dark:focus:ring-sea-green-400 sm:text-sm sm:leading-6"
+                className="relative block w-full rounded-t-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -71,7 +71,7 @@ export default function AdminLogin() {
                 name="password"
                 type="password"
                 required
-                className="relative block w-full rounded-b-md px-3 py-1.5 text-midnight-green-500 dark:text-parchment-500 bg-tea-green-300 dark:bg-midnight-green-400 border-0 ring-1 ring-inset ring-celadon-300 dark:ring-midnight-green-300 placeholder:text-midnight-green-400 dark:placeholder:text-tea-green-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-sea-green-500 dark:focus:ring-sea-green-400 sm:text-sm sm:leading-6"
+                className="relative block w-full rounded-b-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -83,7 +83,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full justify-center rounded-md bg-sea-green-500 dark:bg-sea-green-400 px-3 py-2 text-sm font-semibold text-parchment-500 dark:text-midnight-green-500 hover:bg-sea-green-600 dark:hover:bg-sea-green-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sea-green-500 dark:focus-visible:outline-sea-green-400 disabled:opacity-50 transition-colors"
+              className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400"
             >
               {loading ? 'Logging in...' : 'Sign in'}
             </button>
@@ -92,4 +92,4 @@ export default function AdminLogin() {
       </div>
     </div>
   );
-}
+} 

@@ -86,7 +86,7 @@ export default function WritingDetail({ slug }: { slug: string }) {
     );
 
   return (
-    <div className="min-h-screen bg-parchment-500 dark:bg-midnight-green-500 text-midnight-green-500 dark:text-parchment-500 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       {jsonLd && (
         <>
           <script
@@ -99,32 +99,31 @@ export default function WritingDetail({ slug }: { slug: string }) {
           />
         </>
       )}
-      
-      {/* Breadcrumb Navigation */}
+      {/* Back Button - Update to show breadcrumb navigation */}
       <nav className="mb-8 flex items-center text-sm">
         <Link 
           href="/"
-          className="text-midnight-green-400 hover:text-sea-green-500 dark:text-tea-green-400 dark:hover:text-sea-green-400"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
         >
           Home
         </Link>
-        <span className="mx-2 text-midnight-green-300 dark:text-tea-green-300">/</span>
+        <span className="mx-2 text-gray-500">/</span>
         <Link 
           href="/writings"
-          className="text-midnight-green-400 hover:text-sea-green-500 dark:text-tea-green-400 dark:hover:text-sea-green-400"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
         >
           Blog
         </Link>
-        <span className="mx-2 text-midnight-green-300 dark:text-tea-green-300">/</span>
-        <span className="text-midnight-green-500 dark:text-parchment-500">{writing.title}</span>
+        <span className="mx-2 text-gray-500">/</span>
+        <span className="text-gray-900 dark:text-gray-100">{writing.title}</span>
       </nav>
 
       {/* Writing Details */}
       <div className="space-y-6">
         <div>
-          <h1 className="text-4xl font-bold text-midnight-green-500 dark:text-parchment-500">{writing.title}</h1>
-          <div className="mt-2 flex items-center gap-3 text-sm text-midnight-green-400 dark:text-tea-green-400">
-            <span className="px-2.5 py-0.5 bg-sea-green-500/10 text-sea-green-500 dark:bg-sea-green-400/10 dark:text-sea-green-400 rounded-full">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{writing.title}</h1>
+          <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
               {writing.category}
             </span>
             <span>•</span>
@@ -144,10 +143,7 @@ export default function WritingDetail({ slug }: { slug: string }) {
         {writing.tags && writing.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {writing.tags.map((tag, index) => (
-              <span 
-                key={index} 
-                className="px-3 py-1 text-sm bg-parchment-600 dark:bg-midnight-green-300 text-midnight-green-400 dark:text-tea-green-400 rounded-full"
-              >
+              <span key={index} className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
                 {tag}
               </span>
             ))}
@@ -155,9 +151,8 @@ export default function WritingDetail({ slug }: { slug: string }) {
         )}
 
         {/* Writing Content */}
-        <div className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-midnight-green-500 dark:prose-headings:text-parchment-500 prose-p:text-midnight-green-400 dark:prose-p:text-tea-green-400 prose-a:text-sea-green-500 dark:prose-a:text-sea-green-400 hover:prose-a:text-sea-green-600 dark:hover:prose-a:text-sea-green-300 prose-strong:text-midnight-green-500 dark:prose-strong:text-parchment-500" 
-          dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} 
-        />
+        <div className="prose prose-lg max-w-none dark:prose-invert" 
+          dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} />
       </div>
     </div>
   );
