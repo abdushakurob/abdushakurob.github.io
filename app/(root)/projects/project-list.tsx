@@ -218,14 +218,15 @@ export default function ProjectList() {
     );
   }
 
+  // Page Header and Controls
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
       {/* Page Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-primary-500 dark:text-accent-300 mb-4">
+        <h1 className="text-4xl font-bold text-primary-600 dark:text-accent-200 mb-4">
           Projects & Works
         </h1>
-        <p className="text-xl text-primary-600/80 dark:text-accent-200 max-w-2xl mx-auto">
+        <p className="text-xl text-primary-500 dark:text-accent-200/90 max-w-2xl mx-auto">
           A collection of my work, side projects, and experiments in web development and design.
         </p>
       </div>
@@ -239,10 +240,10 @@ export default function ProjectList() {
             placeholder="Search projects by name, description, or tags..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-primary-200 dark:border-primary-700 bg-surface-light dark:bg-rich-500 text-primary-600 dark:text-accent-300 focus:ring-2 focus:ring-accent-500 dark:focus:ring-accent-600 focus:border-transparent placeholder-primary-400 dark:placeholder-accent-200/50"
+            className="w-full px-4 py-3 rounded-lg border border-primary-200 dark:border-primary-700 bg-surface-100 dark:bg-surface-500 text-primary-600 dark:text-accent-200 focus:ring-2 focus:ring-primary-500 dark:focus:ring-accent-500 focus:border-transparent placeholder-primary-400 dark:placeholder-accent-200/60"
           />
           <svg
-            className="absolute right-3 top-3.5 h-5 w-5 text-primary-400 dark:text-accent-300/50"
+            className="absolute right-3 top-3.5 h-5 w-5 text-primary-400 dark:text-accent-300"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -257,13 +258,13 @@ export default function ProjectList() {
           {/* View Toggle & Sort */}
           <div className="flex items-center gap-4">
             {/* View Toggle */}
-            <div className="flex items-center bg-surface-light dark:bg-rich-500 rounded-lg p-1">
+            <div className="flex items-center bg-surface-100 dark:bg-surface-500 rounded-lg p-1 border border-primary-200 dark:border-primary-700">
               <button
                 onClick={() => setViewType('grid')}
                 className={`p-2 rounded-md transition-colors ${
                   viewType === 'grid'
-                    ? 'bg-primary-100 dark:bg-rich-400 text-accent-600 dark:text-accent-300'
-                    : 'text-primary-500 dark:text-accent-200 hover:text-accent-500 dark:hover:text-accent-300'
+                    ? 'bg-primary-100 dark:bg-surface-600 text-primary-600 dark:text-accent-200'
+                    : 'text-primary-500 dark:text-accent-200/80 hover:text-accent-500 dark:hover:text-accent-300'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -274,8 +275,8 @@ export default function ProjectList() {
                 onClick={() => setViewType('list')}
                 className={`p-2 rounded-md transition-colors ${
                   viewType === 'list'
-                    ? 'bg-primary-100 dark:bg-rich-400 text-accent-600 dark:text-accent-300'
-                    : 'text-primary-500 dark:text-accent-200 hover:text-accent-500 dark:hover:text-accent-300'
+                    ? 'bg-primary-100 dark:bg-surface-600 text-primary-600 dark:text-accent-200'
+                    : 'text-primary-500 dark:text-accent-200/80 hover:text-accent-500 dark:hover:text-accent-300'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -288,7 +289,7 @@ export default function ProjectList() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="bg-surface-light dark:bg-rich-500 border border-primary-200 dark:border-primary-700 rounded-lg px-3 py-2 text-sm text-primary-600 dark:text-accent-300"
+              className="bg-surface-100 dark:bg-surface-500 border border-primary-200 dark:border-primary-700 rounded-lg px-3 py-2 text-sm text-primary-600 dark:text-accent-200 focus:ring-2 focus:ring-primary-500 dark:focus:ring-accent-500"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -299,12 +300,12 @@ export default function ProjectList() {
           {/* Active Filters Display */}
           {(selectedCategory !== 'all' || selectedTags.length > 0 || searchQuery) && (
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-primary-500 dark:text-accent-300/70">
+              <span className="text-primary-500 dark:text-accent-200/90">
                 {filteredProjects.length} results
               </span>
               <button
                 onClick={clearFilters}
-                className="text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200"
+                className="text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200 transition-colors"
               >
                 Clear filters
               </button>
@@ -472,7 +473,7 @@ export default function ProjectList() {
                 className={`block group ${viewType === 'list' ? 'w-full' : ''}`}
               >
                 <div className={`
-                  bg-surface-light dark:bg-rich-500 rounded-xl shadow-sm hover:shadow-md 
+                  bg-surface-100 dark:bg-surface-500 rounded-xl shadow-sm hover:shadow-md 
                   transition-all duration-200 border border-primary-200 dark:border-primary-700
                   ${viewType === 'list' 
                     ? 'flex gap-6 p-4 sm:p-6' 
@@ -485,7 +486,8 @@ export default function ProjectList() {
                       ? 'w-48 h-32 flex-shrink-0' 
                       : 'w-full h-40 mb-4'
                     }
-                  `}>                  {project.coverImage && project.coverImage.length > 0 ? (
+                  `}>                  
+                  {project.coverImage && project.coverImage.length > 0 ? (
                     <Image
                       src={project.coverImage}
                       alt={project.title}
@@ -497,34 +499,34 @@ export default function ProjectList() {
                       }
                     />
                   ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 text-primary-300 dark:text-rich-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 text-primary-400 dark:text-surface-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
                       </div>
-                    )}
+                    </div>
+                  )}
                   </div>
 
                   <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
                     <div className="flex items-start justify-between gap-3">
                       <h2 className={`
-                        font-semibold text-primary-600 dark:text-accent-300
-                        group-hover:text-accent-500 dark:group-hover:text-accent-200 transition-colors
+                        font-semibold text-primary-600 dark:text-accent-200
+                        group-hover:text-accent-500 dark:group-hover:text-accent-300 transition-colors
                         ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
                       `}>
                         {project.title}
                       </h2>
                       {project.isFeatured && (
-                        <span className="flex-shrink-0 px-2.5 py-0.5 text-xs font-medium bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-300 rounded-full">
+                        <span className="flex-shrink-0 px-2.5 py-0.5 text-xs font-medium bg-accent-100 dark:bg-accent-800 text-accent-600 dark:text-accent-200 rounded-full">
                           Featured
                         </span>
                       )}
                     </div>
 
                     <p className={`
-                      mt-2 text-primary-500/80 dark:text-accent-200/90
+                      mt-2 text-primary-500 dark:text-accent-200/90
                       ${viewType === 'list' ? 'line-clamp-1' : 'line-clamp-2'}
                     `}>
                       {project.description}
@@ -533,7 +535,7 @@ export default function ProjectList() {
                     {project.tags && project.tags.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">
                         {project.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full">
+                          <span key={index} className="px-2.5 py-1 text-xs font-medium bg-primary-100 dark:bg-surface-600 text-primary-600 dark:text-accent-200 rounded-full">
                             {tag}
                           </span>
                         ))}
@@ -545,11 +547,11 @@ export default function ProjectList() {
                       flex items-center justify-between
                       ${viewType === 'list' ? 'mt-auto' : ''}
                     `}>
-                      <span className="px-2.5 py-0.5 text-xs font-medium bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-300 rounded-full">
+                      <span className="px-2.5 py-0.5 text-xs font-medium bg-accent-100 dark:bg-accent-800 text-accent-600 dark:text-accent-200 rounded-full">
                         {project.category}
                       </span>
-                      <time className="text-sm text-primary-400 dark:text-accent-200/70">
-                        {getRelativeDate(project.publishedAt || project.createdAt)}
+                      <time className="text-sm text-primary-500 dark:text-accent-200/80">
+                        {getRelativeDate(project.createdAt)}
                       </time>
                     </div>
                   </div>
