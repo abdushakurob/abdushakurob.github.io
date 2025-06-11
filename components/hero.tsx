@@ -12,28 +12,27 @@ const Hero: React.FC = () => {
           rel="stylesheet"
         />
       </Head>
-      <section className="py-24 md:py-32 px-6 relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-tea-green-500/10 to-transparent -z-10"></div>
+      <section className="py-24 md:py-32 px-6 relative overflow-hidden">        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent -z-10"></div>
         
         {/* Floating circles decoration */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-sea-green-500/10 rounded-full blur-3xl -z-10"></div>
-        <div className="absolute bottom-10 left-10 w-72 h-72 bg-midnight-green-500/10 rounded-full blur-3xl -z-10"></div>
+        <div className="absolute top-20 right-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
+        <div className="absolute bottom-10 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl -z-10 animate-pulse" style={{ animationDelay: "1s" }}></div>
         
         <div className="max-w-3xl mx-auto space-y-6">
           <div className="inline-block animate-fade-in">
-            <p className="text-lg font-sans font-medium text-sea-green-500 dark:text-sea-green-400">
+            <p className="text-lg font-sans font-medium text-indigo-600 dark:text-indigo-400">
               Hey there! I&apos;m
             </p>
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold leading-tight md:leading-tight animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-            <span className="text-transparent font-sans bg-clip-text bg-gradient-to-r from-midnight-green-500 to-midnight-green-400">
+            <span className="text-transparent font-sans bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
               Abdushakur
             </span>
           </h1>
           
-          <p className="text-xl text-midnight-green-400 dark:text-tea-green-400 leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             Welcome to my little corner on the internet where I throw things—ideas, half-baked projects, weird thoughts, and whatever else I&apos;m figuring out. Some things will make sense, most won&apos;t. Either way, you&apos;re free to look around.
           </p>
           
