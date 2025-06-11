@@ -68,91 +68,105 @@ export default function WritingDetail({ slug }: { slug: string }) {
     { name: writing.title, item: `/writings/${writing.slug}` }
   ]) : null;
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-gray-500">Loading post...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-primary-500 dark:text-accent-300">
+          Loading article...
+        </div>
       </div>
     );
+  }
 
-  if (error || !writing)
+  if (error || !writing) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center">
-        <p className="text-xl text-red-500">Post not found or failed to load.</p>
-        <Link href="/writings" className="mt-4 text-blue-500 hover:underline">
-          ← Back to Writings
-        </Link>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-500">{error || 'Article not found'}</div>
       </div>
     );
+  }
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
-      {jsonLd && (
-        <>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
-          />
-        </>
-      )}
-      {/* Back Button - Update to show breadcrumb navigation */}
-      <nav className="mb-8 flex items-center text-sm">
-        <Link 
-          href="/"
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
-        >
-          Home
-        </Link>
-        <span className="mx-2 text-gray-500">/</span>
-        <Link 
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      {/* Breadcrumb */}
+      <nav className="mb-8">
+        <Link
           href="/writings"
-          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+          className="text-primary-600 hover:text-accent-500 dark:text-accent-300 dark:hover:text-accent-200"
         >
           Blog
         </Link>
-        <span className="mx-2 text-gray-500">/</span>
-        <span className="text-gray-900 dark:text-gray-100">{writing.title}</span>
+        <span className="mx-2 text-primary-400 dark:text-accent-200/70">/</span>
+        <span className="text-primary-600 dark:text-accent-300">{writing.title}</span>
       </nav>
 
-      {/* Writing Details */}
-      <div className="space-y-6">
+      {/* Article Content */}
+      <div className="space-y-8">
+        {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{writing.title}</h1>
-          <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+          <h1 className="text-4xl font-bold text-primary-500 dark:text-accent-300 mb-4">
+            {writing.title}
+          </h1>
+
+          {/* Meta Info */}
+          <div className="flex flex-wrap items-center gap-3 text-primary-500 dark:text-accent-200">
+            <span className="px-2.5 py-0.5 bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300 rounded-full">
               {writing.category}
             </span>
-            <span>•</span>
+            <span className="text-primary-400 dark:text-accent-200/70">•</span>
             <time>
-              {new Date(writing.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              {new Date(writing.publishedAt || writing.createdAt).toLocaleDateString()}
             </time>
             {writing.readingTime && (
               <>
-                <span>•</span>
+                <span className="text-primary-400 dark:text-accent-200/70">•</span>
                 <span>{writing.readingTime} min read</span>
               </>
             )}
           </div>
         </div>
 
+        {/* Cover Image */}
+        {writing.coverImage && writing.coverImage.length > 0 && (
+          <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+            <Image 
+              src={writing.coverImage} 
+              alt={writing.title} 
+              fill
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              priority
+            />
+          </div>
+        )}
+
         {/* Tags */}
         {writing.tags && writing.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {writing.tags.map((tag, index) => (
-              <span key={index} className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
+              <span 
+                key={index} 
+                className="px-3 py-1 text-sm bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
+              >
                 {tag}
               </span>
             ))}
           </div>
         )}
 
-        {/* Writing Content */}
-        <div className="prose prose-lg max-w-none dark:prose-invert" 
-          dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} />
+        {/* Article Content */}
+        <div className="prose prose-lg max-w-none dark:prose-invert 
+          prose-headings:text-primary-600 dark:prose-headings:text-accent-300
+          prose-p:text-primary-500 dark:prose-p:text-accent-200/90
+          prose-a:text-accent-600 dark:prose-a:text-accent-300 hover:prose-a:text-accent-700 dark:hover:prose-a:text-accent-200
+          prose-strong:text-primary-600 dark:prose-strong:text-accent-300
+          prose-code:text-primary-600 dark:prose-code:text-accent-300 prose-code:bg-primary-50 dark:prose-code:bg-rich-400
+          prose-pre:bg-rich-500 dark:prose-pre:bg-rich-600
+          prose-blockquote:border-accent-500 dark:prose-blockquote:border-accent-600 prose-blockquote:text-primary-500 dark:prose-blockquote:text-accent-200
+          prose-ul:text-primary-500 dark:prose-ul:text-accent-200
+          prose-ol:text-primary-500 dark:prose-ol:text-accent-200
+          prose-li:text-primary-500 dark:prose-li:text-accent-200" 
+          dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} 
+        />
       </div>
     </div>
   );

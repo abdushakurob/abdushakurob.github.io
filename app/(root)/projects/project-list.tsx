@@ -222,10 +222,10 @@ export default function ProjectList() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
       {/* Page Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h1 className="text-4xl font-bold text-primary-500 dark:text-accent-300 mb-4">
           Projects & Works
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="text-xl text-primary-600/80 dark:text-accent-200 max-w-2xl mx-auto">
           A collection of my work, side projects, and experiments in web development and design.
         </p>
       </div>
@@ -239,10 +239,10 @@ export default function ProjectList() {
             placeholder="Search projects by name, description, or tags..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+            className="w-full px-4 py-3 rounded-lg border border-primary-200 dark:border-primary-700 bg-surface-light dark:bg-rich-500 text-primary-600 dark:text-accent-300 focus:ring-2 focus:ring-accent-500 dark:focus:ring-accent-600 focus:border-transparent placeholder-primary-400 dark:placeholder-accent-200/50"
           />
           <svg
-            className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500"
+            className="absolute right-3 top-3.5 h-5 w-5 text-primary-400 dark:text-accent-300/50"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -257,13 +257,13 @@ export default function ProjectList() {
           {/* View Toggle & Sort */}
           <div className="flex items-center gap-4">
             {/* View Toggle */}
-            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+            <div className="flex items-center bg-surface-light dark:bg-rich-500 rounded-lg p-1">
               <button
                 onClick={() => setViewType('grid')}
                 className={`p-2 rounded-md transition-colors ${
                   viewType === 'grid'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                    ? 'bg-primary-100 dark:bg-rich-400 text-accent-600 dark:text-accent-300'
+                    : 'text-primary-500 dark:text-accent-200 hover:text-accent-500 dark:hover:text-accent-300'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -274,8 +274,8 @@ export default function ProjectList() {
                 onClick={() => setViewType('list')}
                 className={`p-2 rounded-md transition-colors ${
                   viewType === 'list'
-                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                    ? 'bg-primary-100 dark:bg-rich-400 text-accent-600 dark:text-accent-300'
+                    : 'text-primary-500 dark:text-accent-200 hover:text-accent-500 dark:hover:text-accent-300'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -288,7 +288,7 @@ export default function ProjectList() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-gray-300"
+              className="bg-surface-light dark:bg-rich-500 border border-primary-200 dark:border-primary-700 rounded-lg px-3 py-2 text-sm text-primary-600 dark:text-accent-300"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -299,12 +299,12 @@ export default function ProjectList() {
           {/* Active Filters Display */}
           {(selectedCategory !== 'all' || selectedTags.length > 0 || searchQuery) && (
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-500 dark:text-gray-400">
+              <span className="text-primary-500 dark:text-accent-300/70">
                 {filteredProjects.length} results
               </span>
               <button
                 onClick={clearFilters}
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200"
               >
                 Clear filters
               </button>
@@ -315,16 +315,16 @@ export default function ProjectList() {
         {/* Filters Section */}
         <div className="space-y-4">
           {/* Categories Section */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+          {/* <div className="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden">
             <button
               onClick={() => setShowCategoriesSection(!showCategoriesSection)}
-              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
+              className="w-full px-4 py-3 flex items-center justify-between bg-surface-light dark:bg-rich-500 text-left"
             >
-              <span className="font-medium text-gray-900 dark:text-gray-100">Categories</span>
+              <span className="font-medium text-primary-600 dark:text-accent-300">Categories</span>
               <svg
                 className={`w-5 h-5 transform transition-transform ${
                   showCategoriesSection ? 'rotate-180' : ''
-                }`}
+                } text-primary-500 dark:text-accent-300`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -333,13 +333,13 @@ export default function ProjectList() {
               </svg>
             </button>
             {showCategoriesSection && (
-              <div className="p-4 flex flex-wrap gap-2">
+              <div className="p-4 flex flex-wrap gap-2 bg-surface-light dark:bg-rich-500">
                 <button
                   onClick={() => setSelectedCategory("all")}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                     selectedCategory === "all"
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                      : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      ? "bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300"
+                      : "bg-primary-100 text-primary-600 dark:bg-rich-400 dark:text-accent-200 hover:bg-primary-200 dark:hover:bg-rich-300"
                   }`}
                 >
                   All Categories
@@ -350,8 +350,8 @@ export default function ProjectList() {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                       selectedCategory === category
-                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                        : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                        ? "bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300"
+                        : "bg-primary-100 text-primary-600 dark:bg-rich-400 dark:text-accent-200 hover:bg-primary-200 dark:hover:bg-rich-300"
                     }`}
                   >
                     {category}
@@ -359,19 +359,19 @@ export default function ProjectList() {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Tags Section */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+          {/* <div className="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden">
             <button
               onClick={() => setShowTagsSection(!showTagsSection)}
-              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
+              className="w-full px-4 py-3 flex items-center justify-between bg-surface-light dark:bg-rich-500 text-left"
             >
-              <span className="font-medium text-gray-900 dark:text-gray-100">Tags</span>
+              <span className="font-medium text-primary-600 dark:text-accent-300">Tags</span>
               <svg
                 className={`w-5 h-5 transform transition-transform ${
                   showTagsSection ? 'rotate-180' : ''
-                }`}
+                } text-primary-500 dark:text-accent-300`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -380,14 +380,14 @@ export default function ProjectList() {
               </svg>
             </button>
             {showTagsSection && (
-              <div className="p-4 space-y-4">
+              <div className="p-4 space-y-4 bg-surface-light dark:bg-rich-500">
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="Search tags..."
                     value={tagSearch}
                     onChange={(e) => setTagSearch(e.target.value)}
-                    className="w-full px-3 py-2 text-sm rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+                    className="w-full px-3 py-2 text-sm rounded-md border border-primary-200 dark:border-primary-700 bg-white dark:bg-rich-400 text-primary-600 dark:text-accent-300 placeholder-primary-400 dark:placeholder-accent-200/50"
                   />
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -397,74 +397,60 @@ export default function ProjectList() {
                       onClick={() => handleTagToggle(tag)}
                       className={`group px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
                         selectedTags.includes(tag)
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
-                          : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                          ? "bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300"
+                          : "bg-primary-100 text-primary-600 dark:bg-rich-400 dark:text-accent-200 hover:bg-primary-200 dark:hover:bg-rich-300"
                       }`}
                     >
                       <span>{tag}</span>
-                      <span className="ml-1.5 px-1.5 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-gray-300 dark:group-hover:bg-gray-600">
+                      <span className="ml-1.5 px-1.5 py-0.5 text-xs rounded-full bg-primary-200/50 dark:bg-rich-300/50 text-primary-600 dark:text-accent-200">
                         {count}
                       </span>
                     </button>
                   ))}
                 </div>
-                {!tagSearch && tagCounts.length > INITIAL_TAGS_TO_SHOW && (
-                  <button
-                    onClick={() => setShowAllTags(!showAllTags)}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {showAllTags ? 'Show Less' : `Show More (${tagCounts.length - INITIAL_TAGS_TO_SHOW} more)`}
-                  </button>
-                )}
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Active Filters */}
           {(selectedCategory !== 'all' || selectedTags.length > 0) && (
-            <div className="flex flex-wrap items-center gap-2 pt-4">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Active filters:</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-primary-500 dark:text-accent-300/70">Active filters:</span>
               {selectedCategory !== 'all' && (
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300">
                   {selectedCategory}
                   <button
                     onClick={() => setSelectedCategory('all')}
-                    className="ml-1.5 hover:text-blue-900 dark:hover:text-blue-100"
+                    className="ml-1.5 hover:text-accent-700 dark:hover:text-accent-200"
                   >
                     ×
                   </button>
                 </span>
               )}
               {selectedTags.map(tag => (
-                <span key={tag} className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">
+                <span key={tag} className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-accent-100 text-accent-600 dark:bg-accent-900/30 dark:text-accent-300">
                   {tag}
                   <button
                     onClick={() => handleTagToggle(tag)}
-                    className="ml-1.5 hover:text-green-900 dark:hover:text-green-100"
+                    className="ml-1.5 hover:text-accent-700 dark:hover:text-accent-200"
                   >
                     ×
                   </button>
                 </span>
               ))}
-              <button
-                onClick={clearFilters}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Clear all
-              </button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Results Section */}
+      {/* Project Grid/List */}
       {filteredProjects.length === 0 ? (
         <div className="text-center py-12">
-          <h3 className="text-xl text-gray-600 dark:text-gray-400">No matching projects found</h3>
-          <p className="mt-2 text-gray-500">Try adjusting your search or filter criteria</p>
+          <h3 className="text-xl text-primary-500 dark:text-accent-300">No matching projects found</h3>
+          <p className="mt-2 text-primary-400 dark:text-accent-200/70">Try adjusting your search or filter criteria</p>
           <button
             onClick={clearFilters}
-            className="mt-4 text-blue-600 dark:text-blue-400 hover:underline"
+            className="mt-4 text-accent-500 hover:text-accent-600 dark:text-accent-300 dark:hover:text-accent-200"
           >
             Clear all filters
           </button>
@@ -486,34 +472,33 @@ export default function ProjectList() {
                 className={`block group ${viewType === 'list' ? 'w-full' : ''}`}
               >
                 <div className={`
-                  bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md 
-                  transition-all duration-200 border border-gray-100 dark:border-gray-700
+                  bg-surface-light dark:bg-rich-500 rounded-xl shadow-sm hover:shadow-md 
+                  transition-all duration-200 border border-primary-200 dark:border-primary-700
                   ${viewType === 'list' 
                     ? 'flex gap-6 p-4 sm:p-6' 
                     : 'p-6 h-full'
                   }
                 `}>
                   <div className={`
-                    relative rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700
+                    relative rounded-lg overflow-hidden bg-primary-100 dark:bg-rich-400
                     ${viewType === 'list' 
                       ? 'w-48 h-32 flex-shrink-0' 
                       : 'w-full h-40 mb-4'
                     }
-                  `}>
-                    {project.coverImage ? (
-                      <Image
-                        src={project.coverImage}
-                        alt={project.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-200"
-                        sizes={viewType === 'list' 
-                          ? "(max-width: 640px) 192px, 192px"
-                          : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        }
-                      />
-                    ) : (
+                  `}>                  {project.coverImage && project.coverImage.length > 0 ? (
+                    <Image
+                      src={project.coverImage}
+                      alt={project.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      sizes={viewType === 'list' 
+                        ? "(max-width: 640px) 192px, 192px"
+                        : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      }
+                    />
+                  ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 text-gray-300 dark:text-gray-600">
+                        <div className="w-16 h-16 text-primary-300 dark:text-rich-600">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
@@ -525,21 +510,21 @@ export default function ProjectList() {
                   <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
                     <div className="flex items-start justify-between gap-3">
                       <h2 className={`
-                        font-semibold text-gray-800 dark:text-gray-100 
-                        group-hover:text-blue-500 transition-colors
+                        font-semibold text-primary-600 dark:text-accent-300
+                        group-hover:text-accent-500 dark:group-hover:text-accent-200 transition-colors
                         ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
                       `}>
                         {project.title}
                       </h2>
                       {project.isFeatured && (
-                        <span className="flex-shrink-0 px-2.5 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+                        <span className="flex-shrink-0 px-2.5 py-0.5 text-xs font-medium bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-300 rounded-full">
                           Featured
                         </span>
                       )}
                     </div>
 
                     <p className={`
-                      mt-2 text-gray-600 dark:text-gray-300
+                      mt-2 text-primary-500/80 dark:text-accent-200/90
                       ${viewType === 'list' ? 'line-clamp-1' : 'line-clamp-2'}
                     `}>
                       {project.description}
@@ -548,7 +533,7 @@ export default function ProjectList() {
                     {project.tags && project.tags.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">
                         {project.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                          <span key={index} className="px-2 py-1 text-xs bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full">
                             {tag}
                           </span>
                         ))}
@@ -556,14 +541,14 @@ export default function ProjectList() {
                     )}
 
                     <div className={`
-                      mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 
+                      mt-4 pt-4 border-t border-primary-200 dark:border-primary-700 
                       flex items-center justify-between
                       ${viewType === 'list' ? 'mt-auto' : ''}
                     `}>
-                      <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                      <span className="px-2.5 py-0.5 text-xs font-medium bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-300 rounded-full">
                         {project.category}
                       </span>
-                      <time className="text-sm text-gray-500 dark:text-gray-400">
+                      <time className="text-sm text-primary-400 dark:text-accent-200/70">
                         {getRelativeDate(project.publishedAt || project.createdAt)}
                       </time>
                     </div>
@@ -578,7 +563,7 @@ export default function ProjectList() {
               <button
                 onClick={loadMore}
                 disabled={loading}
-                className="px-6 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-3 text-lg font-medium bg-accent-500 hover:bg-accent-600 dark:bg-accent-600 dark:hover:bg-accent-500 text-white rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Loading...' : 'Load More'}
               </button>

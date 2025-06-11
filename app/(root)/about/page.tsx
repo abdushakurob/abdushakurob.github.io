@@ -1,107 +1,146 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'About | Abdushakur - Web Developer & Designer',
-  description: 'Learn more about Abdushakur, a passionate web developer and designer. Discover my journey, work philosophy, and approach to creating digital solutions.',
-  keywords: ['About', 'Abdushakur', 'Web Developer', 'Designer', 'Biography', 'Background'],
+  title: 'About | Abdushakur - Full Stack Developer',
+  description: 'Learn more about my journey, skills, and experience as a Full Stack Developer. Discover my approach to web development and technology.',
+  keywords: ['About', 'Full Stack Developer', 'Web Development', 'Skills', 'Experience'],
   alternates: {
     canonical: '/about',
   },
   openGraph: {
-    title: 'About | Abdushakur - Web Developer & Designer',
-    description: 'Learn more about Abdushakur, a passionate web developer and designer.',
+    title: 'About | Abdushakur - Full Stack Developer',
+    description: 'Learn more about my journey, skills, and experience as a Full Stack Developer.',
     url: 'https://abdushakur.me/about',
-    type: 'profile',
-    images: ['/og-about.jpg'],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'About | Abdushakur',
-    description: 'Learn more about Abdushakur, web developer and designer.',
+    type: 'website',
     images: ['/og-about.jpg'],
   },
 };
 
-export default function About() {
+export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-4xl mx-auto">
-      
-      {/* Header */}
-      <h1 className="text-4xl mt-4 font-bold text-green-600 mb-6">A Little More About This Site (and Me).</h1>
-
-      {/* Why This Site Exists */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">Why This Site Exists</h2>
-      <p className="text-lg text-gray-600 leading-relaxed">
-        I used to overthink everything before I even started. Now, I just log the process (hopefully)  
-        and let the public hold me accountable.  
-      </p>
-      <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Right now, my portfolio is basically &quot;believe me, bro.&quot; So this site is part work,  
-        part experiment, and part personal notebook that somehow ended up online.  
-      </p>
-
-      {/* How I Work */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">How I Work</h2>
-      <p className="text-lg text-gray-600 leading-relaxed">
-        I start things before I feel ready. If I wait for the perfect moment, it never happens.  
-        So I build, break things, fix them, and learn along the way.  
-      </p>
-      <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        I like keeping things simple—whether it&apos;s design, code, or problem-solving.  
-        Less noise, fewer distractions, just what&apos;s necessary.  
-      </p>
-      <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        Also, I write things down because I forget. That&apos;s basically what this site is.  
-      </p>
-
-      {/* What I Do */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">What I Do</h2>
-      <p className="text-lg text-gray-600 leading-relaxed">
-        Most of my time is split between web development and brand design—figuring out  
-        how things work and how they should look.  
-      </p>
-      <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        But I also explore Web3, automation, and random stuff that catches my interest.  
-      </p>
-
-      {/* Skills */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">Skills &amp; Tools</h2>
-      <div className="grid md:grid-cols-2 gap-8 mt-4">
-        <div>
-          <h3 className="text-lg font-semibold text-green-600">Web Development</h3>
-          <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
-            <li>HTML, CSS, JavaScript, Python (Intermediate)</li>
-            <li>React.js, Next.js, Node.js/Express.js, Tailwind, Bootstrap, MongoDB</li>
-            <li>FastAPI (a little)</li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-lg font-semibold text-green-600">Brand Visual Design</h3>
-          <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
-            <li>Paper &amp; Pen (first step always)</li>
-            <li>Adobe Illustrator</li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-lg font-semibold text-green-600">Other Things I&apos;m Exploring</h3>
-          <ul className="list-disc pl-5 text-gray-600 space-y-2 mt-2">
-            <li>Sui Move &amp; Blockchain</li>
-            <li>Web3 Concepts &amp; Decentralized Systems</li>
-            <li>APIs, Automation &amp; AI Tools</li>
-          </ul>
-        </div>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      {/* Page Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-primary-500 dark:text-accent-300 mb-4">
+          About Me
+        </h1>
+        <p className="text-xl text-primary-600/80 dark:text-accent-200 max-w-2xl mx-auto">
+          Full Stack Developer passionate about creating intuitive and impactful web experiences.
+        </p>
       </div>
 
-      {/* A Bit More About Me */}
-      <h2 className="text-2xl font-semibold text-blue-500 mt-10 mb-4">A Bit More About Me</h2>
-      <p className="text-lg text-gray-600 leading-relaxed">
-        Outside of work, I&apos;m usually learning something, figuring things out,  
-        or just getting lost in a random idea.  
-      </p>
-      <p className="text-lg text-gray-600 leading-relaxed mt-4">
-        I like deep conversations about tech, design, and problem-solving,  
-        but I also think most things are better when you don&apos;t take them too seriously.  
-      </p>
+      {/* About Content */}
+      <div className="space-y-12">
+        {/* Professional Summary */}
+        <section className="prose prose-lg max-w-none dark:prose-invert
+          prose-headings:text-primary-600 dark:prose-headings:text-accent-300
+          prose-p:text-primary-500 dark:prose-p:text-accent-200/90
+          prose-a:text-accent-600 dark:prose-a:text-accent-300 hover:prose-a:text-accent-700 dark:hover:prose-a:text-accent-200
+          prose-strong:text-primary-600 dark:prose-strong:text-accent-300">
+          <p>
+            I specialize in building modern web applications using React, Next.js, and TypeScript.
+            With a strong foundation in both frontend and backend development, I create scalable
+            solutions that prioritize user experience and performance.
+          </p>
+        </section>
+
+        {/* Skills Section */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold text-primary-600 dark:text-accent-300">
+            Technical Skills
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Frontend */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-primary-500 dark:text-accent-200">
+                Frontend Development
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['React', 'Next.js', 'TypeScript', 'Tailwind CSS'].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1 text-sm bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Backend */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-primary-500 dark:text-accent-200">
+                Backend Development
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['Node.js', 'Express', 'MongoDB', 'PostgreSQL'].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1 text-sm bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Experience Section */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold text-primary-600 dark:text-accent-300">
+            Experience
+          </h2>
+          <div className="space-y-8">
+            <div className="p-6 bg-surface-light dark:bg-rich-500 rounded-xl border border-primary-200 dark:border-primary-700">
+              <h3 className="text-xl font-semibold text-primary-600 dark:text-accent-300 mb-2">
+                Full Stack Developer
+              </h3>
+              <p className="text-primary-500 dark:text-accent-200/90 mb-4">
+                Working on various web development projects, focusing on creating performant and
+                accessible applications using modern technologies.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {['React', 'Next.js', 'Node.js', 'TypeScript'].map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-1 text-xs bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Get in Touch */}
+        <section className="text-center space-y-6 pt-8">
+          <h2 className="text-2xl font-bold text-primary-600 dark:text-accent-300">
+            Let&apos;s Connect
+          </h2>
+          <p className="text-primary-500 dark:text-accent-200/90 max-w-2xl mx-auto">
+            I&apos;m always interested in new opportunities and collaborations. Feel free to reach out
+            if you&apos;d like to discuss a project or just want to connect.
+          </p>
+          <div className="flex justify-center gap-4">
+            <Link
+              href="mailto:contact@abdushakur.me"
+              className="inline-flex items-center px-6 py-3 text-lg font-medium bg-accent-500 hover:bg-accent-600 dark:bg-accent-600 dark:hover:bg-accent-500 text-white rounded-lg transition-colors"
+            >
+              Get in Touch
+            </Link>
+            <Link
+              href="/projects"
+              className="inline-flex items-center px-6 py-3 text-lg font-medium border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-accent-300 hover:bg-primary-50 dark:hover:bg-rich-400 rounded-lg transition-colors"
+            >
+              View Projects
+            </Link>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

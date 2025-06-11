@@ -315,7 +315,7 @@ export default function WritingList() {
         {/* Filters Section */}
         <div className="space-y-4">
           {/* Categories Section */}
-          <div className="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden">
+          {/* <div className="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden">
             <button
               onClick={() => setShowCategoriesSection(!showCategoriesSection)}
               className="w-full px-4 py-3 flex items-center justify-between bg-surface-light dark:bg-rich-500 text-left"
@@ -359,10 +359,10 @@ export default function WritingList() {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Tags Section */}
-          <div className="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden">
+          {/* <div className="border border-primary-200 dark:border-primary-700 rounded-lg overflow-hidden">
             <button
               onClick={() => setShowTagsSection(!showTagsSection)}
               className="w-full px-4 py-3 flex items-center justify-between bg-surface-light dark:bg-rich-500 text-left"
@@ -418,7 +418,7 @@ export default function WritingList() {
                 )}
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Active Filters */}
           {(selectedCategory !== 'all' || selectedTags.length > 0) && (
