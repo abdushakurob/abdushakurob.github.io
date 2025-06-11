@@ -30,16 +30,15 @@ export default function AdminLayout({
   const isActive = (path: string) => pathname === path;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-parchment-500 dark:bg-midnight-green-500">
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 hidden md:block">
+      <aside className="w-64 bg-tea-green-300 dark:bg-midnight-green-400 border-r border-celadon-300 dark:border-midnight-green-300 hidden md:block">
         <div className="p-6">
-          <Link href="/" className="text-xl font-bold flex items-center gap-2">
+          <Link href="/" className="text-xl font-bold flex items-center gap-2 text-sea-green-500 dark:text-sea-green-400 hover:text-sea-green-600 dark:hover:text-sea-green-300 transition-colors">
             <Home size={20} />
             <span>Portfolio Admin</span>
           </Link>
         </div>
-        
         <nav className="mt-6 flex flex-col h-[calc(100vh-100px)] justify-between">
           <ul className="space-y-1">
             <SidebarItem 
@@ -84,7 +83,7 @@ export default function AdminLayout({
               <button 
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="w-full flex items-center gap-2 px-6 py-3 text-red-600 hover:bg-gray-100 transition-colors"
+                className="w-full flex items-center gap-2 px-6 py-3 text-sea-green-500 dark:text-sea-green-400 hover:bg-celadon-300 dark:hover:bg-midnight-green-300 transition-colors"
               >
                 <LogOut size={18} />
                 <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
@@ -93,7 +92,7 @@ export default function AdminLayout({
             <li>
               <Link 
                 href="https://www.abdushakur.me"
-                className="flex items-center gap-2 px-6 py-3 text-gray-600 hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 text-midnight-green-400 dark:text-tea-green-400 hover:bg-celadon-300 dark:hover:bg-midnight-green-300 transition-colors"
               >
                 <Home size={18} />
                 <span>Back to Site</span>
@@ -105,13 +104,13 @@ export default function AdminLayout({
       
       {/* Main content */}
       <main className="flex-1">
-        <header className="bg-white border-b border-gray-200 py-4 px-6">
+        <header className="bg-tea-green-300 dark:bg-midnight-green-400 border-b border-celadon-300 dark:border-midnight-green-300 py-4 px-6">
           <div className="flex justify-between items-center">
-            <h1 className="text-lg font-medium md:hidden">Portfolio Admin</h1>
+            <h1 className="text-lg font-medium text-midnight-green-500 dark:text-parchment-500 md:hidden">Portfolio Admin</h1>
             <div className="flex items-center gap-4">
               {/* Mobile menu button */}
               <div className="md:hidden">
-                <button className="p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <button className="p-2 rounded-md text-midnight-green-400 dark:text-tea-green-400 hover:bg-celadon-300 dark:hover:bg-midnight-green-300">
                   <Home size={20} />
                 </button>
               </div>
@@ -144,8 +143,8 @@ function SidebarItem({
         href={href}
         className={`flex items-center gap-2 px-6 py-3 transition-colors ${
           isActive 
-            ? 'bg-blue-50 text-blue-600 font-medium' 
-            : 'text-gray-600 hover:bg-gray-100'
+            ? 'bg-sea-green-500 dark:bg-sea-green-400 text-parchment-500 dark:text-midnight-green-500 font-medium' 
+            : 'text-midnight-green-400 dark:text-tea-green-400 hover:bg-celadon-300 dark:hover:bg-midnight-green-300'
         }`}
       >
         {icon}
@@ -153,4 +152,4 @@ function SidebarItem({
       </Link>
     </li>
   );
-} 
+}

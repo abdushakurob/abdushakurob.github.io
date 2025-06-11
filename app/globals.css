@@ -2,7 +2,7 @@
 @plugin "daisyui";
 
 /* Color System */
-@layer theme {
+@theme {
   :root {
     --midnight-green-100: #030f13;
     --midnight-green-200: #071e26;
