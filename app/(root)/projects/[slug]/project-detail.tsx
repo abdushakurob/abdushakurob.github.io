@@ -71,9 +71,9 @@ export default function ProjectDetail({ slug }: { slug: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-tea-900 to-tea-800 dark:from-lapis-200 dark:to-lapis-300 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <p className="text-lg text-lapis-300 dark:text-tea-800/60">Loading project...</p>
+          <p className="text-lg text-gray-600 dark:text-gray-400">Loading project...</p>
         </div>
       </div>
     );
@@ -81,10 +81,9 @@ export default function ProjectDetail({ slug }: { slug: string }) {
 
   if (error || !project) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-tea-900 to-tea-800 dark:from-lapis-200 dark:to-lapis-300 flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center">
         <p className="text-xl text-red-500">Project not found or failed to load.</p>
-        <Link href="/projects" 
-              className="mt-4 text-verdigris-DEFAULT hover:text-verdigris-600 dark:text-verdigris-600 dark:hover:text-verdigris-500 hover:underline">
+        <Link href="/projects" className="mt-4 text-blue-500 hover:underline">
           ← Back to Projects
         </Link>
       </div>
@@ -92,7 +91,7 @@ export default function ProjectDetail({ slug }: { slug: string }) {
   }
 
   return (
-    <article className="min-h-screen bg-tea-900/50 dark:bg-lapis-200/50 text-lapis-DEFAULT dark:text-tea-800 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       {jsonLd && (
         <>
           <script
@@ -105,112 +104,120 @@ export default function ProjectDetail({ slug }: { slug: string }) {
           />
         </>
       )}
-
-      <nav className="text-sm mb-8 flex items-center space-x-2">
-        <Link href="/projects" 
-              className="text-verdigris-DEFAULT hover:text-verdigris-600 dark:text-verdigris-600 dark:hover:text-verdigris-500">
-          ← Back to Projects
+      {/* Back Button - Update to show breadcrumb navigation */}
+      <nav className="mb-8 flex items-center text-sm">
+        <Link 
+          href="/"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Home
         </Link>
+        <span className="mx-2 text-gray-500">/</span>
+        <Link 
+          href="/projects"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Projects
+        </Link>
+        <span className="mx-2 text-gray-500">/</span>
+        <span className="text-gray-900 dark:text-gray-100">{project.title}</span>
       </nav>
 
-      <header className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-lapis-DEFAULT dark:text-lapis-700">
-          {project.title}
-        </h1>
-        
-        <div className="flex flex-wrap gap-4 items-center text-sm text-lapis-400 dark:text-tea-800/80">
-          {project.manualDate || project.publishedAt || project.createdAt ? (
-            <time dateTime={project.manualDate || project.publishedAt || project.createdAt}>
-              {new Date(project.manualDate || project.publishedAt || project.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long'
-              })}
+      {/* Project Details */}
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">{project.title}</h1>
+          <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+              {project.category}
+            </span>
+            <span>•</span>
+            <time>
+              {project.manualDate 
+                ? new Date(project.manualDate).toLocaleDateString()
+                : new Date(project.createdAt).toLocaleDateString()}
             </time>
-          ) : null}
-          {project.category && (
-            <>
-              {(project.manualDate || project.publishedAt || project.createdAt) && <span>•</span>}
-              <span className="px-2 py-1 bg-emerald-DEFAULT/10 text-emerald-DEFAULT dark:bg-emerald-600/10 dark:text-emerald-600 rounded-full text-xs">
-                {project.category}
-              </span>
-            </>
-          )}
+          </div>
         </div>
 
-        <p className="mt-4 text-lg text-lapis-400 dark:text-tea-800">
-          {project.description}
-        </p>
-
-        {(project.link || project.github || (project.customLinks && project.customLinks.length > 0)) && (
-          <div className="mt-6 flex flex-wrap gap-4">
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-lapis-DEFAULT hover:bg-lapis-600 dark:bg-lapis-700 dark:hover:bg-lapis-600 text-white rounded-lg transition-colors"
-              >
-                View on GitHub
-              </a>
-            )}
-            {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-verdigris-DEFAULT hover:bg-verdigris-600 dark:bg-verdigris-600 dark:hover:bg-verdigris-500 text-white rounded-lg transition-colors"
-              >
-                Visit Project
-              </a>
-            )}
-            {project.customLinks?.map((link, index) => (
-              <a
-                key={index}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 border border-lapis-200 hover:bg-lapis-DEFAULT/10 dark:border-tea-800 dark:hover:bg-tea-800/10 rounded-lg transition-colors"
-              >
-                {link.title}
-              </a>
-            ))}
+        {/* Cover Image */}
+        {project.coverImage && (
+          <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+            <Image 
+              src={project.coverImage} 
+              alt={project.title} 
+              fill
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              priority
+            />
           </div>
         )}
-      </header>
 
-      {project.coverImage && (
-        <div className="relative w-full h-[400px] mb-8 rounded-xl overflow-hidden">
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill
-            className="object-cover"
-            priority
-          />
+        {/* Project Links */}
+        <div className="flex flex-wrap gap-4">          {project.link && (
+            <a 
+              href={project.link.startsWith('http') ? project.link : `https://${project.link}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+            >
+              <span>View Live</span>
+              <span>↗</span>
+            </a>
+          )}
+          
+          {project.github && (
+            <a 
+              href={project.github.startsWith('http') ? project.github : `https://${project.github}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              <span>View Code</span>
+              <span>↗</span>
+            </a>
+          )}
+
+          {project.customLinks?.map((link, index) => (
+            <a
+              key={index}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            >
+              <span>{link.title}</span>
+              <span>↗</span>
+            </a>
+          ))}
         </div>
-      )}
 
-      {project.content && (
-        <div 
-          className="prose prose-lg max-w-none"
-          dangerouslySetInnerHTML={{ __html: project.content }}
-        />
-      )}
+        {/* Project Content */}
+        <div>
+          <div className="prose prose-lg max-w-none dark:prose-invert">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+              {project.description}
+            </p>
+            {project.content && (
+              <div dangerouslySetInnerHTML={{ __html: project.content }} />
+            )}
+          </div>
+        </div>
 
-      {project.tags && project.tags.length > 0 && (
-        <div className="mt-8 pt-8 border-t border-lapis-200/20 dark:border-tea-800/20">
+        {/* Tags */}
+        {project.tags && project.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {project.tags.map((tag, index) => (
               <span 
-                key={index} 
-                className="px-3 py-1 text-sm bg-lapis-DEFAULT/5 dark:bg-tea-800/5 text-lapis-400 dark:text-tea-800 rounded-full"
+                key={index}
+                className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full"
               >
                 {tag}
               </span>
             ))}
           </div>
-        </div>
-      )}
-    </article>
+        )}
+      </div>
+    </div>
   );
 }

@@ -71,7 +71,7 @@ export default function WritingDetail({ slug }: { slug: string }) {
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-lapis-300 dark:text-tea-800/60">Loading post...</p>
+        <p className="text-lg text-gray-500">Loading post...</p>
       </div>
     );
 
@@ -79,15 +79,14 @@ export default function WritingDetail({ slug }: { slug: string }) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center">
         <p className="text-xl text-red-500">Post not found or failed to load.</p>
-        <Link href="/writings" 
-              className="mt-4 text-verdigris-DEFAULT hover:text-verdigris-600 dark:text-verdigris-600 dark:hover:text-verdigris-500 hover:underline">
+        <Link href="/writings" className="mt-4 text-blue-500 hover:underline">
           ← Back to Writings
         </Link>
       </div>
     );
 
   return (
-    <article className="min-h-screen bg-tea-900/50 dark:bg-lapis-200/50 text-lapis-DEFAULT dark:text-tea-800 px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-base-100 text-base-content px-6 sm:px-12 md:px-24 py-12 max-w-5xl mx-auto">
       {jsonLd && (
         <>
           <script
@@ -100,71 +99,61 @@ export default function WritingDetail({ slug }: { slug: string }) {
           />
         </>
       )}
-
-      <nav className="text-sm mb-8 flex items-center space-x-2">
-        <Link href="/writings" 
-              className="text-verdigris-DEFAULT hover:text-verdigris-600 dark:text-verdigris-600 dark:hover:text-verdigris-500">
-          ← Back to Writings
+      {/* Back Button - Update to show breadcrumb navigation */}
+      <nav className="mb-8 flex items-center text-sm">
+        <Link 
+          href="/"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Home
         </Link>
+        <span className="mx-2 text-gray-500">/</span>
+        <Link 
+          href="/writings"
+          className="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+        >
+          Blog
+        </Link>
+        <span className="mx-2 text-gray-500">/</span>
+        <span className="text-gray-900 dark:text-gray-100">{writing.title}</span>
       </nav>
 
-      <header className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-lapis-DEFAULT dark:text-lapis-700">
-          {writing.title}
-        </h1>
-        
-        <div className="flex flex-wrap gap-4 items-center text-sm text-lapis-400 dark:text-tea-800/80">
-          <time dateTime={writing.publishedAt || writing.createdAt}>
-            {new Date(writing.publishedAt || writing.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </time>
-          <span>•</span>
-          <span>{writing.readingTime} min read</span>
-          {writing.category && (
-            <>
-              <span>•</span>
-              <span className="px-2 py-1 bg-emerald-DEFAULT/10 text-emerald-DEFAULT dark:bg-emerald-600/10 dark:text-emerald-600 rounded-full text-xs">
-                {writing.category}
-              </span>
-            </>
-          )}
+      {/* Writing Details */}
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{writing.title}</h1>
+          <div className="mt-2 flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+            <span className="px-2.5 py-0.5 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 rounded-full">
+              {writing.category}
+            </span>
+            <span>•</span>
+            <time>
+              {new Date(writing.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </time>
+            {writing.readingTime && (
+              <>
+                <span>•</span>
+                <span>{writing.readingTime} min read</span>
+              </>
+            )}
+          </div>
         </div>
-      </header>
 
-      {writing.coverImage && (
-        <div className="relative w-full h-[400px] mb-8 rounded-xl overflow-hidden">
-          <Image
-            src={writing.coverImage}
-            alt={writing.title}
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-      )}
-
-      <div 
-        className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }}
-      />
-
-      {writing.tags && writing.tags.length > 0 && (
-        <div className="mt-8 pt-8 border-t border-lapis-200/20 dark:border-tea-800/20">
+        {/* Tags */}
+        {writing.tags && writing.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {writing.tags.map((tag, index) => (
-              <span 
-                key={index} 
-                className="px-3 py-1 text-sm bg-lapis-DEFAULT/5 dark:bg-tea-800/5 text-lapis-400 dark:text-tea-800 rounded-full"
-              >
+              <span key={index} className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
                 {tag}
               </span>
             ))}
           </div>
-        </div>
-      )}
-    </article>
+        )}
+
+        {/* Writing Content */}
+        <div className="prose prose-lg max-w-none dark:prose-invert" 
+          dangerouslySetInnerHTML={{ __html: processQuillHtml(writing.content) }} />
+      </div>
+    </div>
   );
 }

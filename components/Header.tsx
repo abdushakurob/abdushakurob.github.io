@@ -50,13 +50,13 @@ const Header: React.FC = () => {
   return (
     <header className={cn(
       "fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 w-full",
-      isScrolled ? "bg-tea-900/80 backdrop-blur-md border-b border-lapis-200/10 dark:bg-lapis-200/80 dark:border-tea-800/10" : "bg-transparent"
+      isScrolled ? "bg-background/80 backdrop-blur-md border-b" : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
-          <span className="text-emerald-DEFAULT dark:text-emerald-600">A</span>
-          <span className="text-lapis-DEFAULT dark:text-tea-800">bdushakur</span>
+          <span className="dark:text-green-300 text-green-700">A</span>
+          <span className="text-foreground">bdushakur</span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -65,10 +65,10 @@ const Header: React.FC = () => {
             <Link 
               key={item.name}
               href={item.path}
-              className="text-sm font-medium text-lapis-400 hover:text-lapis-DEFAULT dark:text-tea-800 dark:hover:text-emerald-600 transition-colors relative group"
+              className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors relative group"
             >
               {item.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-emerald-DEFAULT dark:bg-emerald-600 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
             </Link>
           ))}
         </nav>
@@ -76,7 +76,7 @@ const Header: React.FC = () => {
         {/* Mobile Menu Button */}
         <button 
           id="mobile-menu-button"
-          className="md:hidden text-lapis-DEFAULT dark:text-tea-800 focus:outline-none"
+          className="md:hidden text-foreground focus:outline-none"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}
@@ -90,25 +90,25 @@ const Header: React.FC = () => {
       <div
         id="mobile-menu"
         className={cn(
-          "fixed inset-0 z-50 flex flex-col items-center justify-center bg-tea-900/95 dark:bg-lapis-200/95 backdrop-blur-md transition-transform duration-300 md:hidden h-full w-full",
+          "fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/95 backdrop-blur-md transition-transform duration-300 md:hidden h-full w-full",
           mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         )}
       >
         {/* Close Button */}
         <button 
-          className="absolute top-5 right-6 text-lapis-DEFAULT dark:text-tea-800"
+          className="absolute top-5 right-6 text-foreground"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <X size={24} />
+          <X size={30} />
         </button>
 
-        {/* Mobile Navigation Links */}
-        <nav className="flex flex-col items-center space-y-8">
+        {/* Menu Items */}
+        <nav className="flex flex-col items-center space-y-6">
           {navItems.map((item) => (
-            <Link
-              key={item.name}
+            <Link 
+              key={item.name} 
               href={item.path}
-              className="text-xl font-medium text-lapis-DEFAULT hover:text-emerald-DEFAULT dark:text-tea-800 dark:hover:text-emerald-600 transition-colors"
+              className="text-2xl font-medium text-foreground hover:text-accent transition-colors py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.name}
