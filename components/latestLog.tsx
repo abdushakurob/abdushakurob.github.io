@@ -21,7 +21,7 @@ export default function LatestWritings() {
       try {
         const res = await axios.get("/api/writings");
         const fetchedWritings: Writing[] = res.data.writings
-          .filter(writing => !writing.isDraft)
+          .filter((writing) => !writing.isDraft)
           .slice(0, 3); // Get only the latest 3 non-draft writings
         setWritings(fetchedWritings);
       } catch (err) {
@@ -35,43 +35,57 @@ export default function LatestWritings() {
   }, []);
 
   return (
-    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
+    <section className="w-full py-16 border-b border-lapis-200/20 dark:border-lapis-700/20">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Latest Writings</h1> {/* Changed from "Log Updates" */}
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+        <h1 className="text-3xl font-bold mb-6 text-lapis-DEFAULT dark:text-lapis-700">
+          Latest Writings
+        </h1>
+        <p className="text-lg text-lapis-400 dark:text-tea-800 mb-8">
           Thoughts, mistakes, and occasional realizations.
         </p>
 
         {/* Show Loading State */}
         {loading ? (
-          <p className="text-center text-gray-500">Fetching latest writings...</p>
+          <p className="text-center text-lapis-300">Fetching latest writings...</p>
         ) : error ? (
           <p className="text-center text-red-500">Failed to load writings.</p>
         ) : (
           <div className="space-y-6">
             {writings.length > 0 ? (
               writings.map((writing) => (
-                <div key={writing.slug} className="flex justify-between items-center border-b pb-4">
+                <div
+                  key={writing.slug}
+                  className="flex justify-between items-center border-b border-lapis-200/10 dark:border-tea-800/10 pb-4"
+                >
                   <div>
-                    {/* ✅ Title is clickable now */}
-                    <Link href={`/writings/${writing.slug}`} className="text-lg font-medium hover:text-blue-600">
+                    <Link
+                      href={`/writings/${writing.slug}`}
+                      className="text-lg font-medium text-lapis-DEFAULT hover:text-verdigris-DEFAULT dark:text-tea-800 dark:hover:text-verdigris-600 transition-colors"
+                    >
                       {writing.title}
                     </Link>
-                    <p className="text-sm text-gray-500">{writing.category}</p>
+                    <p className="text-sm text-lapis-400 dark:text-tea-800/80">
+                      {writing.category}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-400 font-jetbrains-mono">
+                  <p className="text-sm text-lapis-300 dark:text-tea-800/60 font-jetbrains-mono">
                     {new Date(writing.createdAt).toDateString()}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-center text-gray-500">No writings available.</p>
+              <p className="text-center text-lapis-300 dark:text-tea-800/60">
+                No writings available.
+              </p>
             )}
           </div>
         )}
 
-        {/* ✅ "View More Writings" Link */}
-        <Link href="/writings" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+        {/* View More Writings Link */}
+        <Link
+          href="/writings"
+          className="inline-block mt-6 text-verdigris-DEFAULT hover:text-verdigris-600 dark:text-verdigris-600 dark:hover:text-verdigris-500 font-medium transition-colors"
+        >
           View More Writings →
         </Link>
       </div>

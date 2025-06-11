@@ -1,135 +1,155 @@
-@import "tailwindcss";
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
 
-:root {
-  --background: #f4fef5; /* tea-900 */
-  --foreground: #0e2331; /* lapis-200 */
-  --primary: #22577a;    /* lapis-DEFAULT */
-  --secondary: #38a3a5;  /* verdigris-DEFAULT */
-  --accent: #57cc99;     /* emerald-DEFAULT */
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0e2331; /* lapis-200 */
-    --foreground: #e9fdeb; /* tea-800 */
-    --primary: #5aa1d1;    /* lapis-700 */
-    --secondary: #52c2c4;  /* verdigris-600 */
-    --accent: #79d6ad;     /* emerald-600 */
+    --lapis-DEFAULT: #22577a;
+    --lapis-100: #071219;
+    --lapis-200: #0e2331;
+    --lapis-300: #15354a;
+    --lapis-400: #1c4663;
+    --lapis-500: #22577a;
+    --lapis-600: #327fb2;
+    --lapis-700: #5aa1d1;
+    --lapis-800: #91c1e0;
+    --lapis-900: #c8e0f0;
+
+    --verdigris-DEFAULT: #38a3a5;
+    --verdigris-100: #0b2021;
+    --verdigris-200: #164141;
+    --verdigris-300: #226162;
+    --verdigris-400: #2d8183;
+    --verdigris-500: #38a3a5;
+    --verdigris-600: #52c2c4;
+    --verdigris-700: #7dd1d3;
+    --verdigris-800: #a8e0e1;
+    --verdigris-900: #d4f0f0;
+
+    --emerald-DEFAULT: #57cc99;
+    --emerald-100: #0e2c1f;
+    --emerald-200: #1b593e;
+    --emerald-300: #29855d;
+    --emerald-400: #37b27c;
+    --emerald-500: #57cc99;
+    --emerald-600: #79d6ad;
+    --emerald-700: #9ae0c2;
+    --emerald-800: #bcead6;
+    --emerald-900: #ddf5eb;
+
+    --light-green-DEFAULT: #80ed99;
+    --light-green-100: #094016;
+    --light-green-200: #12812c;
+    --light-green-300: #1cc142;
+    --light-green-400: #42e468;
+    --light-green-500: #80ed99;
+    --light-green-600: #9bf1af;
+    --light-green-700: #b4f4c3;
+    --light-green-800: #cdf8d7;
+    --light-green-900: #e6fbeb;
+
+    --tea-DEFAULT: #c7f9cc;
+    --tea-100: #095110;
+    --tea-200: #11a220;
+    --tea-300: #25e839;
+    --tea-400: #76f183;
+    --tea-500: #c7f9cc;
+    --tea-600: #d3fad7;
+    --tea-700: #defce1;
+    --tea-800: #e9fdeb;
+    --tea-900: #f4fef5;
   }
 }
 
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--tea-900);
+  color: var(--lapis-200);
   font-family: var(--font-satoshi), sans-serif;
 }
 
-h1,h2,h3,h4,h5,h6{
+[data-theme='dark'] body {
+  background-color: var(--lapis-200);
+  color: var(--tea-800);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-plus-jakarta-sans), sans-serif !important;
 }
 
- 
-pre {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 5px;
-  overflow-x: auto;
+/* Prose Styles */
+.prose h1, 
+.prose h2, 
+.prose h3, 
+.prose h4, 
+.prose h5, 
+.prose h6 {
+  font-weight: 700;
+  color: var(--lapis-DEFAULT);
+  margin-bottom: 1rem;
 }
 
-code {
-  font-family: var(--font-jetbrains-mono), monospace;
-  color: #e63946;
+.prose p {
+  color: var(--lapis-200);
+  margin-bottom: 1rem;
 }
 
-/* React Quill Content Styling */
-.prose .ql-code-block-container {
-  background-color: #f5f5f5;
-  border-radius: 0.375rem;
-  padding: 1rem;
+[data-theme='dark'] .prose p {
+  color: var(--tea-800);
+}
+
+.prose a {
+  color: var(--verdigris-DEFAULT);
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: var(--verdigris-600);
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--verdigris-DEFAULT);
+  padding-left: 1rem;
+  font-style: italic;
   margin: 1.5rem 0;
-  overflow-x: auto;
-  display: block;
-  white-space: pre-wrap;
 }
 
-.prose .ql-code-block {
-  font-family: var(--font-jetbrains-mono), monospace;
-  color: #333;
-  white-space: pre;
-  display: block;
-}
-
-/* Target Quill-specific list items */
-.prose ol li,
-.prose ol li[data-list="ordered"] {
-  display: list-item !important;
-  list-style-type: decimal !important;
-  padding-left: 1rem;
-  margin-left: 1.5rem;
-}
-
-.prose ul li,
-.prose ul li[data-list="bullet"] {
-  display: list-item !important;
-  list-style-type: disc !important;
-  padding-left: 1rem;
-  margin-left: 1.5rem;
-}
-
-/* Hide Quill UI elements */
-.prose li .ql-ui {
-  display: none !important;
-}
-
-/* Headings from Quill */
-.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-  font-weight: bold;
-  color: var(--primary);
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-  line-height: 1.2;
-}
-
-.prose h1 {
-  font-size: 2rem;
-}
-
-.prose h2 {
-  font-size: 1.5rem;
-}
-
-.prose h3 {
-  font-size: 1.25rem;
-}
-
-/* Inline code */
 .prose code {
-  background-color: #f4fef5; /* tea-900 */
-  color: #22577a; /* lapis-DEFAULT */
-  padding: 0.2rem 0.4rem;
+  background-color: var(--tea-900);
+  color: var(--lapis-DEFAULT);
+  padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.875em;
 }
 
-/* Blockquotes */
-.prose blockquote {
-  border-left: 4px solid var(--secondary);
-  padding-left: 1rem;
-  font-style: italic;
-  margin: 1.5rem 0;
-  color: var(--foreground);
+/* Button styles */
+.btn-primary {
+  background-color: var(--lapis-DEFAULT);
+  color: white;
+  transition: background-color 0.2s;
 }
 
-/* Links */
-.prose a {
-  color: var(--secondary);
-  text-decoration: underline;
+.btn-primary:hover {
+  background-color: var(--lapis-600);
 }
 
-/* Paragraphs */
-.prose p {
-  margin: 1rem 0;
-  line-height: 1.7;
-  color: var(--foreground);
+.btn-secondary {
+  background-color: var(--verdigris-DEFAULT);
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--verdigris-600);
+}
+
+.btn-accent {
+  background-color: var(--emerald-DEFAULT);
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.btn-accent:hover {
+  background-color: var(--emerald-600);
 }
