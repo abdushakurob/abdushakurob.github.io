@@ -30,13 +30,13 @@
 
   /* 🌓 Backgrounds and depth */
   --color-bg-light: #ffffff;
-  --color-bg-dark: #041710;  /* Deep forest background */
+  --color-bg-dark: #041710;
   --color-surface-light: #f4f8f6;
   --color-surface-dark: #082318;
 
   --color-text-base: #141414;
   --color-text-muted: #4b4b4b;
-  --color-text-inverse: #e8f2ed;  /* Slightly warmer white for better contrast */
+  --color-text-inverse: #f5fefb;
 
   --font-display: var(--font-satoshi), system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
@@ -68,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   h1, h2, h3, h4, h5, h6 {
-    color: #a3d5c3;  /* Lighter shade for better visibility */
+    color: var(--color-accent-400);
   }
 }
 
@@ -121,35 +121,23 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   .prose {
-    color: #e8f2ed;  /* Ensuring readable text color */
-  }
-
-  .prose h1, .prose h2, .prose h3 {
-    color: #a3d5c3;  /* Making headings stand out */
+    color: var(--color-text-inverse);
   }
 
   .prose blockquote {
-    background-color: #0c2d23;  /* Slightly lighter than bg for contrast */
-    color: #b3d5c3;  /* More visible quote text */
-    border-left-color: #2a8c6a;
+    background-color: #11372c;
+    color: var(--color-accent-200);
+    border-left-color: var(--color-accent-500);
   }
 
   .prose code {
-    background-color: #133629;  /* Better contrast for code blocks */
-    color: #b3e6d5;  /* More visible code text */
+    background-color: #1b4537;
+    color: var(--color-accent-200);
   }
 
   .prose pre {
-    background-color: #0c2d23;  /* Consistent with blockquote background */
-    color: #e6f2ed;  /* Very visible code text */
-  }
-
-  .prose a {
-    color: #3d9f7c;  /* Brighter link color for visibility */
-  }
-
-  .prose a:hover {
-    color: #4db892;  /* Even brighter on hover */
+    background-color: #0c3026;
+    color: var(--color-accent-100);
   }
 }
 
@@ -172,14 +160,13 @@ input:focus, textarea:focus {
 
 @media (prefers-color-scheme: dark) {
   input, textarea {
-    background-color: #0c2d23;  /* Slightly lighter than bg for contrast */
-    color: #e8f2ed;
-    border-color: #1a472a;
+    background-color: #0f2a22;
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary-600);
   }
 
   input:focus, textarea:focus {
-    border-color: #2a8c6a;
-    box-shadow: 0 0 0 2px #1c7355;
+    box-shadow: 0 0 0 2px var(--color-accent-400);
   }
 }
 
