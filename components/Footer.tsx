@@ -14,18 +14,18 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="border-t border-gray-300 dark:border-gray-700 py-16 mt-16 bg-gray-50 dark:bg-gray-900">
+    <footer className="border-t border-border py-16 mt-16 bg-background">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-8 md:gap-8">
           {/* Contact section */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-green-600 dark:text-green-400">Wanna Say Hi?</h3>
-            <p className="text-gray-600 dark:text-gray-300 max-w-md">
+            <h3 className="text-2xl font-semibold text-primary">Wanna Say Hi?</h3>
+            <p className="text-muted-foreground max-w-md">
               Have a random idea, a project, or just feel like saying something? Go for it!
             </p>
             <a
               href="mailto:me@abdushakur.me"
-              className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg shadow-md hover:bg-green-500 transition"
+              className="inline-flex items-center px-6 py-3 text-lg font-medium text-primary-foreground bg-primary rounded-lg shadow-md hover:bg-secondary transition"
             >
               Reach Out
               <ArrowUpRight size={20} className="ml-2" />
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="text-muted-foreground hover:text-primary transition-colors"
                   aria-label={link.name}
                 >
                   {link.icon}
@@ -50,55 +50,35 @@ const Footer: React.FC = () => {
           {/* Links section */}
           <div className="grid grid-cols-2 gap-8">
             <div className="space-y-4">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                 Navigation
               </h4>
               <nav className="flex flex-col space-y-3">
-                <Link href="/" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Link href="/" className="text-sm hover:text-primary transition-colors">
                   Home
                 </Link>
-                <Link href="/writings" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Link href="/writings" className="text-sm hover:text-primary transition-colors">
                   Writings
                 </Link>
-                <Link href="/projects" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Link href="/projects" className="text-sm hover:text-primary transition-colors">
                   Projects
                 </Link>
-                <Link href="/build" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Link href="/build" className="text-sm hover:text-primary transition-colors">
                   Build in Public
                 </Link>
-                <Link href="/about" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                <Link href="/about" className="text-sm hover:text-primary transition-colors">
                   About
                 </Link>
               </nav>
             </div>
-
-            {/* <div className="space-y-4">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-300">
-                Resources
-              </h4>
-              <nav className="flex flex-col space-y-3">
-                <Link href="#" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Uses
-                </Link>
-                <Link href="#" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Bookmarks
-                </Link>
-                <Link href="#" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Newsletter
-                </Link>
-                <Link href="#" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  RSS Feed
-                </Link>
-              </nav>
-            </div> */}
           </div>
         </div>
 
-        <div className="border-t border-gray-300 dark:border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-gray-600 dark:text-gray-300">
+        <div className="border-t border-border mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm text-muted-foreground">
             © {currentYear} Abdushakur. All rights reserved.
           </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 md:mt-0">
+          <p className="text-sm text-muted-foreground mt-2 md:mt-0">
             Designed and built ... eventually.
           </p>
         </div>
