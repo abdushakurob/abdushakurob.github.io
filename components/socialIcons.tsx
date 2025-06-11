@@ -6,7 +6,7 @@ const SocialIcons = () => {
     <div className="fixed hidden left-8 bottom-0 md:flex flex-col items-center gap-6 z-50">
       {/* GitHub */}
       <Link href="https://github.com/AbdushakurOB" target="_blank" className="social-icon">
-        <Github className="h-6 w-6 text-muted-foreground hover:text-primary transition-all" />
+        <Github className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
       </Link>
 
       {/* Twitter */}
