@@ -10,21 +10,20 @@ import { processQuillHtml } from "@/lib/quill-html-processor";
 function getRelativeDate(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
-  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+  const diffTime = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffInDays === 0) return 'Today';
-  if (diffInDays === 1) return 'Yesterday';
-  if (diffInDays < 7) return `${diffInDays} days ago`;
-  if (diffInDays < 30) {
-    const weeks = Math.floor(diffInDays / 7);
-    return `${weeks} ${weeks === 1 ? 'week' : 'weeks'} ago`;
+  if (diffDays === 0) {
+    return "Today";
+  } else if (diffDays === 1) {
+    return "Yesterday";
+  } else if (diffDays < 30) {
+    return `${diffDays} days ago`;
+  } else {
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear();
+    return `${month} ${year}`;
   }
-  if (diffInDays < 365) {
-    const months = Math.floor(diffInDays / 30);
-    return `${months} ${months === 1 ? 'month' : 'months'} ago`;
-  }
-  const years = Math.floor(diffInDays / 365);
-  return `${years} ${years === 1 ? 'year' : 'years'} ago`;
 }
 
 interface Writing {
@@ -46,7 +45,13 @@ interface Writing {
 type ViewType = 'grid' | 'list';
 type SortOption = 'newest' | 'oldest' | 'title';
 
+interface TagCount {
+  tag: string;
+  count: number;
+}
+
 const itemsPerPage = 6;
+const INITIAL_TAGS_TO_SHOW = 10;
 
 export default function WritingList() {
   const [writings, setWritings] = useState<Writing[]>([]);
@@ -63,6 +68,11 @@ export default function WritingList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [tagSearch, setTagSearch] = useState("");
+  const [showTagsSection, setShowTagsSection] = useState(false);
+  const [showCategoriesSection, setShowCategoriesSection] = useState(true);
+  const [tagCounts, setTagCounts] = useState<TagCount[]>([]);
+  const [showAllTags, setShowAllTags] = useState(false);
 
   useEffect(() => {
     fetchWritings();
@@ -71,13 +81,24 @@ export default function WritingList() {
   useEffect(() => {
     if (writings.length > 0) {
       setIsFiltering(true);
-      // Extract unique categories and tags
+      // Extract unique categories and calculate tag frequencies
       const cats = new Set(writings.map(w => w.category));
-      const tagSet = new Set<string>();
-      writings.forEach(w => w.tags?.forEach(tag => tagSet.add(tag)));
+      const tagFrequency: Record<string, number> = {};
       
+      writings.forEach(writing => {
+        writing.tags?.forEach(tag => {
+          tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+        });
+      });
+
+      // Convert to array and sort by frequency
+      const sortedTags = Object.entries(tagFrequency)
+        .map(([tag, count]) => ({ tag, count }))
+        .sort((a, b) => b.count - a.count);
+
       setCategories(cats);
-      setTags(tagSet);
+      setTagCounts(sortedTags);
+      setTags(new Set(sortedTags.map(t => t.tag)));
 
       // Filter and sort writings
       let filtered = [...writings];
@@ -126,14 +147,8 @@ export default function WritingList() {
   const fetchWritings = async () => {
     try {
       setError(null);
-      console.log('Fetching writings...');
       const response = await axios.get('/api/writings');
-      console.log('Response:', response.data);
       const newWritings = response.data.writings;
-      
-      if (!Array.isArray(newWritings)) {
-        throw new Error('Invalid response format: writings is not an array');
-      }
       
       setWritings(prevWritings => {
         if (currentPage === 1) return newWritings;
@@ -142,13 +157,9 @@ export default function WritingList() {
       
       setHasMore(newWritings.length === itemsPerPage);
     } catch (err: any) {
-      const errorMessage = err.response?.data?.error || err.message || 'Failed to load writings';
-      console.error('Error details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status
-      });
-      setError(errorMessage);
+      console.error('Error fetching writings:', err);
+      setError('Failed to load writings');
+      setWritings(currentPage === 1 ? [] : writings);
     } finally {
       setLoading(false);
     }
@@ -173,6 +184,20 @@ export default function WritingList() {
     setSelectedCategory("all");
     setSelectedTags([]);
     setSortBy('newest');
+  };
+
+  const getFilteredTags = () => {
+    let filtered = tagCounts;
+    if (tagSearch) {
+      const search = tagSearch.toLowerCase();
+      filtered = filtered.filter(({ tag }) => 
+        tag.toLowerCase().includes(search)
+      );
+    }
+    if (!showAllTags && !tagSearch) {
+      filtered = filtered.slice(0, INITIAL_TAGS_TO_SHOW);
+    }
+    return filtered;
   };
 
   if (loading && currentPage === 1) {
@@ -289,49 +314,146 @@ export default function WritingList() {
 
         {/* Filters Section */}
         <div className="space-y-4">
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2">
+          {/* Categories Section */}
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
             <button
-              onClick={() => setSelectedCategory("all")}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                selectedCategory === "all"
-                  ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                  : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-              }`}
+              onClick={() => setShowCategoriesSection(!showCategoriesSection)}
+              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
             >
-              All Categories
-            </button>
-            {Array.from(categories).map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === category
-                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                    : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+              <span className="font-medium text-gray-900 dark:text-gray-100">Categories</span>
+              <svg
+                className={`w-5 h-5 transform transition-transform ${
+                  showCategoriesSection ? 'rotate-180' : ''
                 }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                {category}
-              </button>
-            ))}
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {showCategoriesSection && (
+              <div className="p-4 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedCategory("all")}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    selectedCategory === "all"
+                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
+                      : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  All Categories
+                </button>
+                {Array.from(categories).map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                      selectedCategory === category
+                        ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
+                        : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {Array.from(tags).map((tag) => (
-              <button
-                key={tag}
-                onClick={() => handleTagToggle(tag)}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  selectedTags.includes(tag)
-                    ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
-                    : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+          {/* Tags Section */}
+          <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setShowTagsSection(!showTagsSection)}
+              className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 text-left"
+            >
+              <span className="font-medium text-gray-900 dark:text-gray-100">Tags</span>
+              <svg
+                className={`w-5 h-5 transform transition-transform ${
+                  showTagsSection ? 'rotate-180' : ''
                 }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                {tag}
-              </button>
-            ))}
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {showTagsSection && (
+              <div className="p-4 space-y-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search tags..."
+                    value={tagSearch}
+                    onChange={(e) => setTagSearch(e.target.value)}
+                    className="w-full px-3 py-2 text-sm rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+                  />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {getFilteredTags().map(({ tag, count }) => (
+                    <button
+                      key={tag}
+                      onClick={() => handleTagToggle(tag)}
+                      className={`group px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        selectedTags.includes(tag)
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300"
+                          : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      }`}
+                    >
+                      <span>{tag}</span>
+                      <span className="ml-1.5 px-1.5 py-0.5 text-xs rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 group-hover:bg-gray-300 dark:group-hover:bg-gray-600">
+                        {count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                {!tagSearch && tagCounts.length > INITIAL_TAGS_TO_SHOW && (
+                  <button
+                    onClick={() => setShowAllTags(!showAllTags)}
+                    className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  >
+                    {showAllTags ? 'Show Less' : `Show More (${tagCounts.length - INITIAL_TAGS_TO_SHOW} more)`}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
+
+          {/* Active Filters */}
+          {(selectedCategory !== 'all' || selectedTags.length > 0) && (
+            <div className="flex flex-wrap items-center gap-2 pt-4">
+              <span className="text-sm text-gray-500 dark:text-gray-400">Active filters:</span>
+              {selectedCategory !== 'all' && (
+                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+                  {selectedCategory}
+                  <button
+                    onClick={() => setSelectedCategory('all')}
+                    className="ml-1.5 hover:text-blue-900 dark:hover:text-blue-100"
+                  >
+                    ×
+                  </button>
+                </span>
+              )}
+              {selectedTags.map(tag => (
+                <span key={tag} className="inline-flex items-center px-3 py-1.5 rounded-full text-sm bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">
+                  {tag}
+                  <button
+                    onClick={() => handleTagToggle(tag)}
+                    className="ml-1.5 hover:text-green-900 dark:hover:text-green-100"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+              <button
+                onClick={clearFilters}
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
