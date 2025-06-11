@@ -19,9 +19,9 @@
 
   /* ⚡ Accent: Deep emerald for authority */
   --color-accent-100: #e6f2ed;
-  --color-accent-200: #a3d5c3;
-  --color-accent-300: #2a8c6a;
-  --color-accent-400: #1c7355;
+  --color-accent-200: #b3e0d0;
+  --color-accent-300: #33b58a;  /* Brighter for better contrast */
+  --color-accent-400: #29a37c;
   --color-accent-500: #155c44;
   --color-accent-600: #0f4432;
   --color-accent-700: #0b3526;
@@ -30,13 +30,15 @@
 
   /* 🌓 Backgrounds and depth */
   --color-bg-light: #ffffff;
-  --color-bg-dark: #041710;
+  --color-bg-dark: #02100a;    /* Darker background for better contrast */
   --color-surface-light: #f4f8f6;
-  --color-surface-dark: #082318;
+  --color-surface-dark: #051812;
 
+  /* Text colors adjusted for dark mode */
   --color-text-base: #141414;
   --color-text-muted: #4b4b4b;
-  --color-text-inverse: #f5fefb;
+  --color-text-inverse: #ffffff;  /* Pure white for better contrast */
+  --color-text-accent: #4cd4a9;   /* Bright accent for dark mode */
 
   --font-display: var(--font-satoshi), system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
@@ -68,7 +70,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-accent-400);
+    color: var(--color-text-accent);  /* Brighter, more visible headers */
   }
 }
 
@@ -124,20 +126,32 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--color-text-inverse);
   }
 
-  .prose blockquote {
-    background-color: #11372c;
+  .prose h1, .prose h2, .prose h3 {
+    color: var(--color-text-accent);
+  }
+
+  .prose a {
+    color: var(--color-accent-300);  /* Brighter links for better visibility */
+  }
+
+  .prose a:hover {
     color: var(--color-accent-200);
-    border-left-color: var(--color-accent-500);
+  }
+
+  .prose blockquote {
+    background-color: #0a2318;  /* Slightly lighter than bg for contrast */
+    color: #b3e0d0;            /* Lighter text for better readability */
+    border-left-color: var(--color-accent-300);
   }
 
   .prose code {
-    background-color: #1b4537;
+    background-color: #0d2c20;  /* Adjusted for better contrast */
     color: var(--color-accent-200);
   }
 
   .prose pre {
-    background-color: #0c3026;
-    color: var(--color-accent-100);
+    background-color: #071c14;
+    color: #e6f2ed;  /* Light color for better code readability */
   }
 }
 
