@@ -47,6 +47,10 @@ const itemsPerPage = 6;
 
 export default function WritingList() {
   const [writings, setWritings] = useState<Writing[]>([]);
+  const [filteredWritings, setFilteredWritings] = useState<Writing[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [categories, setCategories] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +59,32 @@ export default function WritingList() {
   useEffect(() => {
     fetchWritings();
   }, [currentPage]);
+
+  useEffect(() => {
+    if (writings.length > 0) {
+      // Extract unique categories
+      const cats = new Set(writings.map(w => w.category));
+      setCategories(cats);
+
+      // Filter writings based on search and category
+      let filtered = [...writings];
+      
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(writing => 
+          writing.title.toLowerCase().includes(query) ||
+          writing.excerpt?.toLowerCase().includes(query) ||
+          writing.tags?.some(tag => tag.toLowerCase().includes(query))
+        );
+      }
+
+      if (selectedCategory !== "all") {
+        filtered = filtered.filter(writing => writing.category === selectedCategory);
+      }
+
+      setFilteredWritings(filtered);
+    }
+  }, [searchQuery, selectedCategory, writings]);
 
   const fetchWritings = async () => {
     try {
@@ -113,15 +143,79 @@ export default function WritingList() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-      {writings.length === 0 ? (
+      {/* Page Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          Writings & Articles
+        </h1>
+        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Thoughts, tutorials, and insights on web development, design, and technology.
+        </p>
+      </div>
+
+      {/* Search and Filter Section */}
+      <div className="mb-8 space-y-4">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search articles by title, content, or tags..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+          />
+          <svg
+            className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedCategory("all")}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              selectedCategory === "all"
+                ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
+                : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+            }`}
+          >
+            All
+          </button>
+          {Array.from(categories).map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                selectedCategory === category
+                  ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
+                  : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {filteredWritings.length === 0 ? (
         <div className="text-center py-12">
-          <h3 className="text-xl text-gray-600 dark:text-gray-400">No writings published yet.</h3>
-          <p className="mt-2 text-gray-500">Check back soon for new content!</p>
+          <h3 className="text-xl text-gray-600 dark:text-gray-400">No matching articles found</h3>
+          <p className="mt-2 text-gray-500">Try adjusting your search or filter criteria</p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {writings.map((writing) => (
+            {filteredWritings.map((writing) => (
               <Link
                 href={`/writings/${writing.slug}`}
                 key={writing._id}
