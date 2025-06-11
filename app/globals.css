@@ -2,43 +2,41 @@
 @plugin "daisyui";
 
 /* ===============================
-   🎨 Global Design Tokens
-   (Cool Base + Electric Accent)
+   🌿 Refined Green Theme
+   Modern, confident, vibrant
 ================================= */
 @theme {
-  /* 🔵 Primary: Deep Navy Blue */
-  --color-primary-100: #0a2e36;
-  --color-primary-200: #103f4b;
-  --color-primary-300: #14515f;
-  --color-primary-400: #1b6776;
-  --color-primary-500: #258391; /* Main brand color */
-  --color-primary-600: #4da3b1;
-  --color-primary-700: #7fc6d0;
-  --color-primary-800: #a7dce3;
-  --color-primary-900: #d3eef0;
+  /* 🍃 Primary Green: Emerald with range */
+  --color-primary-100: #e6f4ec;
+  --color-primary-200: #b8e1cd;
+  --color-primary-300: #85cfa9;
+  --color-primary-400: #4cbb84;
+  --color-primary-500: #24a060; /* Main brand green */
+  --color-primary-600: #1e8b54;
+  --color-primary-700: #1a7347;
+  --color-primary-800: #155e3a;
+  --color-primary-900: #0f472d;
 
-  /* 🌟 Accent: Electric Mint / Cyan */
-  --color-accent-100: #d0fcf6;
-  --color-accent-200: #a2f6e9;
-  --color-accent-300: #78e8da;
-  --color-accent-400: #4cd9cb;
-  --color-accent-500: #2ac8ba;
-  --color-accent-600: #1cb1a5;
-  --color-accent-700: #0e9a8f;
-  --color-accent-800: #007f75;
-  --color-accent-900: #005f56;
+  /* ⚡ Accent: Electric lime for action */
+  --color-accent-100: #f3fce6;
+  --color-accent-200: #e1fbb3;
+  --color-accent-300: #c7f480;
+  --color-accent-400: #a8ea47;
+  --color-accent-500: #8fd72e;
+  --color-accent-600: #6bbd1f;
+  --color-accent-700: #509f16;
+  --color-accent-800: #387f0f;
+  --color-accent-900: #265c09;
 
-  /* ⚫ Rich Depths for Dark Mode + Shadows */
-  --color-surface-light: #f9fafa;
-  --color-surface-dark: #081e24;
+  /* 🌓 Backgrounds and depth */
   --color-bg-light: #ffffff;
-  --color-bg-dark: #0a2e36;
+  --color-bg-dark: #0b1f17;
+  --color-surface-light: #f5fefb;
+  --color-surface-dark: #0f2a22;
 
-  /* 📄 Typography */
-  --color-text-base: #1a1a1a;
+  --color-text-base: #141414;
   --color-text-muted: #4b4b4b;
-  --color-text-inverse: #f0fdfd;
-  --color-border: #cbd5e1;
+  --color-text-inverse: #f5fefb;
 
   --font-display: var(--font-satoshi), system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
@@ -46,7 +44,7 @@
 }
 
 /* ===============================
-   🌐 Base Elements
+   🌐 Base
 ================================= */
 body {
   background-color: var(--color-bg-light);
@@ -65,7 +63,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  color: var(--color-primary-500);
+  color: var(--color-primary-600);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -75,7 +73,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===============================
-   ✍️ Typography (Prose)
+   ✍️ Typography
 ================================= */
 .prose {
   color: var(--color-text-base);
@@ -83,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose h1, .prose h2, .prose h3 {
-  color: var(--color-primary-600);
+  color: var(--color-primary-700);
 }
 
 .prose a {
@@ -106,7 +104,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose code {
-  background-color: #eef6f6;
+  background-color: #e9fbee;
   color: var(--color-accent-800);
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
@@ -114,8 +112,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose pre {
-  background-color: #011b1c;
-  color: #ccf7f3;
+  background-color: #0f2a22;
+  color: #d1fadd;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
@@ -127,24 +125,24 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .prose blockquote {
-    background-color: #102f33;
+    background-color: #11372c;
     color: var(--color-accent-200);
     border-left-color: var(--color-accent-500);
   }
 
   .prose code {
-    background-color: #10363a;
+    background-color: #1b4537;
     color: var(--color-accent-200);
   }
 
   .prose pre {
-    background-color: #0a2e36;
+    background-color: #0c3026;
     color: var(--color-accent-100);
   }
 }
 
 /* ===============================
-   🧩 Forms
+   💬 Inputs
 ================================= */
 input, textarea {
   background-color: white;
@@ -156,31 +154,31 @@ input, textarea {
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: var(--color-accent-500);
+  border-color: var(--color-primary-500);
   box-shadow: 0 0 0 2px var(--color-accent-300);
 }
 
 @media (prefers-color-scheme: dark) {
   input, textarea {
-    background-color: #0f2c32;
+    background-color: #0f2a22;
     color: var(--color-text-inverse);
-    border-color: var(--color-accent-600);
+    border-color: var(--color-primary-600);
   }
 
   input:focus, textarea:focus {
-    box-shadow: 0 0 0 2px var(--color-accent-500);
+    box-shadow: 0 0 0 2px var(--color-accent-400);
   }
 }
 
 /* ===============================
-   🎛 Scrollbar
+   🖱 Scrollbar
 ================================= */
 ::-webkit-scrollbar {
   width: 0.6rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-accent-500);
+  background-color: var(--color-primary-500);
   border-radius: 9999px;
 }
 
