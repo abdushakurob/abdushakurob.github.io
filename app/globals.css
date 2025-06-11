@@ -5,19 +5,17 @@
    🌿 Refined Green Theme
    Modern, confident, vibrant
 ================================= */
-@theme {
-  /* 🍃 Primary Green: Emerald with range */
+:root {
   --color-primary-100: #e6f4ec;
   --color-primary-200: #b8e1cd;
   --color-primary-300: #85cfa9;
   --color-primary-400: #4cbb84;
-  --color-primary-500: #24a060; /* Main brand green */
+  --color-primary-500: #24a060;
   --color-primary-600: #1e8b54;
   --color-primary-700: #1a7347;
   --color-primary-800: #155e3a;
   --color-primary-900: #0f472d;
 
-  /* ⚡ Accent: Electric lime for action */
   --color-accent-100: #f3fce6;
   --color-accent-200: #e1fbb3;
   --color-accent-300: #c7f480;
@@ -28,7 +26,6 @@
   --color-accent-800: #387f0f;
   --color-accent-900: #265c09;
 
-  /* 🌓 Backgrounds and depth */
   --color-bg-light: #ffffff;
   --color-bg-dark: #0b1f17;
   --color-surface-light: #f5fefb;
@@ -44,20 +41,58 @@
 }
 
 /* ===============================
+   🌱 DaisyUI Custom Theme
+================================= */
+:root {
+  --p: var(--color-primary-500);
+  --pf: var(--color-text-inverse);
+
+  --s: var(--color-accent-500);
+  --sf: var(--color-bg-light);
+
+  --a: var(--color-accent-600);
+  --af: var(--color-bg-light);
+
+  --b1: var(--color-bg-light);
+  --b2: var(--color-surface-light);
+  --b3: var(--color-primary-100);
+
+  --bc: var(--color-text-base);
+
+  --in: #2d9cdb; /* info */
+  --su: #27ae60; /* success */
+  --wa: #f2c94c; /* warning */
+  --er: #eb5757; /* error */
+}
+
+/* Dark theme overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --p: var(--color-primary-400);
+    --pf: var(--color-bg-dark);
+
+    --s: var(--color-accent-400);
+    --sf: var(--color-bg-dark);
+
+    --a: var(--color-accent-300);
+    --af: var(--color-bg-dark);
+
+    --b1: var(--color-bg-dark);
+    --b2: var(--color-surface-dark);
+    --b3: var(--color-primary-900);
+
+    --bc: var(--color-text-inverse);
+  }
+}
+
+/* ===============================
    🌐 Base
 ================================= */
 body {
-  background-color: var(--color-bg-light);
-  color: var(--color-text-base);
+  background-color: var(--b1);
+  color: var(--bc);
   font-family: var(--font-display);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: var(--color-bg-dark);
-    color: var(--color-text-inverse);
-  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -146,7 +181,7 @@ h1, h2, h3, h4, h5, h6 {
 ================================= */
 input, textarea {
   background-color: white;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-primary-300);
   border-radius: 0.375rem;
   padding: 0.5rem 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
