@@ -1,32 +1,26 @@
 @import "tailwindcss";
-@plugin "daisyui";
-:root {
-  /* --background: #e8f5e9; Light green background */
-  --foreground: #004d40; /* Dark green text */
-  --primary: #0288d1;    /* Blue for buttons and highlights */
-  --secondary: #81c784;  /* Light green for accents */
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  --background: #f4fef5; /* tea-900 */
+  --foreground: #0e2331; /* lapis-200 */
+  --primary: #22577a;    /* lapis-DEFAULT */
+  --secondary: #38a3a5;  /* verdigris-DEFAULT */
+  --accent: #57cc99;     /* emerald-DEFAULT */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #00251a; /* Dark green background */
-    --foreground: #e0f7fa; /* Light blue text */
-    --primary: #03a9f4;    /* Bright blue for buttons and highlights */
-    --secondary: #4caf50;  /* Green for accents */
+    --background: #0e2331; /* lapis-200 */
+    --foreground: #e9fdeb; /* tea-800 */
+    --primary: #5aa1d1;    /* lapis-700 */
+    --secondary: #52c2c4;  /* verdigris-600 */
+    --accent: #79d6ad;     /* emerald-600 */
   }
 }
 
 body {
   background: var(--background);
-  color: var(--foreground); 
-  /* font-family: Arial, Helvetica, sans-serif; */
+  color: var(--foreground);
   font-family: var(--font-satoshi), sans-serif;
 }
 
@@ -90,7 +84,7 @@ code {
 /* Headings from Quill */
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
   font-weight: bold;
-  color: #059669; /* green-600 */
+  color: var(--primary);
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   line-height: 1.2;
@@ -110,8 +104,8 @@ code {
 
 /* Inline code */
 .prose code {
-  background-color: #f3f4f6;
-  color: #ef4444;
+  background-color: #f4fef5; /* tea-900 */
+  color: #22577a; /* lapis-DEFAULT */
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-family: var(--font-jetbrains-mono), monospace;
@@ -120,16 +114,16 @@ code {
 
 /* Blockquotes */
 .prose blockquote {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid var(--secondary);
   padding-left: 1rem;
   font-style: italic;
   margin: 1.5rem 0;
-  color: #4b5563;
+  color: var(--foreground);
 }
 
 /* Links */
 .prose a {
-  color: #3b82f6;
+  color: var(--secondary);
   text-decoration: underline;
 }
 
@@ -137,4 +131,5 @@ code {
 .prose p {
   margin: 1rem 0;
   line-height: 1.7;
+  color: var(--foreground);
 }
