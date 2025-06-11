@@ -4,50 +4,48 @@
 /* ===============================
    ✅ Design Tokens (Color System)
 ================================= */
-@theme {
-  /* Primary Brand Palette (Oxford Blue) */
-  --color-primary-100: #05080d;
-  --color-primary-200: #0b111a;
-  --color-primary-300: #101927;
-  --color-primary-400: #162234;
-  --color-primary-500: #1b2a41; /* Main brand color */
-  --color-primary-600: #34517c;
-  --color-primary-700: #89a5ce;
-  --color-primary-800: #b4c5e0;
-  --color-primary-900: #e0e7f2;
+@theme {  /* Primary Brand Palette (Ocean Blue) */
+  --color-primary-100: #0a1f2d;
+  --color-primary-200: #133040;
+  --color-primary-300: #1b4154;
+  --color-primary-400: #1d4d69;
+  --color-primary-500: #22577a; /* Main brand color */
+  --color-primary-600: #38a3a5;
+  --color-primary-700: #57cc99;
+  --color-primary-800: #80ed99;
+  --color-primary-900: #c7f9cc;
 
-  /* Accent Palette (Charcoal with increased contrast) */
-  --color-accent-100: #0a0f13;
-  --color-accent-200: #141d25;
-  --color-accent-300: #9fb7cc;  /* Brightened for dark mode text */
-  --color-accent-400: #273a4b;
-  --color-accent-500: #324a5f; /* Accent color */
-  --color-accent-600: #4b6e8e;
-  --color-accent-700: #6f93b3;
-  --color-accent-800: #b8d0e6; /* Brightened for dark mode */
-  --color-accent-900: #e5eef5;
+  /* Accent Palette (Teal to Green) */
+  --color-accent-100: #133638;
+  --color-accent-200: #1d4d4e;
+  --color-accent-300: #276466;
+  --color-accent-400: #318486;
+  --color-accent-500: #38a3a5; /* Accent color */
+  --color-accent-600: #57cc99;
+  --color-accent-700: #6de0ac;
+  --color-accent-800: #80ed99;
+  --color-accent-900: #c7f9cc;
 
-  /* Rich Black for Depth */
-  --color-rich-100: #020507;
-  --color-rich-200: #050a0d;
-  --color-rich-300: #070f14;
-  --color-rich-400: #0a141b;
-  --color-rich-500: #0c1821;
-  --color-rich-600: #3d7baa; /* Brightened for better contrast */
-  --color-rich-700: #77a8ce;
-  --color-rich-800: #a8c9e3;
-  --color-rich-900: #d9e8f3;
+  /* Rich Green for Depth */
+  --color-rich-100: #0a1f1d;
+  --color-rich-200: #133230;
+  --color-rich-300: #1b4440;
+  --color-rich-400: #225750;
+  --color-rich-500: #2a6a60;
+  --color-rich-600: #254a66;
+  --color-rich-700: #3d7baa;
+  --color-rich-800: #77a8ce;
+  --color-rich-900: #bbd3e6;
+  /* Neutrals */
+  --color-bg-light: #f8faf8;
+  --color-bg-dark: #133040;
+  --color-surface-light: #e8f3ed;
+  --color-surface-dark: #22577a;
 
-  /* Neutrals with better contrast */
-  --color-bg-light: #f5f5f8;
-  --color-bg-dark: #0c1821;    /* Rich black for deep background */
-  --color-surface-light: #ebeaf1;
-  --color-surface-dark: #162234; /* Slightly lighter than bg for contrast */
-
-  /* Text + UI Elements with improved contrast */
-  --color-text-base: #1b2a41;
-  --color-text-muted: #4b6e8e;
-  --color-border: #ccc9dc;
+  /* Text + UI Elements */
+  --color-text-base: #22577a;
+  --color-text-muted: #38a3a5;
+  --color-border: #c7f9cc;
 
   /* Fonts */
   --font-display: var(--font-satoshi), system-ui, sans-serif;
@@ -68,7 +66,7 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--color-bg-dark);
-    color: var(--color-accent-300); /* Brightened text color for dark mode */
+    color: var(--color-surface-light);
   }
 }
 
@@ -80,7 +78,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-accent-800); /* Brighter heading color for dark mode */
+    color: var(--color-accent-300);
   }
 }
 
@@ -132,33 +130,21 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   .prose {
-    color: var(--color-accent-300); /* Improved readability for dark mode content */
+    color: var(--color-surface-light);
   }
-  
-  .prose h1, .prose h2, .prose h3 {
-    color: var(--color-accent-800);
-  }
-  
-  .prose a {
-    color: var(--color-accent-700);
-  }
-  
-  .prose a:hover {
-    color: var(--color-accent-800);
-  }
-  
-  .prose strong {
-    color: var(--color-accent-800);
-  }
-  
+
   .prose blockquote {
-    color: var(--color-accent-300);
-    border-color: var(--color-accent-600);
+    background-color: var(--color-primary-700);
+    color: var(--color-accent-200);
   }
-  
+
   .prose code {
+    background-color: var(--color-primary-800);
     color: var(--color-accent-300);
-    background-color: var(--color-rich-400);
+  }
+
+  .prose pre {
+    background-color: var(--color-primary-800);
   }
 }
 
