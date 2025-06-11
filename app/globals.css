@@ -2,42 +2,41 @@
 @plugin "daisyui";
 
 /* ===============================
-   🌿 Refined Dark Green Theme
-   Modern, confident, sophisticated
+   🌿 Deep Verdant Theme
+   Grounded, bold, intelligent
 ================================= */
 @theme {
-  /* 🌲 Primary Green: Deep forest green range */
-  --color-primary-100: #e8f5f0;
-  --color-primary-200: #c7e6d7;
-  --color-primary-300: #94c5ae;
-  --color-primary-400: #5a9c82;
-  --color-primary-500: #2c7a5f; /* Main brand green - darker and more sophisticated */
-  --color-primary-600: #1f5c46;
-  --color-primary-700: #164634;
-  --color-primary-800: #0e3424;
-  --color-primary-900: #082218;
+  /* 🌲 Primary: Deep moss to obsidian green range */
+  --color-primary-100: #e6f1ed;
+  --color-primary-200: #bfded0;
+  --color-primary-300: #86bba7;
+  --color-primary-400: #4f927b;
+  --color-primary-500: #2f6e59; /* Main green: mature, low-saturation */
+  --color-primary-600: #1f4e40;
+  --color-primary-700: #14352c;
+  --color-primary-800: #0c241d;
+  --color-primary-900: #071710;
 
-  /* 🌱 Accent: Sage green for balanced contrast */
-  --color-accent-100: #f0f5e9;
-  --color-accent-200: #dce8cc;
-  --color-accent-300: #b8cc9c;
-  --color-accent-400: #96b574;
-  --color-accent-500: #779656; /* More muted and natural */
-  --color-accent-600: #5c7642;
-  --color-accent-700: #455831;
-  --color-accent-800: #2e3b21;
-  --color-accent-900: #1a2112;
+  /* 🌱 Accent: Muted olive and mineral green */
+  --color-accent-100: #f1f4ec;
+  --color-accent-200: #d8e1c8;
+  --color-accent-300: #b2c297;
+  --color-accent-400: #8ca86f;
+  --color-accent-500: #6e8a54;
+  --color-accent-600: #556c42;
+  --color-accent-700: #3e5031;
+  --color-accent-800: #28341f;
+  --color-accent-900: #171f13;
 
-  /* 🌓 Enhanced backgrounds and depth */
+  /* 🌒 Neutrals and contrast */
   --color-bg-light: #ffffff;
-  --color-bg-dark: #0a1f16;
-  --color-surface-light: #f8faf9;
-  --color-surface-dark: #102820;
-  
-  /* 📝 Improved text contrast */
-  --color-text-base: #1a2023;
-  --color-text-muted: #4a5558;
-  --color-text-inverse: #f0f4f2;
+  --color-bg-dark: #0a1b15;
+  --color-surface-light: #f7f9f8;
+  --color-surface-dark: #101e1a;
+
+  --color-text-base: #1a1f1d;
+  --color-text-muted: #49514f;
+  --color-text-inverse: #edf5f2;
 
   --font-display: var(--font-satoshi), system-ui, sans-serif;
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
@@ -105,7 +104,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose code {
-  background-color: #edf3f0;
+  background-color: #eaf1ee;
   color: var(--color-primary-700);
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
@@ -113,8 +112,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose pre {
-  background-color: #102820;
-  color: #e8f5f0;
+  background-color: #0e221c;
+  color: #edf5f2;
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;
@@ -138,18 +137,18 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .prose blockquote {
-    background-color: #1a3028;
+    background-color: #162e26;
     color: var(--color-accent-200);
     border-left-color: var(--color-primary-400);
   }
 
   .prose code {
-    background-color: #1f3830;
-    color: var(--color-accent-200);
+    background-color: #1d382f;
+    color: var(--color-accent-100);
   }
 
   .prose pre {
-    background-color: #0d2018;
+    background-color: #0b1d17;
     color: var(--color-accent-100);
   }
 }
