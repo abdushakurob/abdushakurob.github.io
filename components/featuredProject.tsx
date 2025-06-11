@@ -113,6 +113,11 @@ export default function FeaturedProject() {
                             </a>
                           ))}
                         </div>
+                        <div className="pt-4 border-t border-primary-200/50 dark:border-primary-700/50 flex flex-wrap items-center gap-4">
+                        <span className="px-3 py-1 text-xs font-medium bg-accent-100 text-accent-600 dark:bg-accent-500/10 dark:text-accent-300 rounded-full whitespace-nowrap">
+                            {project.category}
+                        </span>
+                        </div>
                       </div>
                     </div>
                   </Link>
