@@ -154,10 +154,9 @@ export default function ProjectDetail({ slug }: { slug: string }) {
         )}
 
         {/* Project Links */}
-        <div className="flex flex-wrap gap-4">
-          {project.link && (
+        <div className="flex flex-wrap gap-4">          {project.link && (
             <a 
-              href={project.link}
+              href={project.link.startsWith('http') ? project.link : `https://${project.link}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
@@ -169,7 +168,7 @@ export default function ProjectDetail({ slug }: { slug: string }) {
           
           {project.github && (
             <a 
-              href={project.github}
+              href={project.github.startsWith('http') ? project.github : `https://${project.github}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
