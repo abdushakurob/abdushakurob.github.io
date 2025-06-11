@@ -22,12 +22,13 @@ const CustomButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }, ref) => {
     
     const baseStyles = "inline-flex items-center justify-center font-medium transition-all rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none btn-hover-effect";
-      const variantStyles = {
+    
+    const variantStyles = {
       primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-      outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-      ghost: "hover:bg-muted text-foreground hover:text-foreground",
-      link: "text-primary underline-offset-4 hover:underline"
+      secondary: "bg-green-500 text-white hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700",
+      outline: "border border-input bg-background hover:bg-accent hover:border-accent",
+      ghost: "hover:bg-accent/10 text-foreground",
+      link: "text-blue-500 dark:text-blue-400 underline-offset-4 hover:underline"
     };
     
     const sizeStyles = {

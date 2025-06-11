@@ -54,7 +54,8 @@ const Header: React.FC = () => {
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">          <span className="text-primary">A</span>
+        <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
+          <span className="dark:text-green-300 text-green-700">A</span>
           <span className="text-foreground">bdushakur</span>
         </Link>
         
