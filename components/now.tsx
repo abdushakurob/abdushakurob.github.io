@@ -1,72 +1,57 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Link from "next/link";
+"use client"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import Link from "next/link"
 
 interface Track {
-  _id: string;
-  title: string;
-  category: string;
-  createdAt: string;
+  _id: string
+  title: string
+  category: string
+  createdAt: string
 }
 
 export default function Now() {
-  const [tracks, setTracks] = useState<Track[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [tracks, setTracks] = useState<Track[]>([])
+  const [loading, setLoading] = useState(true)
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchTracks() {
       try {
-        const res = await axios.get("/api/build");
-        const latestTracks = res.data
-          .sort((a: Track, b: Track) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          .slice(0, 3);
-        setTracks(latestTracks);
+        const res = await axios.get("/api/build")
+        const latestTracks = res.data.slice(0, 3) // ✅ Show only latest 3
+        setTracks(latestTracks)
 
+        // ✅ Get latest update time
         if (latestTracks.length > 0) {
-          setLastUpdated(
-            new Date(latestTracks[0].createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })
-          );
+          setLastUpdated(new Date(latestTracks[0].createdAt).toLocaleDateString())
         }
       } catch (error) {
-        console.error("Error fetching tracks:", error);
+        console.error("Error fetching tracks:", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     }
-    fetchTracks();
-  }, []);
+    fetchTracks()
+  }, [])
 
   return (
-    <section className="w-full py-16 border-b border-gray-200 dark:border-gray-800">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold mb-4 tracking-tight text-gray-900 dark:text-white">
-          What’s Cooking in My Brain
-        </h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-10">
-          Stuff I’m building, learning, and overthinking at the moment.
+    <section className="w-full py-16 border-b border-gray-300 dark:border-gray-700">
+      <div className="max-w-4xl mx-auto px-6">
+        <h2 className="text-3xl font-bold mb-6">What&apos;s Cooking in My Brain</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          Stuff I&apos;m building, learning, and overthinking at the moment.
         </p>
 
         {loading ? (
-          <p className="text-center text-gray-500">Fetching latest updates...</p>
+          <p className="text-gray-500 text-center">Fetching latest updates...</p>
         ) : tracks.length > 0 ? (
           <div className="space-y-6">
             {tracks.map((track) => (
-              <div
-                key={track._id}
-                className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 dark:border-gray-700 pb-4"
-              >
-                <p className="text-base font-medium text-gray-900 dark:text-white">
-                  {track.title}
-                </p>
-                <span className="mt-1 sm:mt-0 text-xs font-mono bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded">
-                  {track.category}
+              <div key={track._id} className="flex justify-between items-center border-b pb-4">
+                <p className="text-gray-900 dark:text-gray-100">{track.title}</p>
+                <span className="text-xs text-blue-500 font-jetbrains-mono">
+                  [{track.category}]
                 </span>
               </div>
             ))}
@@ -75,23 +60,18 @@ export default function Now() {
           <p className="text-center text-gray-500">No active builds right now.</p>
         )}
 
-        <div className="mt-10 text-center">
-          <Link
-            href="/build"
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:underline"
-          >
-            View More →
-          </Link>
-        </div>
+        <Link href="/build" className="inline-block mt-6 text-blue-600 dark:text-blue-400 font-medium">
+          View More →
+        </Link>
 
-        <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 font-mono text-center">
+        <p className="mt-8 text-sm text-gray-500 dark:text-gray-400 font-jetbrains-mono">
           Last updated:{" "}
-          <span className="text-green-600 dark:text-green-400">
+          <span className="text-green-500">
             {lastUpdated || "just now"}
           </span>{" "}
-          <span className="italic">(or maybe forever ago)</span>
+          <i>(or maybe forever ago)</i>
         </p>
       </div>
     </section>
-  );
+  )
 }
