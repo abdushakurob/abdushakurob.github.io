@@ -1,35 +1,113 @@
 @import "tailwindcss";
 @plugin "daisyui";
-:root {
-  /* --background: #e8f5e9; Light green background */
-  --foreground: #004d40; /* Dark green text */
-  --primary: #0288d1;    /* Blue for buttons and highlights */
-  --secondary: #81c784;  /* Light green for accents */
-}
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #00251a; /* Dark green background */
-    --foreground: #e0f7fa; /* Light blue text */
-    --primary: #03a9f4;    /* Bright blue for buttons and highlights */
-    --secondary: #4caf50;  /* Green for accents */
+    /* Color System */
+    --color-midnight-green-100: #030f13;
+    --color-midnight-green-200: #071e26;
+    --color-midnight-green-300: #0a2d39;
+    --color-midnight-green-400: #0d3d4c;
+    --color-midnight-green-500: #114b5f;
+    --color-midnight-green-600: #1d81a3;
+    --color-midnight-green-700: #34b1db;
+    --color-midnight-green-800: #78cbe7;
+    --color-midnight-green-900: #bbe5f3;
+
+    --color-sea-green-100: #051d16;
+    --color-sea-green-200: #0a3b2c;
+    --color-sea-green-300: #105843;
+    --color-sea-green-400: #157659;
+    --color-sea-green-500: #1a936f;
+    --color-sea-green-600: #24cd9a;
+    --color-sea-green-700: #53e1b6;
+    --color-sea-green-800: #8debcf;
+    --color-sea-green-900: #c6f5e7;
+
+    --color-celadon-100: #123319;
+    --color-celadon-200: #256633;
+    --color-celadon-300: #37994c;
+    --color-celadon-400: #54c16c;
+    --color-celadon-500: #88d498;
+    --color-celadon-600: #9fdcac;
+    --color-celadon-700: #b7e5c1;
+    --color-celadon-800: #cfeed6;
+    --color-celadon-900: #e7f6ea;
+
+    --color-tea-green-100: #24341e;
+    --color-tea-green-200: #47683c;
+    --color-tea-green-300: #6b9b59;
+    --color-tea-green-400: #98bc8a;
+    --color-tea-green-500: #c6dabf;
+    --color-tea-green-600: #d1e1cb;
+    --color-tea-green-700: #dde9d8;
+    --color-tea-green-800: #e8f0e5;
+    --color-tea-green-900: #f4f8f2;
+
+    --color-parchment-100: #483813;
+    --color-parchment-200: #8f7026;
+    --color-parchment-300: #cda443;
+    --color-parchment-400: #e0c78b;
+    --color-parchment-500: #f3e9d2;
+    --color-parchment-600: #f6eedc;
+    --color-parchment-700: #f8f2e4;
+    --color-parchment-800: #faf6ed;
+    --color-parchment-900: #fdfbf6;
+
+    /* Semantic Colors - Light Mode */
+    --color-background: var(--color-parchment-500);
+    --color-foreground: var(--color-midnight-green-500);
+    --color-primary: var(--color-sea-green-500);
+    --color-primary-foreground: var(--color-parchment-500);
+    --color-secondary: var(--color-celadon-500);
+    --color-accent: var(--color-tea-green-500);
+    
+    /* Typography */
+    --font-sans: var(--font-satoshi);
+    --font-heading: var(--font-plus-jakarta-sans);
+    --font-mono: var(--font-jetbrains-mono);
+
+    /* Animation */
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+    /* Spacing */
+    --space-page: 2rem;
+    --space-section: 4rem;
+  }
+
+  /* Dark Mode Variables */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background: var(--color-midnight-green-200);
+      --color-foreground: var(--color-parchment-500);
+      --color-primary: var(--color-sea-green-400);
+      --color-primary-foreground: var(--color-parchment-500);
+      --color-secondary: var(--color-celadon-400);
+      --color-accent: var(--color-tea-green-400);
+    }
   }
 }
 
+/* Base Styles */
 body {
-  background: var(--background);
-  color: var(--foreground); 
-  /* font-family: Arial, Helvetica, sans-serif; */
-  font-family: var(--font-satoshi), sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
 }
 
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-foreground);
+}
+
+pre, code {
+  font-family: var(--font-mono);
+}
+
+/* Existing styles */
 h1,h2,h3,h4,h5,h6{
   font-family: var(--font-plus-jakarta-sans), sans-serif !important;
 }
