@@ -22,9 +22,12 @@ const Hero: React.FC = () => {
         
         <div className="max-w-3xl mx-auto space-y-6">
           <div className="inline-block animate-fade-in">
-            <p className="text-lg font-sans font-medium text-primary">
+            {/* <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-600/10 text-accent">
               Hey there! I&apos;m
-            </p>
+            </span> */}
+            <p className="text-lg font-sans font-medium text-green-500 dark:text-green-400">
+            Hey there! I&apos;m
+          </p>
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold leading-tight md:leading-tight animate-fade-in-up" style={{ animationDelay: "0.1s" }}>

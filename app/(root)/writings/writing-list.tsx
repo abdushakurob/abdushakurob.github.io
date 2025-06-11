@@ -236,13 +236,13 @@ export default function WritingList() {
         <div className="relative">
           <input
             type="text"
-            placeholder="Search writings..."
+            placeholder="Search articles by title, content, or tags..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-2 pr-10 rounded-lg border border-border bg-background"
+            className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
           />
           <svg
-            className="absolute right-3 top-3.5 h-5 w-5 text-muted-foreground"
+            className="absolute right-3 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-500"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -257,13 +257,13 @@ export default function WritingList() {
           {/* View Toggle & Sort */}
           <div className="flex items-center gap-4">
             {/* View Toggle */}
-            <div className="flex items-center bg-muted rounded-lg p-1">
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
               <button
                 onClick={() => setViewType('grid')}
                 className={`p-2 rounded-md transition-colors ${
                   viewType === 'grid'
-                    ? 'bg-background text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -274,8 +274,8 @@ export default function WritingList() {
                 onClick={() => setViewType('list')}
                 className={`p-2 rounded-md transition-colors ${
                   viewType === 'list'
-                    ? 'bg-background text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -283,7 +283,33 @@ export default function WritingList() {
                 </svg>
               </button>
             </div>
+
+            {/* Sort Dropdown */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-700 dark:text-gray-300"
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="title">Title A-Z</option>
+            </select>
           </div>
+
+          {/* Active Filters Display */}
+          {(selectedCategory !== 'all' || selectedTags.length > 0 || searchQuery) && (
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-500 dark:text-gray-400">
+                {filteredWritings.length} results
+              </span>
+              <button
+                onClick={clearFilters}
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Filters Section */}
@@ -496,11 +522,11 @@ export default function WritingList() {
                     )}
                   </div>
 
-                  <div className={`flex-1 ${viewType === 'list' ? 'min-w-0' : ''}`}>
-                    <div className="space-y-1">
+                  <div className={`flex-1 ${viewType === 'list' ? 'flex flex-col' : ''}`}>
+                    <div className="flex items-start justify-between gap-3">
                       <h2 className={`
-                        font-bold text-foreground
-                        group-hover:text-primary transition-colors
+                        font-semibold text-gray-800 dark:text-gray-100 
+                        group-hover:text-blue-500 transition-colors
                         ${viewType === 'list' ? 'text-2xl line-clamp-1' : 'text-xl line-clamp-2'}
                       `}>
                         {writing.title}
@@ -508,7 +534,7 @@ export default function WritingList() {
                     </div>
 
                     <p className={`
-                      mt-2 text-muted-foreground
+                      mt-2 text-gray-600 dark:text-gray-300
                       ${viewType === 'list' ? 'line-clamp-2' : 'line-clamp-3'}
                     `}>
                       {writing.excerpt || processQuillHtml(writing.content).slice(0, 150) + '...'}
@@ -517,12 +543,25 @@ export default function WritingList() {
                     {writing.tags && writing.tags.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">
                         {writing.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded-full">
+                          <span key={index} className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
                             {tag}
                           </span>
                         ))}
                       </div>
                     )}
+
+                    <div className={`
+                      mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 
+                      flex items-center justify-between
+                      ${viewType === 'list' ? 'mt-auto' : ''}
+                    `}>
+                      <span className="px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
+                        {writing.category}
+                      </span>
+                      <time className="text-sm text-gray-500 dark:text-gray-400">
+                        {getRelativeDate(writing.publishedAt || writing.createdAt)}
+                      </time>
+                    </div>
                   </div>
                 </div>
               </Link>
