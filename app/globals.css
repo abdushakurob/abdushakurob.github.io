@@ -5,36 +5,49 @@
    ✅ Design Tokens (Color System)
 ================================= */
 @theme {
-  /* Primary Brand Palette */
-  --color-primary-100: #e6f7f8;
-  --color-primary-200: #bbe5f3;
-  --color-primary-300: #78cbe7;
-  --color-primary-400: #34b1db;
-  --color-primary-500: #1d81a3; /* Main brand color */
-  --color-primary-600: #114b5f;
-  --color-primary-700: #0d3d4c;
-  --color-primary-800: #0a2d39;
-  --color-primary-900: #071e26;
+  /* Primary Brand Palette (Oxford Blue) */
+  --color-primary-100: #05080d;
+  --color-primary-200: #0b111a;
+  --color-primary-300: #101927;
+  --color-primary-400: #162234;
+  --color-primary-500: #1b2a41; /* Main brand color */
+  --color-primary-600: #34517c;
+  --color-primary-700: #4e77b5;
+  --color-primary-800: #89a5ce;
+  --color-primary-900: #c4d2e6;
 
-  /* Accent Palette (Secondary) */
-  --color-accent-100: #f1fcf8;
-  --color-accent-200: #c6f5e7;
-  --color-accent-300: #8debcf;
-  --color-accent-400: #53e1b6;
-  --color-accent-500: #24cd9a; /* Accent color */
-  --color-accent-600: #1a936f;
-  --color-accent-700: #157659;
+  /* Accent Palette (Charcoal) */
+  --color-accent-100: #0a0f13;
+  --color-accent-200: #141d25;
+  --color-accent-300: #1e2c38;
+  --color-accent-400: #273a4b;
+  --color-accent-500: #324a5f; /* Accent color */
+  --color-accent-600: #4b6e8e;
+  --color-accent-700: #6f93b3;
+  --color-accent-800: #9fb7cc;
+  --color-accent-900: #cfdbe6;
+
+  /* Rich Black for Depth */
+  --color-rich-100: #020507;
+  --color-rich-200: #050a0d;
+  --color-rich-300: #070f14;
+  --color-rich-400: #0a141b;
+  --color-rich-500: #0c1821;
+  --color-rich-600: #254a66;
+  --color-rich-700: #3d7baa;
+  --color-rich-800: #77a8ce;
+  --color-rich-900: #bbd3e6;
 
   /* Neutrals */
-  --color-bg-light: #fdfbf6;
-  --color-bg-dark: #030f13;
-  --color-surface-light: #f3e9d2;
-  --color-surface-dark: #114b5f;
+  --color-bg-light: #f5f5f8;
+  --color-bg-dark: #0c1821;
+  --color-surface-light: #ebeaf1;
+  --color-surface-dark: #1b2a41;
 
   /* Text + UI Elements */
-  --color-text-base: #0a2d39;
-  --color-text-muted: #47683c;
-  --color-border: #c6dabf;
+  --color-text-base: #1b2a41;
+  --color-text-muted: #324a5f;
+  --color-border: #ccc9dc;
 
   /* Fonts */
   --font-display: var(--font-satoshi), system-ui, sans-serif;
