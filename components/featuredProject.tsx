@@ -86,7 +86,7 @@ export default function FeaturedProject() {
                         
                         {project.tags && project.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2">                            {project.tags.map((tag, index) => (
-                              <span key={index} className="px-2.5 py-1 text-xs font-medium bg-rich-100 dark:bg-rich-600 text-white dark:white rounded-full border border-rich-500 dark:border-rich-500">
+                              <span key={index} className="px-2.5 py-1 text-xs font-medium bg-rich-100 dark:bg-rich-600 text-gray-200 dark:white rounded-full border border-rich-500 dark:border-rich-500">
                                 {tag}
                               </span>
                             ))}
@@ -124,7 +124,7 @@ export default function FeaturedProject() {
 
             {/* View All Projects Button */}
             <div className="text-center mt-16">
-              <Link href="/projects" className="inline-flex items-center gap-2 px-8 py-3 text-base font-semibold bg-primary-500 hover:bg-primary-600 text-white dark:bg-primary-600 dark:hover:bg-primary-500 rounded-lg transition-all duration-300 hover:gap-3">
+              <Link href="/projects" className="inline-flex items-center gap-2 px-8 py-3 text-base font-semibold bg-primary-500 hover:bg-primary-600 text-gray-200 dark:bg-primary-600 dark:hover:bg-primary-500 rounded-lg transition-all duration-300 hover:gap-3">
                 View All Projects
                 <span className="text-lg">→</span>
               </Link>
