@@ -4,34 +4,34 @@
 /* ===============================
    ✅ Design Tokens (Color System)
 ================================= */
-@theme {  /* Primary Brand Palette (Green) */
+@theme {  /* Primary Brand Palette (Deep Green) */
   --color-primary-100: #036666;
-  --color-primary-200: #14746f;
-  --color-primary-300: #248277;
-  --color-primary-400: #358f80;
-  --color-primary-500: #469d89; /* Main brand color */
-  --color-primary-600: #56ab91;
-  --color-primary-700: #67b99a;
-  --color-primary-800: #78c6a3;
-  --color-primary-900: #88d4ab;
+  --color-primary-200: #036666;
+  --color-primary-300: #14746f;
+  --color-primary-400: #14746f;
+  --color-primary-500: #248277; /* Main brand color */
+  --color-primary-600: #358f80;
+  --color-primary-700: #469d89;
+  --color-primary-800: #56ab91;
+  --color-primary-900: #67b99a;
 
-  /* Accent Palette (Light Green) */
-  --color-accent-100: #14746f;
-  --color-accent-200: #248277;
-  --color-accent-300: #358f80;
-  --color-accent-400: #469d89;
-  --color-accent-500: #56ab91; /* Accent color */
-  --color-accent-600: #67b99a;
-  --color-accent-700: #78c6a3;
-  --color-accent-800: #88d4ab;
+  /* Accent Palette (Vibrant Green) */
+  --color-accent-100: #036666;
+  --color-accent-200: #14746f;
+  --color-accent-300: #248277;
+  --color-accent-400: #358f80;
+  --color-accent-500: #78c6a3; /* Accent color */
+  --color-accent-600: #88d4ab;
+  --color-accent-700: #99e2b4;
+  --color-accent-800: #99e2b4;
   --color-accent-900: #99e2b4;
 
   /* Rich Green for Depth */
   --color-rich-100: #036666;
-  --color-rich-200: #14746f;
-  --color-rich-300: #248277;
-  --color-rich-400: #358f80;
-  --color-rich-500: #469d89;
+  --color-rich-200: #036666;
+  --color-rich-300: #14746f;
+  --color-rich-400: #248277;
+  --color-rich-500: #358f80;
   --color-rich-600: #254a66;
   --color-rich-700: #3d7baa;
   --color-rich-800: #77a8ce;
@@ -39,12 +39,12 @@
   --color-bg-light: #f8faf8;
   --color-bg-dark: #036666;
   --color-surface-light: #e8f3ed;
-  --color-surface-dark: #14746f;
+  --color-surface-dark: #036666;
 
   /* Text + UI Elements */
   --color-text-base: #036666;
-  --color-text-muted: #358f80;
-  --color-border: #88d4ab;
+  --color-text-muted: #248277;
+  --color-border: #56ab91;
 
   /* Fonts */
   --font-display: var(--font-satoshi), system-ui, sans-serif;
@@ -65,19 +65,19 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--color-bg-dark);
-    color: var(--color-accent-900);
+    color: var(--color-accent-700);
   }
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
-  color: var(--color-primary-500);
+  color: var(--color-primary-400);
 }
 
 @media (prefers-color-scheme: dark) {
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-accent-800);
+    color: var(--color-accent-600);
   }
 }
 
@@ -129,23 +129,23 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-color-scheme: dark) {
   .prose {
-    color: var(--color-accent-900);
+    color: var(--color-accent-700);
   }
 
   .prose blockquote {
-    background-color: var(--color-rich-200);
-    color: var(--color-accent-800);
-    border-left-color: var(--color-accent-600);
+    background-color: var(--color-rich-100);
+    color: var(--color-accent-600);
+    border-left-color: var(--color-accent-500);
   }
 
   .prose code {
-    background-color: var(--color-rich-300);
-    color: var(--color-accent-800);
+    background-color: var(--color-rich-200);
+    color: var(--color-accent-600);
   }
 
   .prose pre {
-    background-color: var(--color-rich-200);
-    color: var(--color-accent-900);
+    background-color: var(--color-rich-100);
+    color: var(--color-accent-700);
   }
 }
 
@@ -168,9 +168,13 @@ input:focus, textarea:focus {
 
 @media (prefers-color-scheme: dark) {
   input, textarea {
-    background-color: var(--color-primary-800);
-    color: var(--color-accent-100);
-    border-color: var(--color-primary-600);
+    background-color: var(--color-rich-200);
+    color: var(--color-accent-700);
+    border-color: var(--color-accent-500);
+  }
+
+  input:focus, textarea:focus {
+    box-shadow: 0 0 0 2px var(--color-accent-600);
   }
 }
 
