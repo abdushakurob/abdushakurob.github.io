@@ -49,13 +49,15 @@ const Header: React.FC = () => {
   // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
-  }, []);  return (    <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 mb-8 sm:mb-12 mt-2 sm:mt-4 transition-all duration-300 w-full",
+  }, []);
+  return (
+    <header className={cn(
+      "fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 w-full",
       isScrolled ? "bg-background/80 dark:bg-primary-900/80 backdrop-blur-md border-b dark:border-primary-800" : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity py-2">
+        <Link href="/" className="font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
           <span className="dark:text-accent-300 text-primary-600">A</span>
           <span className="text-foreground dark:text-surface-light">bdushakur</span>
         </Link>
@@ -75,14 +77,15 @@ const Header: React.FC = () => {
         </nav>
         
         {/* Mobile Menu Button */}
-        <button          id="mobile-menu-button"
-          className="md:hidden text-foreground dark:text-surface-light p-2.5 my-2 rounded-lg hover:bg-surface-light/10 dark:hover:bg-primary-800/50 active:bg-surface-light/20 dark:active:bg-primary-800 transform active:scale-95 transition-all focus:outline-none"
+        <button 
+          id="mobile-menu-button"
+          className="md:hidden text-foreground dark:text-surface-light p-2 rounded-lg hover:bg-surface-light/10 dark:hover:bg-primary-800/50 active:bg-surface-light/20 dark:active:bg-primary-800 transform active:scale-95 transition-all focus:outline-none"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
         >
-          <div className="relative w-6 h-6">
+          <div className="relative w-6 h-6 mb-3">
             <div className={cn(
               "absolute inset-0 transform transition-all duration-300 ease-in-out",
               mobileMenuOpen ? "rotate-180 opacity-0" : "rotate-0 opacity-100"

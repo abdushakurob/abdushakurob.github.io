@@ -542,9 +542,8 @@ export default function WritingList() {
                     `}>
                       {writing.excerpt || processQuillHtml(writing.content).slice(0, 150) + '...'}
                     </p>
-                    
-                    {writing.tags && writing.tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      {writing.tags && writing.tags.length > 0 && (
+                      <div className={`mt-4 flex flex-wrap gap-2 ${viewType === 'list' ? 'mb-4' : ''}`}>
                         {writing.tags.map((tag, index) => (                          <span key={index} className="px-2 py-1 text-xs bg-primary-100 dark:bg-surface-600 text-primary-600 dark:text-accent-200 rounded-full">
                             {tag}
                           </span>
