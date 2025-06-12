@@ -532,8 +532,9 @@ export default function ProjectList() {
                     `}>
                       {project.description}
                     </p>
-                      {project.tags && project.tags.length > 0 && (
-                      <div className={`mt-4 flex flex-wrap gap-2 ${viewType === 'list' ? 'mb-4' : ''}`}>
+                    
+                    {project.tags && project.tags.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-2">
                         {project.tags.map((tag, index) => (
                           <span key={index} className="px-2.5 py-1 text-xs font-medium bg-primary-100 dark:bg-surface-600 text-primary-600 dark:text-accent-200 rounded-full">
                             {tag}
