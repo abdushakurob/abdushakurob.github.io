@@ -1,6 +1,5 @@
-'use client';
 import type { Metadata } from 'next';
-import React, { useEffect } from 'react';
+import React from 'react';
 import './globals.css';
 import { satoshi, plusJakarta, jetbrainsMono } from './fonts';
 import { createStaticSitemapData } from '@/lib/utils';
@@ -145,11 +144,6 @@ export default function RootLayout({
   };
 
   const sitemapData = createStaticSitemapData();
-  // _app.tsx or layout.tsx
-useEffect(() => {
-  document.documentElement.setAttribute('data-theme', 'light'); // or 'dark'
-}, []);
-
 
   return (
     <html 
@@ -157,7 +151,7 @@ useEffect(() => {
       className={`${satoshi.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
     >
       <head>
-        <meta name="theme-color" content="#18181b" />
+        <meta name="theme-color" content="#e6f2ed" />
         <meta name="color-scheme" content="light" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />

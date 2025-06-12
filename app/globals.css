@@ -5,6 +5,10 @@
    🌿 Refined Green Theme
    Modern, confident, vibrant
 ================================= */
+:root {
+  color-scheme: light;
+}
+
 @theme {
   /* 🍃 Primary Green: Commanding dark green palette */
   --color-primary-100: #e3ebe6;
@@ -29,7 +33,7 @@
   --color-accent-900: #041710;
 
   /* 🌓 Backgrounds and depth */
-  --color-bg-light: #ffffff;
+  --color-bg-light: #e6f2ed;
   --color-bg-dark: #041710;
   --color-surface-light: #f4f8f6;
   --color-surface-dark: #082318;
