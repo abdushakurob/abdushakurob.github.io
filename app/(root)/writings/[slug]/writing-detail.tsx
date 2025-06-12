@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
@@ -30,6 +30,17 @@ export default function WritingDetail({ slug }: { slug: string }) {
   const [writing, setWriting] = useState<Writing | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  const copyToClipboard = useCallback(async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy code:', err);
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchWriting() {
@@ -67,6 +78,51 @@ export default function WritingDetail({ slug }: { slug: string }) {
     { name: 'Blog', item: '/writings' },
     { name: writing.title, item: `/writings/${writing.slug}` }
   ]) : null;
+
+  useEffect(() => {
+    if (!writing) return;
+
+    // Add copy button to all pre elements containing code
+    const codeBlocks = document.querySelectorAll('pre');
+    codeBlocks.forEach((pre) => {
+      const code = pre.querySelector('code');
+      if (!code) return;
+
+      // Only add button if it doesn't exist
+      if (!pre.querySelector('.copy-code')) {
+        const button = document.createElement('button');
+        button.className = 'copy-code';
+        button.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Copy</span>
+        `;
+
+        const codeText = code.textContent || '';
+        button.onclick = () => {
+          copyToClipboard(codeText);
+          button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Copied!</span>
+          `;
+          setTimeout(() => {
+            button.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
+            `;
+          }, 2000);
+        };
+        pre.appendChild(button);
+      }
+    });
+  }, [writing, copyToClipboard]);
 
   if (loading) {
     return (
