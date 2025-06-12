@@ -301,190 +301,112 @@ input:focus, textarea:focus {
     color: #aefae2;
   }
 
-  /* Cards and Containers */
-  .card {
-    background-color: #0e221a;
-    border: 1px solid #155c44;
-    color: #e8fff5;
-    box-shadow: 0 4px 6px -1px rgba(0, 20, 10, 0.1), 0 2px 4px -1px rgba(0, 20, 10, 0.06);
+  /* Enhanced Card Styles */
+  .card, div[class*="rounded-xl"], div[class*="rounded-lg"] {
+    background-color: rgba(14, 34, 26, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(42, 140, 106, 0.2);
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 20, 10, 0.2),
+      0 2px 4px -1px rgba(0, 20, 10, 0.1),
+      inset 0 2px 4px rgba(174, 250, 226, 0.05);
+    transition: all 0.3s ease;
   }
 
-  .card:hover {
-    border-color: #2a8c6a;
-    box-shadow: 0 10px 15px -3px rgba(0, 20, 10, 0.1), 0 4px 6px -2px rgba(0, 20, 10, 0.05);
+  .card:hover, div[class*="rounded-xl"]:hover, div[class*="rounded-lg"]:hover {
+    border-color: rgba(42, 140, 106, 0.4);
+    box-shadow: 
+      0 10px 15px -3px rgba(0, 20, 10, 0.3),
+      0 4px 6px -2px rgba(0, 20, 10, 0.15),
+      inset 0 2px 4px rgba(174, 250, 226, 0.1);
+    transform: translateY(-2px);
   }
 
-  /* Content Containers */
-  .content-box {
-    background-color: #0f2a22;
-    border: 1px solid #155c44;
-    color: #e8fff5;
+  /* Writing Cards Specific */
+  .writing-card, div[class*="writing"] {
+    background: linear-gradient(
+      145deg,
+      rgba(14, 34, 26, 0.95) 0%,
+      rgba(26, 60, 48, 0.95) 100%
+    );
+    border: 1px solid rgba(42, 140, 106, 0.3);
   }
 
-  /* Buttons */
-  button:not([class*="bg-"]) {
-    background-color: #1a3c30;
-    color: #f0fff7;
-    border: 1px solid #2a8c6a;
+  /* Tags Enhancement */
+  span[class*="rounded-full"], .tag {
+    background-color: rgba(26, 60, 48, 0.8) !important;
+    color: #aefae2 !important;
+    border: 1px solid rgba(42, 140, 106, 0.4) !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
     transition: all 0.2s ease;
   }
 
-  button:not([class*="bg-"]):hover {
-    background-color: #2e5e4b;
-    border-color: #44b38b;
+  span[class*="rounded-full"]:hover, .tag:hover {
+    background-color: rgba(46, 94, 75, 0.9) !important;
+    border-color: rgba(94, 235, 189, 0.5) !important;
+    color: #dbfff5 !important;
     transform: translateY(-1px);
   }
 
-  button:not([class*="bg-"]):active {
-    transform: translateY(0);
+  /* Footer Enhancement */
+  footer, .footer {
+    background: linear-gradient(
+      to bottom,
+      rgba(14, 34, 26, 0.8) 0%,
+      rgba(6, 26, 19, 0.95) 100%
+    );
+    border-top: 1px solid rgba(42, 140, 106, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+      0 -4px 6px -1px rgba(0, 20, 10, 0.1),
+      0 -2px 4px -1px rgba(0, 20, 10, 0.06);
   }
 
-  /* Primary Button */
-  .btn-primary {
-    background-color: #2a8c6a !important;
-    color: #f0fff7 !important;
-    border: 1px solid #44b38b !important;
-  }
-
-  .btn-primary:hover {
-    background-color: #44b38b !important;
-    border-color: #5eebbd !important;
-  }
-
-  /* Secondary Button */
-  .btn-secondary {
-    background-color: #1a3c30 !important;
-    color: #f0fff7 !important;
-    border: 1px solid #2a8c6a !important;
-  }
-
-  .btn-secondary:hover {
-    background-color: #2e5e4b !important;
-    border-color: #44b38b !important;
-  }
-
-  /* Lists */
-  ul:not(.prose ul), ol:not(.prose ol) {
-    color: var(--color-text-inverse);
-  }
-
-  li:not(.prose li) {
-    color: var(--color-text-inverse);
-  }
-
-  /* Tables */
-  table:not(.prose table) {
-    background-color: #0e221a;
-    color: #e8fff5;
-  }
-
-  th:not(.prose th) {
-    background-color: #1a3c30;
-    color: #f0fff7;
-  }
-
-  td:not(.prose td) {
-    border-color: #155c44;
-    color: #e8fff5;
-  }
-
-  /* Form Elements */
-  select {
-    background-color: #0f2a22;
-    color: #f0fff7;
-    border-color: #2a8c6a;
-  }
-
-  select:focus {
-    border-color: #44b38b;
-    box-shadow: 0 0 0 2px #2a8c6a;
-  }
-
-  /* Custom Components */
-  .tag {
-    background-color: #1a3c30;
+  footer a, .footer a {
     color: #7af3c8;
-    border: 1px solid #2a8c6a;
+    transition: all 0.2s ease;
   }
 
-  .tag:hover {
-    background-color: #2e5e4b;
-    border-color: #44b38b;
+  footer a:hover, .footer a:hover {
+    color: #aefae2;
+    text-shadow: 0 0 8px rgba(174, 250, 226, 0.3);
   }
 
-  .badge {
-    background-color: #1a3c30;
-    color: #7af3c8;
+  /* Content Element Enhancement */
+  .content-box, div[class*="bg-surface"] {
+    background-color: rgba(15, 42, 34, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(42, 140, 106, 0.2);
+    box-shadow: inset 0 2px 4px rgba(174, 250, 226, 0.05);
   }
 
-  /* Dividers */
-  hr {
-    border-color: #155c44;
+  /* Text Enhancements for Dark Mode */
+  p, span {
+    color: #e8fff5;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   }
 
-  /* Code Blocks (outside prose) */
-  code:not(.prose code) {
-    background-color: #1b4537;
-    color: #dbfff5;
+  h1, h2, h3, h4, h5, h6 {
+    color: #aefae2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
-  /* Alerts and Notifications */
-  .alert {
-    background-color: #1a3c30;
-    border: 1px solid #2a8c6a;
-    color: #f0fff7;
+  /* Category Tags */
+  span[class*="bg-accent"] {
+    background-color: rgba(42, 140, 106, 0.3) !important;
+    color: #7af3c8 !important;
+    border: 1px solid rgba(94, 235, 189, 0.4) !important;
   }
 
-  .alert-success {
-    background-color: #1c4d3a;
-    border-color: #2a8c6a;
+  /* Date/Time Text */
+  time, .text-muted {
+    color: rgba(174, 250, 226, 0.7) !important;
   }
 
-  .alert-warning {
-    background-color: #4d3a1c;
-    border-color: #8c6a2a;
-  }
-
-  .alert-error {
-    background-color: #4d1c1c;
-    border-color: #8c2a2a;
-  }
-
-  /* Tooltips */
-  [data-tooltip]::after {
-    background-color: #1a3c30;
-    color: #f0fff7;
-    border: 1px solid #2a8c6a;
-  }
-
-  /* Modal/Dialog */
-  .modal {
-    background-color: #0e221a;
-    border: 1px solid #155c44;
-    box-shadow: 0 20px 25px -5px rgba(0, 20, 10, 0.1), 0 10px 10px -5px rgba(0, 20, 10, 0.04);
-  }
-
-  .modal-header {
-    border-bottom-color: #155c44;
-  }
-
-  .modal-footer {
-    border-top-color: #155c44;
-  }
-
-  /* Navigation */
-  nav {
-    background-color: #0e221a;
-    border-bottom-color: #155c44;
-  }
-
-  /* Custom Shadows */
-  .shadow-custom {
-    box-shadow: 0 4px 6px -1px rgba(0, 20, 10, 0.1), 0 2px 4px -1px rgba(0, 20, 10, 0.06);
-  }
-
-  .hover-shadow:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 20, 10, 0.1), 0 4px 6px -2px rgba(0, 20, 10, 0.05);
+  /* Card Description Text */
+  div[class*="line-clamp"] {
+    color: rgba(232, 255, 245, 0.9);
   }
 }
 

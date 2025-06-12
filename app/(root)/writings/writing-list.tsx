@@ -485,17 +485,19 @@ export default function WritingList() {
                 href={`/writings/${writing.slug}`}
                 key={writing._id}
                 className={`block group ${viewType === 'list' ? 'w-full' : ''}`}
-              >
-                <div className={`
-                  bg-surface-light dark:bg-rich-500 rounded-xl shadow-sm hover:shadow-md 
-                  transition-all duration-200 border border-primary-200 dark:border-primary-700
+              >                <div className={`
+                  bg-surface-light dark:bg-surface-dark rounded-xl
+                  shadow-sm hover:shadow-md 
+                  transition-all duration-300 
+                  border border-primary-200 dark:border-primary-700/30
+                  group-hover:border-primary-300 dark:group-hover:border-accent-600/30
+                  group-hover:-translate-y-1
                   ${viewType === 'list' 
                     ? 'flex gap-6 p-4 sm:p-6' 
                     : 'p-6 h-full'
                   }
-                `}>
-                  <div className={`
-                    relative rounded-lg overflow-hidden bg-primary-100 dark:bg-rich-400
+                `}>                    <div className={`
+                    relative rounded-lg overflow-hidden bg-primary-100 dark:bg-rich-400/30
                     ${viewType === 'list' 
                       ? 'w-48 h-32 flex-shrink-0' 
                       : 'w-full h-40 mb-4'
@@ -543,8 +545,7 @@ export default function WritingList() {
                     
                     {writing.tags && writing.tags.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">
-                        {writing.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 text-xs bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full">
+                        {writing.tags.map((tag, index) => (                          <span key={index} className="px-2 py-1 text-xs bg-primary-100 dark:bg-surface-600 text-primary-600 dark:text-accent-200 rounded-full">
                             {tag}
                           </span>
                         ))}
