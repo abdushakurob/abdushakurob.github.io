@@ -52,7 +52,7 @@ const Header: React.FC = () => {
   }, []);
   return (
     <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-300 w-full",
+      "fixed top-0 left-0 right-0 z-50 px-6 py-4 mb-16 transition-all duration-300 w-full",
       isScrolled ? "bg-background/80 dark:bg-primary-900/80 backdrop-blur-md border-b dark:border-primary-800" : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
