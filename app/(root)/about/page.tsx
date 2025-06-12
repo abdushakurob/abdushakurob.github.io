@@ -24,41 +24,62 @@ export default function AboutPage() {
       {/* Page Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primary-500 dark:text-accent-300 mb-4">
-          About Me
+          A Little More About This Site (and Me)
         </h1>
         <p className="text-xl text-primary-600/80 dark:text-accent-200 max-w-2xl mx-auto">
-          Full Stack Developer passionate about creating intuitive and impactful web experiences.
+          Part portfolio, part experiment, and part personal notebook that somehow ended up online.
         </p>
       </div>
 
       {/* About Content */}
       <div className="space-y-12">
-        {/* Professional Summary */}
+        {/* Personal Philosophy */}
         <section className="prose prose-lg max-w-none dark:prose-invert
           prose-headings:text-primary-600 dark:prose-headings:text-accent-300
           prose-p:text-primary-500 dark:prose-p:text-accent-200/90
           prose-a:text-accent-600 dark:prose-a:text-accent-300 hover:prose-a:text-accent-700 dark:hover:prose-a:text-accent-200
           prose-strong:text-primary-600 dark:prose-strong:text-accent-300">
+          <h2>Why This Site Exists</h2>
           <p>
-            I specialize in building modern web applications using React, Next.js, and TypeScript.
-            With a strong foundation in both frontend and backend development, I create scalable
-            solutions that prioritize user experience and performance.
+            I used to overthink everything before I even started. Now, I just log the process and let
+            the public hold me accountable. I start things before I feel ready—because if I wait for
+            the perfect moment, it never happens. So I build, break things, fix them, and learn along
+            the way.
           </p>
+          <p>
+            I like keeping things simple—whether it's design, code, or problem-solving. Less noise,
+            fewer distractions, just what's necessary. Also, I write things down because I forget.
+            That's basically what this site is.
+          </p>
+        </section>
+
+        {/* Professional Focus */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold text-primary-600 dark:text-accent-300">
+            What I Do
+          </h2>
+          <div className="prose prose-lg max-w-none dark:prose-invert">
+            <p className="text-primary-500 dark:text-accent-200/90">
+              Most of my time is split between web development and brand design—figuring out how
+              things work and how they should look. I specialize in building modern web applications,
+              but I also explore Web3, automation, and random stuff that catches my interest.
+            </p>
+          </div>
         </section>
 
         {/* Skills Section */}
         <section className="space-y-6">
           <h2 className="text-2xl font-bold text-primary-600 dark:text-accent-300">
-            Technical Skills
+            Skills & Tools
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Frontend */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Web Development */}
             <div className="space-y-4">
               <h3 className="font-semibold text-primary-500 dark:text-accent-200">
-                Frontend Development
+                Web Development
               </h3>
               <div className="flex flex-wrap gap-2">
-                {['React', 'Next.js', 'TypeScript', 'Tailwind CSS'].map((skill) => (
+                {['React', 'Next.js', 'TypeScript', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Python', 'FastAPI'].map((skill) => (
                   <span
                     key={skill}
                     className="px-3 py-1 text-sm bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
@@ -69,13 +90,30 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Backend */}
+            {/* Design */}
             <div className="space-y-4">
               <h3 className="font-semibold text-primary-500 dark:text-accent-200">
-                Backend Development
+                Brand Visual Design
               </h3>
               <div className="flex flex-wrap gap-2">
-                {['Node.js', 'Express', 'MongoDB', 'PostgreSQL'].map((skill) => (
+                {['Adobe Illustrator', 'Paper & Pen', 'UI/UX'].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1 text-sm bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Exploring */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-primary-500 dark:text-accent-200">
+                Currently Exploring
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {['Sui Move', 'Web3', 'Blockchain', 'AI Tools', 'Automation'].map((skill) => (
                   <span
                     key={skill}
                     className="px-3 py-1 text-sm bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
@@ -88,32 +126,16 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Experience Section */}
-        <section className="space-y-6">
+        {/* Personal Touch */}
+        <section className="prose prose-lg max-w-none dark:prose-invert mt-8">
           <h2 className="text-2xl font-bold text-primary-600 dark:text-accent-300">
-            Experience
+            A Bit More About Me
           </h2>
-          <div className="space-y-8">
-            <div className="p-6 bg-surface-light dark:bg-rich-500 rounded-xl border border-primary-200 dark:border-primary-700">
-              <h3 className="text-xl font-semibold text-primary-600 dark:text-accent-300 mb-2">
-                Full Stack Developer
-              </h3>
-              <p className="text-primary-500 dark:text-accent-200/90 mb-4">
-                Working on various web development projects, focusing on creating performant and
-                accessible applications using modern technologies.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['React', 'Next.js', 'Node.js', 'TypeScript'].map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2 py-1 text-xs bg-primary-100 dark:bg-rich-400 text-primary-600 dark:text-accent-200 rounded-full"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+          <p className="text-primary-500 dark:text-accent-200/90">
+            Outside of work, I'm usually learning something, figuring things out, or just getting
+            lost in a random idea. I like deep conversations about tech, design, and problem-solving,
+            but I also think most things are better when you don't take them too seriously.
+          </p>
         </section>
 
         {/* Get in Touch */}
@@ -122,8 +144,8 @@ export default function AboutPage() {
             Let&apos;s Connect
           </h2>
           <p className="text-primary-500 dark:text-accent-200/90 max-w-2xl mx-auto">
-            I&apos;m always interested in new opportunities and collaborations. Feel free to reach out
-            if you&apos;d like to discuss a project or just want to connect.
+            Always up for interesting conversations and collaborations. Whether you want to discuss
+            a project, share ideas, or just say hi—feel free to reach out.
           </p>
           <div className="flex justify-center gap-4">
             <Link
