@@ -224,10 +224,11 @@ export default function ProjectList() {
       {/* Page Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primary-600 dark:text-accent-200 mb-4">
-          Projects & Works
+          Things I've Built
         </h1>
         <p className="text-xl text-primary-500 dark:text-accent-200/90 max-w-2xl mx-auto">
-          A collection of my work, side projects, and experiments in web development and design.
+          Some experiments, side projects, and things I've broken and fixed along the way.
+          A mix of web apps, designs, and random ideas that turned into something.
         </p>
       </div>
 

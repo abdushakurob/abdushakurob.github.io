@@ -223,10 +223,11 @@ export default function WritingList() {
       {/* Page Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-primary-500 dark:text-accent-800 mb-4">
-          Writings & Articles
+          Brain Dumps & Learnings
         </h1>
         <p className="text-xl text-primary-600/80 dark:text-accent-300 max-w-2xl mx-auto">
-          Thoughts, tutorials, and insights on web development, design, and technology.
+          Random thoughts, notes-to-self, and things I learned the hard way.
+          Consider it my public notebook—messy but maybe useful.
         </p>
       </div>
 
