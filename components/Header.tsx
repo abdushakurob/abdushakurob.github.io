@@ -85,7 +85,7 @@ const Header: React.FC = () => {
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
         >
-          <div className="relative w-6 h-6">
+          <div className="relative w-6 h-6 mb-3">
             <div className={cn(
               "absolute inset-0 transform transition-all duration-300 ease-in-out",
               mobileMenuOpen ? "rotate-180 opacity-0" : "rotate-0 opacity-100"
